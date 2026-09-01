@@ -5,11 +5,13 @@
 
     --color-primary: #5980A6;
     --color-primary-text: #ffffff;
+    --color-primary-dark: #1D1F20;
 
     --color-layout-bg: #ffffff;
     --color-page-bg: #f2f2f3;
     --color-input-bg: #ffffff;
     --color-card-bg: #ffffff;
+    --color-border: #5980A6;
 }
 
 @layer base {

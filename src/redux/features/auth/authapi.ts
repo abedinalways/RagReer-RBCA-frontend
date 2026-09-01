@@ -55,7 +55,7 @@ const authApi = baseApi.injectEndpoints({
     }),
     signUp: builder.mutation<
       { success?: boolean; message?: string },
-      { name: string; email: string; password: string; role?: string }
+      { name: string; email: string; password: string; role?: string, phone?: string }
     >({
       query: (credentials) => ({
         url: "/auth/register",

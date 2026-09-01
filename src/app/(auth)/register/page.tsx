@@ -1,10 +1,10 @@
+import Register from "@/sharedComponents/auth/Register";
+import { Suspense } from "react";
+
 export default function RegisterPage() {
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen py-2">
-            <h1 className="text-4xl font-bold">Register</h1>
-            <p className="mt-4 text-lg text-gray-600">
-                Please fill in the form below to create a new account.
-            </p>
-        </div>
+        <Suspense fallback={<div>Loading...</div>}>
+            <Register />
+        </Suspense>
     );
 }
