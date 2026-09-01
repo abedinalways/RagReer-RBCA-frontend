@@ -69,11 +69,11 @@ export default function Register() {
     };
 
     return (
-        <div className="box-border h-[100dvh] overflow-hidden px-3 py-3 sm:px-4 sm:py-4">
-            <div className="mx-auto flex h-full w-full flex-col overflow-hidden ">
-                <div className="grid h-full min-h-0 flex-1 gap-1 lg:grid-cols-[6fr_6fr]">
-                    <section className="flex min-h-0 items-center justify-center rounded-[26px] px-3 py-4 lg:order-2 ">
-                        <div className="w-full max-w-md">
+        <div className="box-border flex min-h-[100dvh] w-full flex-col px-3 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-4 sm:py-5 lg:h-[100dvh] lg:overflow-hidden">
+            <div className="mx-auto flex w-full flex-col lg:h-full lg:min-h-0 lg:overflow-hidden">
+                <div className="grid w-full flex-1 gap-2 lg:min-h-0 lg:grid-cols-[6fr_6fr] lg:gap-1">
+                    <section className="flex min-h-0 flex-col rounded-[26px] px-1 py-4 sm:px-4 sm:py-6 lg:order-2 lg:overflow-y-auto">
+                        <div className="m-auto w-full max-w-md">
                             <div className="flex justify-center">
                                 <Image
                                     src="/images/website_logo.webp"
@@ -85,15 +85,18 @@ export default function Register() {
                             </div>
 
                             <div className="text-center">
-                                <h1 className="text-[34px] font-semibold tracking-[-0.03em] text-[#111111]">
+                                <h1 className="text-[28px] font-semibold tracking-[-0.03em] text-[#111111] sm:text-[32px] lg:text-[34px]">
                                     Create Account
                                 </h1>
-                                <p className="mt-3 text-sm leading-6 text-[#7C859C]">
+                                <p className="mt-2 text-sm leading-6 text-[#7C859C] sm:mt-3">
                                     Please register by filling your data
                                 </p>
                             </div>
 
-                            <form className="mt-10 space-y-5" onSubmit={handleSubmit(onSubmit)}>
+                            <form
+                                className="mt-6 space-y-4 sm:mt-8 sm:space-y-5 lg:mt-10"
+                                onSubmit={handleSubmit(onSubmit)}
+                            >
                                 <div className="space-y-1">
                                     <label
                                         htmlFor="signup-name"
