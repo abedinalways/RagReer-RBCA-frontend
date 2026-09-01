@@ -1,8 +1,4 @@
-/**
- * access-control/access.utils.ts — pure, dependency-free permission helpers.
- *
- * These are safe to call from server components, route guards and middleware.
- */
+
 
 import type { Permission } from "./permissions/permissions";
 import { ROLE_PERMISSIONS, type Role } from "./roles/roles";

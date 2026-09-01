@@ -13,13 +13,6 @@ interface RoleGuardProps extends PropsWithChildren {
   fallback?: ReactNode;
 }
 
-/**
- * Route-level role protection. If the session role is not in `roles`,
- * the user is redirected to their own workspace home.
- *
- * Used by workspace route-groups:
- *   src/app/(protected)/admin/layout.tsx → <RoleGuard roles={[ROLES.ADMIN]}>
- */
 export function RoleGuard({ roles, fallback = null, children }: RoleGuardProps) {
   const role = useAppStore((state) => state.role);
   const isAuthenticated = useAppStore((state) => state.isAuthenticated);

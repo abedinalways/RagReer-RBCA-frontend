@@ -34,6 +34,7 @@ export default function LoginPage() {
   const [selected, setSelected] = useState<Role | null>(null);
 
   const handleSelect = (role: Role) => {
+    console.log("Selected role:", role);
     setSelected(role);
     login(role);
     router.replace(ROLE_HOME[role]);

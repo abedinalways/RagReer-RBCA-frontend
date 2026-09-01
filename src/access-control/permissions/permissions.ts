@@ -1,12 +1,3 @@
-/**
- * access-control/permissions/permissions.ts
- *
- * Central definition of every permission in the application (Rules ② & ③).
- * Permission strings follow the `module.action` convention and are defined in
- * exactly ONE place — the rest of the project imports `PERMISSIONS` instead of
- * hard-coding strings. The permission definition drives navigation, route
- * access, component access and action access.
- */
 
 export const PERMISSIONS = {
   AUTH: {

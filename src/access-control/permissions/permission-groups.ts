@@ -1,9 +1,4 @@
-/**
- * access-control/permissions/permission-groups.ts
- *
- * Permission definitions grouped per module so permission screens
- * (e.g. Admin → Settings → Staff) can render/select them in a structured way.
- */
+
 
 import { getModulePermissions, PERMISSIONS, type Permission, type PermissionModule } from "./permissions";
 
