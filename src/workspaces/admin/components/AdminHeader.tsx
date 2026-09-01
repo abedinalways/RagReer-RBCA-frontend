@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useAppStore } from "@/store/store";
 import { ROLE_LABELS } from "@/access-control/roles/roles";
+import { LogoutButton } from "@/components/shared/LogoutButton";
 
 /** Mobile top bar for the admin workspace. */
 export function AdminHeader() {
@@ -24,9 +25,12 @@ export function AdminHeader() {
         <span className="font-semibold text-slate-900">🏢 RBCA</span>
       </div>
 
-      <div className="text-right">
-        <p className="text-sm font-medium text-slate-800">{user?.name ?? "Admin"}</p>
-        <p className="text-xs text-slate-500">{role ? ROLE_LABELS[role] : ""}</p>
+      <div className="flex items-center gap-3">
+        <div className="text-right">
+          <p className="text-sm font-medium text-slate-800">{user?.name ?? "Admin"}</p>
+          <p className="text-xs text-slate-500">{role ? ROLE_LABELS[role] : ""}</p>
+        </div>
+        <LogoutButton />
       </div>
     </header>
   );

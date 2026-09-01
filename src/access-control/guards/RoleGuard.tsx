@@ -8,7 +8,7 @@ import { ROLE_HOME, type Role } from "../roles/roles";
 
 interface RoleGuardProps extends PropsWithChildren {
   /** Roles allowed inside the guarded area. */
-  roles: Role[];
+  roles: readonly Role[];
   /** Shown while the guard evaluates / as a fallback. */
   fallback?: ReactNode;
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useAppStore } from "@/store/store";
+import { LogoutButton } from "@/components/shared/LogoutButton";
 
 export function WorkerHeader() {
   const user = useAppStore((state) => state.user);
@@ -11,7 +12,10 @@ export function WorkerHeader() {
         <span aria-hidden>🔧</span>
         <span className="font-semibold text-slate-900">RagReer Jobs</span>
       </div>
-      <span className="text-sm font-medium text-slate-600">{user?.name ?? "Worker"}</span>
+      <div className="flex items-center gap-3">
+        <span className="text-sm font-medium text-slate-600">{user?.name ?? "Worker"}</span>
+        <LogoutButton />
+      </div>
     </header>
   );
 }

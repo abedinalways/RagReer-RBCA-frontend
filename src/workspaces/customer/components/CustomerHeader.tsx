@@ -2,6 +2,7 @@
 
 import { useAppStore } from "@/store/store";
 import { ROLE_LABELS } from "@/access-control/roles/roles";
+import { LogoutButton } from "@/components/shared/LogoutButton";
 
 export function CustomerHeader() {
   const user = useAppStore((state) => state.user);
@@ -13,9 +14,10 @@ export function CustomerHeader() {
         <p className="text-sm font-medium text-slate-800">{user?.name ?? "Welcome"}</p>
         <p className="text-xs text-slate-500">{role ? ROLE_LABELS[role] : ""} Portal</p>
       </div>
-      <span className="rounded-full bg-sky-100 px-3 py-1 text-xs font-medium text-sky-700">
-        Customer
-      </span>
+      <div className="flex items-center gap-3">
+        <span className="rounded-full bg-sky-100 px-3 py-1 text-xs font-medium text-sky-700">Customer</span>
+        <LogoutButton />
+      </div>
     </header>
   );
 }
