@@ -1,0 +1,19 @@
+/**
+ * workspaces/worker/layouts/WorkerLayout.tsx
+ *
+ * Mobile-first PWA shell — intentionally NOT a re-skinned desktop layout.
+ * Mirrors the worker screenshot: Home / Jobs / Time / Profile via bottom nav.
+ */
+
+import { WorkerBottomNav } from "../components/WorkerBottomNav";
+import { WorkerHeader } from "../components/WorkerHeader";
+
+export function WorkerLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="mx-auto flex min-h-screen w-full max-w-md flex-col bg-slate-100 shadow-sm">
+      <WorkerHeader />
+      <main className="flex-1 p-4 pb-24">{children}</main>
+      <WorkerBottomNav />
+    </div>
+  );
+}
