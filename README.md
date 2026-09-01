@@ -103,4 +103,4 @@ Action Access (LeadActions etc.)
 - `src/access-control/roles/roles.ts` — role → permission matrix + role home
 - `src/features/leads/` — reference module showing the full feature anatomy
 - `src/workspaces/worker/` — mobile-first PWA shell reusing `features/jobs`
-- `src/store/slices/auth-slice.ts` — mock session; swap for a real auth provider
+- `src/store/slices/auth-slice.ts` — mock session; swap for a real auth provider# raggreer-half-stache
