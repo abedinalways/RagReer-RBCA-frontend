@@ -2,29 +2,35 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useAppStore } from "@/store/store";
+import { useAppSelector } from "@/redux/store";
+import {
+  selectCurrentRole,
+  selectIsAuthenticated,
+  selectIsHydrated,
+} from "@/redux/features/auth/authSlice";
 import { ROLE_HOME } from "@/access-control/roles/roles";
 
-/**
- * Root page redirect — lands the user on their role's workspace home.
- * (Replaced by server-side middleware once real auth lands.)
- */
+
 export function WorkspaceRedirect() {
-  const role = useAppStore((state) => state.role);
-  const isAuthenticated = useAppStore((state) => state.isAuthenticated);
+  const hydrated = useAppSelector(selectIsHydrated);
+  const role = useAppSelector(selectCurrentRole);
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
   const router = useRouter();
 
   useEffect(() => {
+    if (!hydrated) return;
     if (!isAuthenticated) {
       router.replace("/login");
       return;
     }
     if (role) router.replace(ROLE_HOME[role]);
-  }, [isAuthenticated, role, router]);
+  }, [hydrated, isAuthenticated, role, router]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-slate-50 text-sm text-slate-500">
-      {isAuthenticated && role ? `Redirecting to ${ROLE_HOME[role]}…` : "Redirecting to login…"}
+      {hydrated && isAuthenticated && role
+        ? `Redirecting to ${ROLE_HOME[role]}…`
+        : "Redirecting to login…"}
     </div>
   );
 }

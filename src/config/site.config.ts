@@ -1,6 +1,4 @@
-/**
- * config/site.config.ts — app-level constants.
- */
+
 
 export const SITE = {
   name: "RagReer RBCA",

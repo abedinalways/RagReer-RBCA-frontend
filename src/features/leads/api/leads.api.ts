@@ -1,9 +1,9 @@
 /**
  * features/leads/api/leads.api.ts — Lead endpoints.
- * Only touches the shared client (store/api/api-client.ts) — no direct fetch.
+ * Only touches the shared client (lib/api-client.ts) — no direct fetch.
  */
 
-import { apiClient } from "@/store/api/api-client";
+import { apiClient } from "@/lib/api-client";
 import type { Lead, LeadListParams } from "../types/lead.types";
 
 export interface LeadPayload {

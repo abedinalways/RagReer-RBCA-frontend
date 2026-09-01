@@ -1,14 +1,18 @@
 "use client";
 
 import { useCallback } from "react";
-import { useAppStore } from "@/store/store";
+import { useAppSelector } from "@/redux/store";
+import {
+  selectCurrentRole,
+  selectPermissions,
+} from "@/redux/features/auth/authSlice";
 import { hasAnyPermission, hasAllPermissions, hasPermission } from "../access.utils";
 import type { Permission } from "../permissions/permissions";
 
 
 export function usePermission() {
-  const permissions = useAppStore((state) => state.permissions);
-  const role = useAppStore((state) => state.role);
+  const permissions = useAppSelector(selectPermissions);
+  const role = useAppSelector(selectCurrentRole);
 
   const can = useCallback((permission: Permission) => hasPermission(permissions, permission), [permissions]);
   const canAny = useCallback((required: Permission[]) => hasAnyPermission(permissions, required), [permissions]);

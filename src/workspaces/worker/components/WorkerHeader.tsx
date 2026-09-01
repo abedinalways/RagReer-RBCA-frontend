@@ -1,10 +1,11 @@
 "use client";
 
-import { useAppStore } from "@/store/store";
+import { useAppSelector } from "@/redux/store";
+import { selectCurrentUser } from "@/redux/features/auth/authSlice";
 import { LogoutButton } from "@/components/shared/LogoutButton";
 
 export function WorkerHeader() {
-  const user = useAppStore((state) => state.user);
+  const user = useAppSelector(selectCurrentUser);
 
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center justify-between bg-white px-4 shadow-sm">

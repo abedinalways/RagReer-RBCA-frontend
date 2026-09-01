@@ -1,12 +1,16 @@
 "use client";
 
-import { useAppStore } from "@/store/store";
+import { useAppSelector } from "@/redux/store";
+import {
+  selectCurrentRole,
+  selectCurrentUser,
+} from "@/redux/features/auth/authSlice";
 import { ROLE_LABELS } from "@/access-control/roles/roles";
 import { LogoutButton } from "@/components/shared/LogoutButton";
 
 export function CustomerHeader() {
-  const user = useAppStore((state) => state.user);
-  const role = useAppStore((state) => state.role);
+  const user = useAppSelector(selectCurrentUser);
+  const role = useAppSelector(selectCurrentRole);
 
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-slate-200 bg-white px-4 md:px-6">

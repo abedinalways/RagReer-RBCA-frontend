@@ -1,11 +1,3 @@
-/**
- * access-control/roles/roles.ts
- *
- * Rule ① & ⑤ — Roles are FIXED (ADMIN / CUSTOMER / WORKER) and the role
- * permission matrix is centralized here. Admin gains every permission; Customer
- * and Worker only get their scope. The role matrix is the single source of
- * truth for navigation, route guards, component guards and action guards.
- */
 
 import { ALL_PERMISSIONS, PERMISSIONS, type Permission } from "../permissions/permissions";
 
@@ -32,14 +24,7 @@ export const ROLE_HOME: Record<Role, string> = {
 
 export const ALL_ROLES: Role[] = [ROLES.ADMIN, ROLES.CUSTOMER, ROLES.WORKER];
 
-/**
- * Role ↔ permission matrix.
- *
- * ADMIN    → every permission (staff granularity handled via per-staff
- *             permission sets at the staff-configuration layer).
- * CUSTOMER → own requests/property/estimations/contracts/appointments/invoices.
- * WORKER   → own jobs, time-tracking and profile.
- */
+
 export const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
   [ROLES.ADMIN]: [...ALL_PERMISSIONS],
 

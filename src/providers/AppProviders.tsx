@@ -1,18 +1,13 @@
 "use client";
 
 import type { PropsWithChildren } from "react";
-import StoreProvider from "@/store/provider";
+import ReduxProvider from "@/redux/ReduxProvider";
 
-/**
- * providers/AppProviders.tsx — root client provider stack.
- * Add future providers here (Theme, ReactQuery, i18n…) — layouts never need
- * to know about them.
- */
 export function AppProviders({ children }: PropsWithChildren) {
   return (
-    <StoreProvider>
+    <ReduxProvider>
       {/* future providers go here */}
       {children}
-    </StoreProvider>
+    </ReduxProvider>
   );
 }

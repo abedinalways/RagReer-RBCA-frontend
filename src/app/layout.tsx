@@ -1,7 +1,16 @@
 import type { Metadata } from "next";
+import { Barlow_Condensed } from "next/font/google";
+
 import { AppProviders } from "@/providers/AppProviders";
 import { SITE } from "@/config/site.config";
 import "./globals.css";
+
+const barlowCondensed = Barlow_Condensed({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+  variable: "--font-barlow-condensed",
+});
 
 export const metadata: Metadata = {
   title: {
@@ -11,15 +20,12 @@ export const metadata: Metadata = {
   description: SITE.description,
 };
 
-/**
- * Root layout — the ONLY place that mounts the global provider stack.
- * Everything below is routed by app/… route groups and rendered inside
- * workspace layouts.
- */
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
-      <body className="min-h-screen bg-slate-50 antialiased">
+    <html lang="en" className={barlowCondensed.variable}>
+      <body className="min-h-screen antialiased">
         <AppProviders>{children}</AppProviders>
       </body>
     </html>

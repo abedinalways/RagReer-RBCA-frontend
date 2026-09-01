@@ -1,1 +1,21 @@
 @import "tailwindcss";
+
+@theme {
+    --font-barlow: var(--font-barlow-condensed);
+
+    --color-primary: #5980A6;
+    --color-primary-text: #ffffff;
+
+    --color-layout-bg: #ffffff;
+    --color-page-bg: #f2f2f3;
+    --color-input-bg: #ffffff;
+    --color-card-bg: #ffffff;
+}
+
+@layer base {
+    body {
+        @apply min-h-screen text-slate-800 antialiased;
+        background-color: var(--color-page-bg);
+        font-family: var(--font-barlow-condensed);
+    }
+}

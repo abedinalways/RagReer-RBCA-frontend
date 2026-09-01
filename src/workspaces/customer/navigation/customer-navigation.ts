@@ -1,10 +1,4 @@
-/**
- * workspaces/customer/navigation/customer-navigation.ts
- *
- * Customer workspace sidebar — permission driven. Labels map 1:1 to the
- * Customer Portal screenshot (My Requests, My Property, …) while the actual
- * implementation lives in `features/…` (Feature ≠ Role).
- */
+
 
 import { PERMISSIONS } from "@/access-control/permissions/permissions";
 import type { WorkspaceNavigationItem } from "../../workspace.types";

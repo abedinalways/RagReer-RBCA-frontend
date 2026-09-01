@@ -1,9 +1,18 @@
 /**
- * store/api/api-client.ts — thin typed fetch client.
+ * lib/api-client.ts — thin typed fetch client for feature `api/*.ts` modules
+ * that live outside RTK Query. Swapping the transport (axios, react-query…)
+ * later only touches this file.
  *
- * Feature `api/*.ts` modules import exclusively from here, so swapping the
- * transport (axios, react-query, tRPC…) later only touches this file.
+ * - The authorization token is read from the auth cookie written by the Redux
+ *   auth slice, so feature APIs stay authenticated automatically.
+ * - Design mode (`NEXT_PUBLIC_DESIGN_MODE=true`): the network is never touched
+ *   and benign stubs are returned, matching `redux/api/designMode.ts`.
+ * - Production: every request hits the real backend.
  */
+
+import Cookies from "js-cookie";
+import { authCookieNames } from "@/lib/auth/config";
+import { env } from "@/lib/env";
 
 export interface ApiQueryParams {
   [key: string]: string | number | boolean | undefined;
@@ -14,26 +23,44 @@ export interface ApiRequestOptions {
   headers?: HeadersInit;
 }
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "";
+function getAuthToken(): string | null {
+  if (typeof window === "undefined") return null;
+  return Cookies.get(authCookieNames.token) ?? null;
+}
 
 function buildUrl(path: string, params?: ApiQueryParams): string {
-  if (!params) return `${API_BASE_URL}${path}`;
+  if (!params) return `${env.apiBaseUrl}${path}`;
 
   const search = new URLSearchParams();
   for (const [key, value] of Object.entries(params)) {
     if (value !== undefined) search.set(key, String(value));
   }
   const query = search.toString();
-  return query ? `${API_BASE_URL}${path}?${query}` : `${API_BASE_URL}${path}`;
+  return query ? `${env.apiBaseUrl}${path}?${query}` : `${env.apiBaseUrl}${path}`;
 }
 
 async function request<T>(path: string, options: ApiRequestOptions & RequestInit = {}): Promise<T> {
   const { params, headers, ...init } = options;
 
+  // Design mode: keep Redux/feature code running without a backend.
+  if (env.designMode) {
+    const method = (init.method ?? "GET").toUpperCase();
+    if (method === "GET") {
+      return [] as unknown as T;
+    }
+    return {
+      success: true,
+      message: "Design mode: request resolved locally.",
+    } as unknown as T;
+  }
+
+  const token = getAuthToken();
+
   const response = await fetch(buildUrl(path, params), {
     ...init,
     headers: {
       "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...(headers as Record<string, string> | undefined),
     },
   });

@@ -3,7 +3,12 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import type { PropsWithChildren, ReactNode } from "react";
-import { useAppStore } from "@/store/store";
+import { useAppSelector } from "@/redux/store";
+import {
+  selectCurrentRole,
+  selectIsAuthenticated,
+  selectIsHydrated,
+} from "@/redux/features/auth/authSlice";
 import { ROLE_HOME, type Role } from "../roles/roles";
 
 interface RoleGuardProps extends PropsWithChildren {
@@ -14,11 +19,13 @@ interface RoleGuardProps extends PropsWithChildren {
 }
 
 export function RoleGuard({ roles, fallback = null, children }: RoleGuardProps) {
-  const role = useAppStore((state) => state.role);
-  const isAuthenticated = useAppStore((state) => state.isAuthenticated);
+  const hydrated = useAppSelector(selectIsHydrated);
+  const role = useAppSelector(selectCurrentRole);
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
   const router = useRouter();
 
   useEffect(() => {
+    if (!hydrated) return;
     if (!isAuthenticated) {
       router.replace("/login");
       return;
@@ -26,8 +33,10 @@ export function RoleGuard({ roles, fallback = null, children }: RoleGuardProps) 
     if (role && !roles.includes(role)) {
       router.replace(ROLE_HOME[role] ?? "/login");
     }
-  }, [isAuthenticated, role, roles, router]);
+  }, [hydrated, isAuthenticated, role, roles, router]);
 
-  if (!isAuthenticated || !role || !roles.includes(role)) return <>{fallback}</>;
+  if (!hydrated || !isAuthenticated || !role || !roles.includes(role)) {
+    return <>{fallback}</>;
+  }
   return <>{children}</>;
 }

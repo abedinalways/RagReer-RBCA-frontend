@@ -1,9 +1,3 @@
-/**
- * workspaces/worker/layouts/WorkerLayout.tsx
- *
- * Mobile-first PWA shell — intentionally NOT a re-skinned desktop layout.
- * Mirrors the worker screenshot: Home / Jobs / Time / Profile via bottom nav.
- */
 
 import { WorkerBottomNav } from "../components/WorkerBottomNav";
 import { WorkerHeader } from "../components/WorkerHeader";
