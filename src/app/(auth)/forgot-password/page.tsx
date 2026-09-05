@@ -1,9 +1,12 @@
-import { Fragment } from "react/jsx-runtime";
+import { Suspense } from "react";
+
+import LoginFallback from "@/components/LoginFallback";
+import ForgotPassword from "@/sharedComponents/auth/ForgotPassword";
 
 export default function ForgotPasswordPage() {
     return (
-        <Fragment>
-
-        </Fragment>
+        <Suspense fallback={<LoginFallback />}>
+            <ForgotPassword />
+        </Suspense>
     );
 }
