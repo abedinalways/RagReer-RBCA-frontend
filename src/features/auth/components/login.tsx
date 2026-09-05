@@ -21,8 +21,8 @@ import {
   type Role,
 } from "@/access-control/roles/roles";
 import { cn } from "@/lib/utils";
-import AuthShadowPanel from "./AuthShadowPanel";
-import Button from "../button/Button";
+import AuthShadowPanel from "../../../sharedComponents/auth/AuthShadowPanel";
+import Button from "../../../sharedComponents/button/Button";
 import { fieldInputClassName, fieldWrapperClassName } from "./Register";
 import Image from "next/image";
 

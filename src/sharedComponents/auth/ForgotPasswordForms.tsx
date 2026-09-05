@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 
 import { authRoutes } from "@/lib/auth/config";
 import Button from "../button/Button";
-import { fieldInputClassName, fieldWrapperClassName } from "./Register";
+import { fieldInputClassName, fieldWrapperClassName } from "../../features/auth/components/Register";
 
 export const formNoticeClassName =
     "rounded-[12px] border border-red-200 bg-red-50 px-4 py-3 text-center text-sm text-[#D14343]";

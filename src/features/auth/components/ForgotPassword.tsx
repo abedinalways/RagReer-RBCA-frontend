@@ -10,9 +10,9 @@ import {
     useForgotPasswordMutation,
     useResetPasswordMutation,
 } from "@/redux/features/auth/authapi";
-import AuthShadowPanel from "./AuthShadowPanel";
-import OtpVerify from "./OtpVerify";
-import { EmailStepForm, NewPasswordStepForm } from "./ForgotPasswordForms";
+import AuthShadowPanel from "../../../sharedComponents/auth/AuthShadowPanel";
+import OtpVerify from "../../../sharedComponents/auth/OtpVerify";
+import { EmailStepForm, NewPasswordStepForm } from "../../../sharedComponents/auth/ForgotPasswordForms";
 
 const RESEND_COOLDOWN_SECONDS = 30;
 const RESET_TOKEN_STORAGE_KEY = "rgr_forgot_password_reset";

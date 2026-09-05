@@ -9,9 +9,9 @@ import { useForm } from "react-hook-form";
 import { Eye, EyeOff, Loader2, Lock, Mail, Phone, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useSignUpMutation } from "@/redux/features/auth/authapi";
-import AuthShadowPanel from "./AuthShadowPanel";
+import AuthShadowPanel from "../../../sharedComponents/auth/AuthShadowPanel";
 import { authRoutes } from "@/lib/auth/config";
-import Button from "../button/Button";
+import Button from "../../../sharedComponents/button/Button";
 
 type SignUpFormValues = {
     name: string;

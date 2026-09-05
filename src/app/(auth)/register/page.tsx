@@ -1,5 +1,5 @@
 import LoginFallback from "@/components/LoginFallback";
-import Register from "@/sharedComponents/auth/Register";
+import Register from "@/features/auth/components/Register";
 import { Suspense } from "react";
 
 export default function RegisterPage() {

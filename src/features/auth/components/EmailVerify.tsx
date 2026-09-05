@@ -5,8 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 import { authRoutes } from "@/lib/auth/config";
 import { useResendVerificationEmailMutation } from "@/redux/features/auth/authapi";
-import AuthShadowPanel from "./AuthShadowPanel";
-import OtpVerify from "./OtpVerify";
+import AuthShadowPanel from "../../../sharedComponents/auth/AuthShadowPanel";
+import OtpVerify from "../../../sharedComponents/auth/OtpVerify";
 
 /** Fallback for the design/demo flow when no email is provided in the URL. */
 const DEMO_MASKED_EMAIL = "alexjo***@gmail.com";

@@ -1,5 +1,5 @@
 import LoginFallback from "@/components/LoginFallback";
-import Login from "@/sharedComponents/auth/login";
+import Login from "@/features/auth/components/login";
 import { Suspense } from "react";
 
 
