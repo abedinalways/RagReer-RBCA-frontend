@@ -50,10 +50,7 @@ export function OtpInput({
                         handleKeyDown(index, event);
                     }}
                     onPaste={handlePaste}
-                    className={` h-12 w-12 rounded-md border bg-white text-center text-base font-medium text-[#111111]  outline-none transition-all sm:h-14  sm:w-14 ${error ? ` border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500 ` : `border-[#D0D5DD]
-                    focus:border-[#5B82A8]
-                    focus:ring-1
-                    focus:ring-[#5B82A8]
+                    className={` h-12 w-12 rounded-md border bg-white text-center text-base font-medium text-[#111111]  outline-none transition-all sm:h-14  sm:w-14 ${error ? ` border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500 ` : `border-[#D0D5DD] focus:border-[#5B82A8] focus:ring-1 focus:ring-[#5B82A8]
                 `
                         }
 
