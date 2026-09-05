@@ -1,12 +1,11 @@
 import { Suspense } from "react";
 
-import LoginFallback from "@/components/LoginFallback";
-import ForgotPassword from "@/features/auth/components/ForgotPassword";
+import { ForgotPasswordForm, LoginFallback } from "@/features/auth";
 
 export default function ForgotPasswordPage() {
     return (
         <Suspense fallback={<LoginFallback />}>
-            <ForgotPassword />
+            <ForgotPasswordForm />
         </Suspense>
     );
 }

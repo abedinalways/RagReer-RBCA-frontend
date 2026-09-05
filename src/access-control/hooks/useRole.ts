@@ -4,7 +4,7 @@ import { useAppSelector } from "@/redux/store";
 import {
   selectCurrentRole,
   selectCurrentUser,
-} from "@/redux/features/auth/authSlice";
+} from "@/features/auth/state/auth.slice";
 import { ROLE_HOME, ROLE_LABELS, type Role } from "../roles/roles";
 
 /** Role helpers for the current session (read straight from the Redux store). */

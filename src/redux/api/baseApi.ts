@@ -9,17 +9,10 @@ import {
 import { env } from "@/lib/env";
 import { getErrorMessage } from "@/lib/getErrorMessage";
 import { buildDesignModeResponse } from "@/redux/api/designMode";
-import {
-  extractAuthTokens,
-  handleAuthSuccess,
-} from "@/redux/features/auth/authHelpers";
-import { logOut, setCredentials } from "@/redux/features/auth/authSlice";
+import { extractAuthTokens } from "@/features/auth/utils/auth.utils";
+import { logOut, setCredentials } from "@/features/auth/state/auth.slice";
 import type { RootState } from "@/redux/store";
-import type {
-  LoginParams,
-  LoginResponse,
-  RefreshTokenResponse,
-} from "@/types/auth";
+import type { RefreshTokenResponse } from "@/features/auth/types/auth.types";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: env.apiBaseUrl,
@@ -130,23 +123,10 @@ export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: baseQueryWithDesignMode,
   tagTypes: ["User"],
-  endpoints: (builder) => ({
-    login: builder.mutation<LoginResponse, LoginParams>({
-      query: (credentials) => ({
-        url: "/auth/login",
-        method: "POST",
-        body: credentials,
-      }),
-      onQueryStarted: async (_arg, { dispatch, queryFulfilled }) => {
-        try {
-          const { data } = await queryFulfilled;
-          handleAuthSuccess(data, dispatch);
-        } catch {
-          // handled by the caller via unwrap
-        }
-      },
-    }),
-  }),
+  /**
+   * No endpoints here on purpose — `baseApi` is infrastructure only (base
+   * query, auth-token refresh, design mode). Features inject their own
+   * endpoints, e.g. `features/auth/api/auth.api.ts`.
+   */
+  endpoints: () => ({}),
 });
-
-export const { useLoginMutation } = baseApi;

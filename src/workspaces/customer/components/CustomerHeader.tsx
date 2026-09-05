@@ -1,10 +1,7 @@
 "use client";
 
 import { useAppSelector } from "@/redux/store";
-import {
-  selectCurrentRole,
-  selectCurrentUser,
-} from "@/redux/features/auth/authSlice";
+import { selectCurrentRole, selectCurrentUser } from "@/features/auth";
 import { ROLE_LABELS } from "@/access-control/roles/roles";
 import { LogoutButton } from "@/components/shared/LogoutButton";
 

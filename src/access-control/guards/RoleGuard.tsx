@@ -8,7 +8,7 @@ import {
   selectCurrentRole,
   selectIsAuthenticated,
   selectIsHydrated,
-} from "@/redux/features/auth/authSlice";
+} from "@/features/auth/state/auth.slice";
 import { ROLE_HOME, type Role } from "../roles/roles";
 
 interface RoleGuardProps extends PropsWithChildren {

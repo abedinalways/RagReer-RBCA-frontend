@@ -7,8 +7,8 @@ import { useAppSelector } from "@/redux/store";
 import {
   selectIsAuthenticated,
   selectIsHydrated,
-} from "@/redux/features/auth/authSlice";
-import { SessionLoader } from "@/redux/features/auth/SessionLoader";
+  SessionLoader,
+} from "@/features/auth";
 
 /**
  * Route group shell for every authenticated page. Guards happen here once,

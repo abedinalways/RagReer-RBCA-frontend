@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { Provider } from "react-redux";
 import { store, useAppDispatch } from "@/redux/store";
-import { setHydrated } from "@/redux/features/auth/authSlice";
+import { setHydrated } from "@/features/auth/state/auth.slice";
 
 /**
  * Flips the auth store's `hydrated` flag right after mount. Until then every

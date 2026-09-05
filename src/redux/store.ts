@@ -2,13 +2,14 @@
 
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import authReducer from "@/redux/features/auth/authSlice";
-import uiReducer from "@/redux/features/ui/uiSlice";
+import authReducer from "@/features/auth/state/auth.slice";
+import uiReducer from "@/features/ui/state/ui.slice";
 import { baseApi } from "@/redux/api/baseApi";
 
 /**
- * Redux store — mirrors `zvonsystem-dashboard/src/redux/store.ts`.
- * Auth + UI slices sit next to the RTK Query `baseApi` slice.
+ * Redux store — Redux/RTK Query infrastructure. Feature slices live inside
+ * their features (e.g. `features/auth/state/auth.slice.ts`) and are
+ * registered here next to the RTK Query `baseApi` slice.
  */
 export const store = configureStore({
   reducer: {

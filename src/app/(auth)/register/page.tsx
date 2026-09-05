@@ -1,11 +1,11 @@
-import LoginFallback from "@/components/LoginFallback";
-import Register from "@/features/auth/components/Register";
 import { Suspense } from "react";
+
+import { LoginFallback, RegisterForm } from "@/features/auth";
 
 export default function RegisterPage() {
     return (
         <Suspense fallback={<LoginFallback />}>
-            <Register />
+            <RegisterForm />
         </Suspense>
     );
 }

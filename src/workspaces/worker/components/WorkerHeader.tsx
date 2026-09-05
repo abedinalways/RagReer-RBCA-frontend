@@ -1,7 +1,7 @@
 "use client";
 
 import { useAppSelector } from "@/redux/store";
-import { selectCurrentUser } from "@/redux/features/auth/authSlice";
+import { selectCurrentUser } from "@/features/auth";
 import { LogoutButton } from "@/components/shared/LogoutButton";
 
 export function WorkerHeader() {

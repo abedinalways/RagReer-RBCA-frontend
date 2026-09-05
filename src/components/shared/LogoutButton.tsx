@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/redux/features/auth/hooks";
+import { useAuth } from "@/features/auth";
 import { cn } from "@/lib/utils";
 
 /**

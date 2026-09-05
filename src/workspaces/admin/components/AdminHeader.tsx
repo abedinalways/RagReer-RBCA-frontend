@@ -2,11 +2,8 @@
 
 import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
-import {
-  selectCurrentRole,
-  selectCurrentUser,
-} from "@/redux/features/auth/authSlice";
-import { toggleSidebar } from "@/redux/features/ui/uiSlice";
+import { selectCurrentRole, selectCurrentUser } from "@/features/auth";
+import { toggleSidebar } from "@/features/ui";
 import { ROLE_LABELS } from "@/access-control/roles/roles";
 import { LogoutButton } from "@/components/shared/LogoutButton";
 

@@ -7,7 +7,7 @@ import {
   selectCurrentRole,
   selectIsAuthenticated,
   selectIsHydrated,
-} from "@/redux/features/auth/authSlice";
+} from "@/features/auth";
 import { ROLE_HOME } from "@/access-control/roles/roles";
 
 

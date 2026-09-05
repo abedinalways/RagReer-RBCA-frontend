@@ -1,7 +1,6 @@
 import { Suspense } from "react";
 
-import LoginFallback from "@/components/LoginFallback";
-import EmailVerify from "@/features/auth/components/EmailVerify";
+import { EmailVerify, LoginFallback } from "@/features/auth";
 
 export default function EmailVerifyPage() {
     return (

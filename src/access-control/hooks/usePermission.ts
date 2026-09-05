@@ -5,7 +5,7 @@ import { useAppSelector } from "@/redux/store";
 import {
   selectCurrentRole,
   selectPermissions,
-} from "@/redux/features/auth/authSlice";
+} from "@/features/auth/state/auth.slice";
 import { hasAnyPermission, hasAllPermissions, hasPermission } from "../access.utils";
 import type { Permission } from "../permissions/permissions";
 

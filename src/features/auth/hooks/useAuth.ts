@@ -1,0 +1,56 @@
+"use client";
+
+import { baseApi } from "@/redux/api/baseApi";
+import {
+  useLoginMutation,
+  useLogoutUserMutation,
+} from "@/features/auth/api/auth.api";
+import {
+  logOut,
+  selectCurrentRole,
+  selectCurrentToken,
+  selectCurrentUser,
+  selectIsAuthenticated,
+} from "@/features/auth/state/auth.slice";
+import { getErrorMessage } from "@/lib/getErrorMessage";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
+
+/**
+ * `useAuth` — the single hook components use for session state + login/logout.
+ */
+export const useAuth = () => {
+  const dispatch = useAppDispatch();
+  const token = useAppSelector(selectCurrentToken);
+  const role = useAppSelector(selectCurrentRole);
+  const user = useAppSelector(selectCurrentUser);
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+  const [logIn, loginState] = useLoginMutation();
+  const [logoutUser, logoutState] = useLogoutUserMutation();
+
+  const handleLogout = async () => {
+    try {
+      if (token) {
+        await logoutUser().unwrap();
+      }
+    } catch (error) {
+      console.error(getErrorMessage(error, "Logout request failed."));
+    } finally {
+      dispatch(logOut());
+      dispatch(baseApi.util.resetApiState());
+    }
+  };
+
+  return {
+    token,
+    role,
+    user,
+    isAuthenticated,
+    logIn,
+    logOut: handleLogout,
+    isLoginLoading: loginState.isLoading,
+    isLogoutLoading: logoutState.isLoading,
+    isLoading: loginState.isLoading || logoutState.isLoading,
+    loginError: loginState.error,
+    logoutError: logoutState.error,
+  };
+};

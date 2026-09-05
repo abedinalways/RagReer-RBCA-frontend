@@ -1,12 +1,11 @@
-import LoginFallback from "@/components/LoginFallback";
-import Login from "@/features/auth/components/login";
 import { Suspense } from "react";
 
+import { LoginFallback, LoginForm } from "@/features/auth";
 
 export default function LoginPage() {
   return (
     <Suspense fallback={<LoginFallback />}>
-      <Login />
+      <LoginForm />
     </Suspense>
   );
 }
