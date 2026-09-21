@@ -3,6 +3,7 @@
 import { ChevronRight, MapPin } from "lucide-react";
 import { WorkerStatCard } from "./WorkerStatCard";
 import { CurrentlyClockedInCard } from "./CurrentlyClockedInCard";
+import { ApprovedExtraWorkCard } from "./ApprovedExtraWorkCard";
 import {
   WorkTimeIcon,
   OverTimeIcon,
@@ -49,51 +50,9 @@ export function WorkerHomeView() {
         </div>
       </section>
 
-
       <CurrentlyClockedInCard />
 
-      <section className="rounded-2xl border border-border bg-card-bg p-4 shadow-2xs space-y-3">
-        <div>
-          <span className="rounded-md bg-tag-rescheduling-bg px-2.5 py-0.5 text-xs font-semibold text-tag-rescheduling-text">
-            Rescheduling
-          </span>
-        </div>
-
-        <div className="flex gap-3">
-          <div className="flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-xl bg-status-running-bg text-center">
-            <span className="text-base font-bold leading-none text-primary-heading">26</span>
-            <span className="text-[11px] font-semibold text-status-running-text uppercase mt-0.5">Aug</span>
-          </div>
-
-          <div className="space-y-1">
-            <h4 className="text-sm font-bold text-primary-heading leading-snug">
-              1 approved extra work item
-            </h4>
-            <p className="text-xs text-secondary-subheading line-clamp-1">
-              Re-grade washed gravel along the north...
-            </p>
-          </div>
-        </div>
-
-        <div className="flex items-center justify-between pt-1">
-          <div className="flex items-center gap-1 text-xs text-secondary-subheading">
-            <MapPin className="h-3.5 w-3.5 text-secondary-subheading" />
-            <span>21 Broadway, Manhattan</span>
-          </div>
-          <span className="rounded-md bg-status-running-bg px-2 py-0.5 text-[11px] font-semibold text-status-running-text">
-            6.7km
-          </span>
-        </div>
-
-        <div className="pt-1">
-          <a
-            href="#"
-            className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline"
-          >
-            View approvals <ChevronRight className="h-3.5 w-3.5" />
-          </a>
-        </div>
-      </section>
+      <ApprovedExtraWorkCard />
 
       {/* Today's Work section */}
       <section className="space-y-3">

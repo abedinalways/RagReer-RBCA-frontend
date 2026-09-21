@@ -22,6 +22,7 @@
     --color-card-bg: #FFFFFF;
     --color-pure-white-bg: #FFFFFF;
     --color-blue-50: #E7F1FB;
+    --color-blue-100: #CADFF4;
     --color-nav-bg: #EAF2F9;
 
     /* Borders */
@@ -33,8 +34,9 @@
     --color-info: #0777F6;
     --color-status-running-bg: #EAF2F9;
     --color-status-running-text: #2D6A9F;
-    --color-tag-rescheduling-bg: #FFF4D6;
-    --color-tag-rescheduling-text: #D97706;
+    --color-tag-rescheduling-bg: rgba(245, 181, 23, 0.15);
+    --color-tag-rescheduling-border: rgba(245, 181, 23, 0.50);
+    --color-tag-rescheduling-text: #B47804;
     --color-trend-up: #16A34A;
     --color-trend-down: #E11D48;
 }
@@ -46,6 +48,7 @@
         --Secondary_subheading: #5C5F60;
         --txt-primary: #2F3131;
         --Blue-50: #E7F1FB;
+        --Blue-100: #CADFF4;
         --Pure-white-Bg: #FFFFFF;
         --Info: #0777F6;
 
@@ -54,6 +57,7 @@
         --color-primary: #5980A6;
         --color-info: #0777F6;
         --color-blue-50: #E7F1FB;
+        --color-blue-100: #CADFF4;
         --color-nav-bg: #EAF2F9;
         --color-page-bg: #F5F6F8;
         --color-card-bg: #FFFFFF;
