@@ -19,14 +19,14 @@ export const Pagination: React.FC<PaginationProps> = ({
   pageSizeOptions = [10, 25, 50],
 }) => {
   return (
-    <div className="flex items-center justify-between px-4 py-3 border-t border-gray-200 bg-white">
+    <div className="flex items-center justify-between px-4 py-3 border-t border-border bg-card-bg">
       {/* Show Items Selector */}
-      <div className="flex items-center gap-2 text-sm text-gray-700">
+      <div className="flex items-center gap-2 text-sm text-secondary-subheading">
         <span>Show items</span>
         <select
           value={itemsPerPage}
           onChange={(e) => onItemsPerPageChange(Number(e.target.value))}
-          className="border border-gray-300 rounded px-2 py-1 text-sm bg-white"
+          className="border border-border rounded px-2 py-1 text-sm bg-input-bg text-secondary-subheading"
         >
           {pageSizeOptions.map((opt) => (
             <option key={opt} value={opt}>
@@ -41,19 +41,19 @@ export const Pagination: React.FC<PaginationProps> = ({
         <button
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="p-1 border rounded disabled:opacity-40"
+          className="p-1 border border-border bg-card-bg text-secondary-subheading rounded disabled:opacity-40 hover:border-primary hover:text-primary"
         >
           <ChevronLeft className="w-4 h-4" />
         </button>
 
-        <button className="min-w-[32px] h-8 rounded text-sm bg-[#476282] text-white">
+        <button className="min-w-8 h-8 rounded text-sm bg-primary text-primary-text">
           {currentPage}
         </button>
 
         <button
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="p-1 border rounded disabled:opacity-40"
+          className="p-1 border border-border bg-card-bg text-secondary-subheading rounded disabled:opacity-40 hover:border-primary hover:text-primary"
         >
           <ChevronRight className="w-4 h-4" />
         </button>
