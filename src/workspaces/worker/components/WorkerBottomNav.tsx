@@ -14,7 +14,7 @@ export function WorkerBottomNav() {
   const visibleItems = workerNavigation.filter((item) => !item.permission || can(item.permission));
 
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-40 mx-auto w-full max-w-md border-t border-slate-200 bg-white/95 backdrop-blur">
+    <nav className="fixed inset-x-0 bottom-0 z-40 mx-auto w-full max-w-md border-t border-border bg-card-bg/95 backdrop-blur-md">
       <div className="grid grid-cols-4">
         {visibleItems.map((item) => {
           const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
@@ -23,8 +23,8 @@ export function WorkerBottomNav() {
               key={item.href}
               href={item.href}
               className={cn(
-                "flex flex-col items-center gap-1 py-2.5 text-[11px] font-medium",
-                active ? "text-indigo-600" : "text-slate-500",
+                "flex flex-col items-center gap-1 py-2.5 text-[11px] font-semibold transition-colors",
+                active ? "text-primary" : "text-secondary-subheading hover:text-primary-heading",
               )}
             >
               <span className="text-xl" aria-hidden>

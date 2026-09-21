@@ -3,21 +3,52 @@
 @theme {
     --font-barlow: var(--font-barlow-condensed);
 
+    /* Figma Exact Variables */
+    --color-primary-heading: #1D1F20;
+    --color-secondary-subheading: #5C5F60;
+    --color-txt-primary: #2F3131;
+
+    /* Brand Colors */
     --color-primary: #5980A6;
-    --color-primary-text: #ffffff;
+    --color-primary-hover: #4A6E91;
+    --color-primary-light: #EAF0F6;
+    --color-primary-text: #FFFFFF;
     --color-primary-dark: #1D1F20;
 
-    --color-layout-bg: #ffffff;
-    --color-page-bg: #f2f2f3;
-    --color-input-bg: #ffffff;
-    --color-card-bg: #ffffff;
-    --color-border: #5980A6;
+    /* Backgrounds & Surface */
+    --color-layout-bg: #FFFFFF;
+    --color-page-bg: #F5F6F8;
+    --color-input-bg: #FFFFFF;
+    --color-card-bg: #FFFFFF;
+
+    /* Borders */
+    --color-border: #EAECF0;
+    --color-border-subtle: #F2F4F7;
+
+    /* Status & Badges */
+    --color-status-running-bg: #EAF2F9;
+    --color-status-running-text: #2D6A9F;
+    --color-tag-rescheduling-bg: #FFF4D6;
+    --color-tag-rescheduling-text: #D97706;
+    --color-trend-up: #16A34A;
+    --color-trend-down: #E11D48;
 }
 
 @layer base {
+    :root {
+        /* CSS Custom Properties for direct variable usage */
+        --primary-heading: #1D1F20;
+        --secondary-subheading: #5C5F60;
+        --txt-primary: #2F3131;
+        --color-primary: #5980A6;
+        --color-page-bg: #F5F6F8;
+        --color-card-bg: #FFFFFF;
+    }
+
     body {
-        @apply min-h-screen text-slate-800 antialiased;
+        @apply min-h-screen antialiased;
         background-color: var(--color-page-bg);
-        font-family: var(--font-barlow-condensed);
+        color: var(--color-txt-primary);
+        font-family: var(--font-barlow-condensed), system-ui, sans-serif;
     }
 }
