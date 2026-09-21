@@ -1,114 +1,57 @@
 "use client";
 
-import { 
-  Clock, 
-  Timer, 
-  ClipboardCheck, 
-  ChevronRight, 
-  MapPin, 
-  TrendingUp, 
-  TrendingDown 
-} from "lucide-react";
+import { ChevronRight, MapPin } from "lucide-react";
+import { WorkerStatCard } from "./WorkerStatCard";
+import { CurrentlyClockedInCard } from "./CurrentlyClockedInCard";
+import {
+  WorkTimeIcon,
+  OverTimeIcon,
+  CompletedWorkIcon,
+} from "./icons/WorkerStatIcons";
 
 export function WorkerHomeView() {
   return (
     <div className="space-y-5">
       {/* Activity this week section */}
       <section className="space-y-3">
-        <h2 className="text-sm font-bold text-txt-primary tracking-tight">
+        <h2 className="text-xl font-medium text-txt-primary tracking-tight">
           Activity this week
         </h2>
-        
+
         <div className="grid grid-cols-2 gap-3">
-          {/* Work Time Stat Card */}
-          <div className="rounded-2xl border border-border bg-card-bg p-3.5 shadow-2xs">
-            <div className="flex items-center justify-between">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-status-running-bg text-primary">
-                <Clock className="h-4 w-4" />
-              </div>
-              <span className="text-xs font-medium text-secondary-subheading">
-                Work Time
-              </span>
-            </div>
-            <div className="mt-3 flex items-baseline justify-between">
-              <p className="text-base font-bold text-primary-heading">
-                12:36:45 <span className="text-xs font-normal text-secondary-subheading">h</span>
-              </p>
-              <span className="flex items-center gap-0.5 text-xs font-semibold text-trend-up">
-                <TrendingUp className="h-3 w-3" />
-                +2.1%
-              </span>
-            </div>
-          </div>
+          <WorkerStatCard
+            title="Work Time"
+            value="12:36:45"
+            unit="h"
+            trend="+2.1%"
+            trendType="up"
+            icon={<WorkTimeIcon className="h-5 w-5 text-white" />}
+          />
 
-          {/* Over Time Stat Card */}
-          <div className="rounded-2xl border border-border bg-card-bg p-3.5 shadow-2xs">
-            <div className="flex items-center justify-between">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-status-running-bg text-primary">
-                <Timer className="h-4 w-4" />
-              </div>
-              <span className="text-xs font-medium text-secondary-subheading">
-                Over Time
-              </span>
-            </div>
-            <div className="mt-3 flex items-baseline justify-between">
-              <p className="text-base font-bold text-primary-heading">
-                12:36:45 <span className="text-xs font-normal text-secondary-subheading">h</span>
-              </p>
-              <span className="flex items-center gap-0.5 text-xs font-semibold text-trend-up">
-                <TrendingUp className="h-3 w-3" />
-                +2.1%
-              </span>
-            </div>
-          </div>
+          <WorkerStatCard
+            title="Over Time"
+            value="12:36:45"
+            unit="h"
+            trend="+2.1%"
+            trendType="up"
+            icon={<OverTimeIcon className="h-5 w-5 text-white" />}
+          />
 
-          {/* Completed Work Stat Card (Full width on 3rd item) */}
-          <div className="col-span-2 rounded-2xl border border-border bg-card-bg p-3.5 shadow-2xs">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-status-running-bg text-primary">
-                  <ClipboardCheck className="h-4 w-4" />
-                </div>
-                <span className="text-xs font-medium text-secondary-subheading">
-                  Completed Work
-                </span>
-              </div>
-            </div>
-            <div className="mt-3 flex items-baseline justify-between">
-              <p className="text-base font-bold text-primary-heading">
-                05/07 <span className="text-xs font-normal text-secondary-subheading">Work</span>
-              </p>
-              <span className="flex items-center gap-0.5 text-xs font-semibold text-trend-down">
-                <TrendingDown className="h-3 w-3" />
-                -1.3%
-              </span>
-            </div>
-          </div>
+          <WorkerStatCard
+            title="Completed Work"
+            value="05/07"
+            unit="Work"
+            trend="-1.3%"
+            trendType="down"
+            icon={<CompletedWorkIcon className="h-5 w-5 text-white" />}
+            className="col-span-2"
+          />
         </div>
       </section>
 
-      {/* Currently clocked in section */}
-      <section className="rounded-2xl border border-status-running-text/15 bg-status-running-bg/40 p-4 shadow-2xs">
-        <div className="flex items-center justify-between">
-          <h3 className="text-base font-bold text-primary-heading">
-            Currently clocked in
-          </h3>
-          <span className="rounded-md border border-status-running-text/20 bg-white px-2.5 py-0.5 text-xs font-semibold text-status-running-text">
-            Running
-          </span>
-        </div>
-        <p className="mt-1 text-xs text-secondary-subheading">
-          On-site work · Weekly grounds — Cedar Ridge
-        </p>
-        <button
-          type="button"
-          className="mt-3.5 flex w-full items-center justify-center gap-1.5 rounded-xl bg-primary py-2.5 text-sm font-semibold text-primary-text shadow-xs transition-colors hover:bg-primary-hover"
-        >
-          Manage time Clock <ChevronRight className="h-4 w-4" />
-        </button>
-      </section>
 
-      {/* Rescheduling / Extra Work Item Card */}
+      <CurrentlyClockedInCard />
+
       <section className="rounded-2xl border border-border bg-card-bg p-4 shadow-2xs space-y-3">
         <div>
           <span className="rounded-md bg-tag-rescheduling-bg px-2.5 py-0.5 text-xs font-semibold text-tag-rescheduling-text">

@@ -20,12 +20,17 @@
     --color-page-bg: #F5F6F8;
     --color-input-bg: #FFFFFF;
     --color-card-bg: #FFFFFF;
+    --color-pure-white-bg: #FFFFFF;
+    --color-blue-50: #E7F1FB;
+    --color-nav-bg: #EAF2F9;
 
     /* Borders */
     --color-border: #EAECF0;
+    --color-border-card: #E7F1FB;
     --color-border-subtle: #F2F4F7;
 
     /* Status & Badges */
+    --color-info: #0777F6;
     --color-status-running-bg: #EAF2F9;
     --color-status-running-text: #2D6A9F;
     --color-tag-rescheduling-bg: #FFF4D6;
@@ -36,11 +41,20 @@
 
 @layer base {
     :root {
-        /* CSS Custom Properties for direct variable usage */
+        /* CSS Custom Properties matching exact Figma naming */
+        --Primary_Heading: #1D1F20;
+        --Secondary_subheading: #5C5F60;
+        --txt-primary: #2F3131;
+        --Blue-50: #E7F1FB;
+        --Pure-white-Bg: #FFFFFF;
+        --Info: #0777F6;
+
         --primary-heading: #1D1F20;
         --secondary-subheading: #5C5F60;
-        --txt-primary: #2F3131;
         --color-primary: #5980A6;
+        --color-info: #0777F6;
+        --color-blue-50: #E7F1FB;
+        --color-nav-bg: #EAF2F9;
         --color-page-bg: #F5F6F8;
         --color-card-bg: #FFFFFF;
     }
