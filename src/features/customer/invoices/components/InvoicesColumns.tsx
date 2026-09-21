@@ -7,29 +7,29 @@ export const StatusBadge: React.FC<{ status: InvoiceStatus }> = ({
   switch (status) {
     case "Pending":
       return (
-        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-xs font-semibold bg-[#fffbeb] text-[#d97706] border border-[#fde68a]">
-          <span className="w-2 h-2 rounded-full bg-[#f59e0b]"></span>
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-xs font-semibold bg-tag-rescheduling-bg text-tag-rescheduling-text border border-tag-rescheduling-border">
+          <span className="w-2 h-2 rounded-full bg-tag-rescheduling-text"></span>
           Pending
         </span>
       );
     case "Paid":
       return (
-        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-xs font-semibold bg-[#ecfdf5] text-[#059669] border border-[#a7f3d0]">
-          <span className="w-2 h-2 rounded-full bg-[#10b981]"></span>
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-xs font-semibold bg-trend-up/10 text-trend-up border border-trend-up/20">
+          <span className="w-2 h-2 rounded-full bg-trend-up"></span>
           Paid
         </span>
       );
     case "Due":
       return (
-        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-xs font-semibold bg-[#fef2f2] text-[#dc2626] border border-[#fecaca]">
-          <span className="w-2 h-2 rounded-full bg-[#ef4444]"></span>
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-xs font-semibold bg-trend-down/10 text-trend-down border border-trend-down/20">
+          <span className="w-2 h-2 rounded-full bg-trend-down"></span>
           Due
         </span>
       );
     case "Overdue":
       return (
-        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-xs font-semibold bg-[#ffe4e6] text-[#be123c] border border-[#fecdd3]">
-          <span className="w-2 h-2 rounded-full bg-[#e11d48]"></span>
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-xs font-semibold bg-trend-down/10 text-trend-down border border-trend-down/20">
+          <span className="w-2 h-2 rounded-full bg-trend-down"></span>
           Overdue
         </span>
       );
@@ -47,7 +47,7 @@ export const createInvoicesColumns = (
     cell: (row) => (
       <button
         onClick={() => onActionClick(row)}
-        className="text-[#2b5282] font-semibold hover:underline cursor-pointer"
+        className="text-primary font-semibold hover:underline cursor-pointer"
       >
         {row.id}
       </button>
@@ -57,14 +57,14 @@ export const createInvoicesColumns = (
     header: "Property Address",
     accessorKey: "propertyAddress",
     cell: (row) => (
-      <span className="text-gray-700 text-sm">{row.propertyAddress}</span>
+      <span className="text-txt-primary text-sm">{row.propertyAddress}</span>
     ),
   },
   {
     header: "Service Type",
     accessorKey: "serviceType",
     cell: (row) => (
-      <span className="text-gray-700 text-sm truncate block">
+      <span className="text-txt-primary text-sm truncate block">
         {row.serviceType}
       </span>
     ),
@@ -73,14 +73,14 @@ export const createInvoicesColumns = (
     header: "Payment Type",
     accessorKey: "paymentType",
     cell: (row) => (
-      <span className="text-gray-700 text-sm">{row.paymentType}</span>
+      <span className="text-txt-primary text-sm">{row.paymentType}</span>
     ),
   },
   {
     header: "Issue Date",
     accessorKey: "issueDate",
     cell: (row) => (
-      <span className="text-gray-600 text-sm">{row.issueDate}</span>
+      <span className="text-secondary-subheading text-sm">{row.issueDate}</span>
     ),
   },
   {
@@ -92,7 +92,7 @@ export const createInvoicesColumns = (
     header: "Amount",
     accessorKey: "amount",
     cell: (row) => (
-      <span className="text-gray-900 font-bold text-sm">{row.amount}</span>
+      <span className="text-primary-heading font-bold text-sm">{row.amount}</span>
     ),
   },
   {
@@ -103,7 +103,7 @@ export const createInvoicesColumns = (
       return (
         <button
           onClick={() => onActionClick(row)}
-          className="bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 text-xs font-medium px-3 py-1.5 rounded-md shadow-2xs"
+          className="bg-card-bg border border-border text-txt-primary hover:bg-blue-50 text-xs font-medium px-3 py-1.5 rounded-md shadow-2xs"
         >
           {buttonText}
         </button>

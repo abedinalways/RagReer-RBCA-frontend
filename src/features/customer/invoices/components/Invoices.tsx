@@ -39,52 +39,57 @@ export const Invoices: React.FC = () => {
   };
   return (
     <div>
-      <EmptyStateCard
-        icon={<DocumentIcon className="w-7 h-7 text-[#4C6E8D]" />}
-        title="No Appointment Yet"
-        description="After confirming a service HALF STACHE will schedule your appointment."
-        actionLabel="Go to My Requests"
-        onAction={handleRequestClick}
-      />
-      <div className="bg-white rounded-xl border border-gray-200">
-        <div className="p-4 flex items-center justify-between">
-          <h2 className="text-lg font-bold">All Invoices</h2>
-          <div className="flex items-center gap-3">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Type to search"
-              className="border border-gray-200 rounded-lg px-3 py-1.5 text-sm"
-            />
-            <select
-              value={selectedStatus}
-              onChange={(e) => setSelectedStatus(e.target.value)}
-              className="border border-gray-200 rounded-lg px-3 py-1.5 text-sm"
-            >
-              <option value="All Status">All Status</option>
-              <option value="Pending">Pending</option>
-              <option value="Paid">Paid</option>
-              <option value="Due">Due</option>
-              <option value="Overdue">Overdue</option>
-            </select>
+      {filteredInvoices.length === 0 ? (
+        <EmptyStateCard
+          icon={<DocumentIcon className="w-7 h-7 text-primary" />}
+          title="No Invoices Found"
+          description="You don't have any invoices yet."
+          actionLabel="Go to My Requests"
+          onAction={handleRequestClick}
+        />
+      ) : (
+        <div className="bg-card-bg rounded-xl border border-border">
+          <div className="p-4 flex items-center justify-between">
+            <h2 className="text-lg font-bold text-primary-heading">
+              All Invoices
+            </h2>
+            <div className="flex items-center gap-3">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Type to search"
+                className="border border-border bg-input-bg rounded-lg px-3 py-1.5 text-sm text-txt-primary"
+              />
+              <select
+                value={selectedStatus}
+                onChange={(e) => setSelectedStatus(e.target.value)}
+                className="border border-border bg-input-bg rounded-lg px-3 py-1.5 text-sm text-txt-primary"
+              >
+                <option value="All Status">All Status</option>
+                <option value="Pending">Pending</option>
+                <option value="Paid">Paid</option>
+                <option value="Due">Due</option>
+                <option value="Overdue">Overdue</option>
+              </select>
+            </div>
           </div>
+
+          <ReusableTable
+            data={filteredInvoices.slice(0, itemsPerPage)}
+            columns={columns}
+            keyExtractor={(item, idx) => idx}
+          />
+
+          <Pagination
+            currentPage={currentPage}
+            totalPages={Math.ceil(filteredInvoices.length / itemsPerPage)}
+            itemsPerPage={itemsPerPage}
+            onPageChange={setCurrentPage}
+            onItemsPerPageChange={setItemsPerPage}
+          />
         </div>
-
-        <ReusableTable
-          data={filteredInvoices.slice(0, itemsPerPage)}
-          columns={columns}
-          keyExtractor={(item, idx) => idx}
-        />
-
-        <Pagination
-          currentPage={currentPage}
-          totalPages={Math.ceil(filteredInvoices.length / itemsPerPage)}
-          itemsPerPage={itemsPerPage}
-          onPageChange={setCurrentPage}
-          onItemsPerPageChange={setItemsPerPage}
-        />
-      </div>
+      )}
     </div>
   );
 };
