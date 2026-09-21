@@ -1,9 +1,9 @@
 "use client";
 
-import { ChevronRight, MapPin } from "lucide-react";
 import { WorkerStatCard } from "./WorkerStatCard";
 import { CurrentlyClockedInCard } from "./CurrentlyClockedInCard";
 import { ApprovedExtraWorkCard } from "./ApprovedExtraWorkCard";
+import { TodayWorkJobCard } from "./TodayWorkJobCard";
 import {
   WorkTimeIcon,
   OverTimeIcon,
@@ -56,69 +56,32 @@ export function WorkerHomeView() {
 
       {/* Today's Work section */}
       <section className="space-y-3">
-        <h2 className="text-base font-bold text-txt-primary tracking-tight">
+        <h2 className="text-xl font-medium text-txt-primary tracking-tight">
           Today's Work
         </h2>
 
         {/* Current Job Card */}
-        <div className="overflow-hidden rounded-2xl border border-border bg-card-bg shadow-2xs">
-          <div className="relative h-44 w-full bg-slate-100">
-            <img
-              src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&q=80&w=600"
-              alt="Willow Creek Residence"
-              className="h-full w-full object-cover"
-            />
-            <span className="absolute top-3 right-3 rounded-lg bg-primary px-3 py-1 text-xs font-semibold text-white shadow-xs">
-              Current
-            </span>
-          </div>
+        <TodayWorkJobCard
+          status="CURRENT"
+          title="Willow Creek Residence"
+          address="100 Whispering Pines Blvd at Hwy 43"
+          service="Lawn Mowing + Trimming"
+          customerName="Mr. Aurora"
+          customerAvatar="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=100"
+          imageSrc="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&q=80&w=600"
+          progressText="Work in Progress - 00:48:26"
+        />
 
-          <div className="p-4 space-y-3">
-            <div>
-              <h3 className="text-base font-bold text-primary-heading">
-                Willow Creek Residence
-              </h3>
-              <p className="mt-1 flex items-center gap-1 text-xs text-secondary-subheading">
-                <MapPin className="h-3.5 w-3.5 shrink-0 text-secondary-subheading" />
-                100 Whispering Pines Blvd at Hwy 43
-              </p>
-            </div>
-
-            <p className="text-xs font-semibold text-txt-primary">
-              Lawn Mowing + Trimming
-            </p>
-
-            <div className="flex items-center gap-2 pt-1">
-              <img
-                src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=100"
-                alt="Mr. Aurora"
-                className="h-7 w-7 rounded-full object-cover border border-border"
-              />
-              <span className="text-xs font-semibold text-primary-heading">
-                Mr. Aurora
-              </span>
-            </div>
-
-            <div className="border-t border-border pt-3 flex items-center justify-between text-xs font-semibold text-secondary-subheading">
-              <span>Work in Progress - 00:48:26</span>
-              <ChevronRight className="h-4 w-4" />
-            </div>
-          </div>
-        </div>
-
-        {/* Upcoming Job Card Preview */}
-        <div className="overflow-hidden rounded-2xl border border-border bg-card-bg shadow-2xs opacity-90">
-          <div className="relative h-32 w-full bg-slate-100">
-            <img
-              src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=600"
-              alt="Upcoming Residence"
-              className="h-full w-full object-cover"
-            />
-            <span className="absolute top-3 right-3 rounded-lg border border-border bg-white/90 backdrop-blur-xs px-3 py-1 text-xs font-semibold text-status-running-text shadow-xs">
-              Upcoming
-            </span>
-          </div>
-        </div>
+        {/* Upcoming Job Card */}
+        <TodayWorkJobCard
+          status="UPCOMING"
+          title="Cedar Ridge Estates"
+          address="450 Cedar Ridge Way"
+          service="Hedge Trimming + Yard Clean"
+          customerName="Mrs. Davis"
+          imageSrc="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=600"
+          progressText="Scheduled for 02:30 PM"
+        />
       </section>
     </div>
   );
