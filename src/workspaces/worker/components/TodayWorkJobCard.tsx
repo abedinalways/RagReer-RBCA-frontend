@@ -19,6 +19,15 @@ export interface TodayWorkJobCardProps {
   className?: string;
 }
 
+/**
+ * Reusable Today's Work Job Card component based on Figma spec:
+ * - display: flex; flex-direction: column; align-items: flex-start; gap: 0.75rem (12px)
+ * - padding: 0.75rem (12px, p-3)
+ * - border-radius: 0.5rem (8px, rounded-lg)
+ * - border: 1px solid var(--Blue-50, #E7F1FB)
+ * - background: var(--Pure-white-Bg, #FFFFFF)
+ * - box-shadow: 0 2px 12px 0 rgba(39, 53, 81, 0.06)
+ */
 export function TodayWorkJobCard({
   imageSrc,
   imageAlt = "Job property photo",
