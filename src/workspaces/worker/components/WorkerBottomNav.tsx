@@ -42,7 +42,7 @@ export function WorkerBottomNav() {
               <IconComponent
                 className={cn("h-5 w-5 transition-transform duration-200", active ? "scale-105" : "")}
               />
-              <span className="text-[11px] font-semibold leading-none">{item.label}</span>
+              <span className="text-xs font-semibold leading-none">{item.label}</span>
             </Link>
           );
         })}
