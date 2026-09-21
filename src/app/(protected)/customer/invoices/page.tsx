@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { PlaceholderPage } from "@/components/shared/PlaceholderPage";
 import { InvoicesList } from "@/features/invoices/components/InvoicesList";
+import { Invoices } from "@/features/customer/invoices/components/Invoices";
 
 export const metadata: Metadata = { title: "Invoices" };
 
@@ -10,11 +11,14 @@ export const metadata: Metadata = { title: "Invoices" };
  */
 export default function CustomerInvoicesPage() {
   return (
-    <PlaceholderPage
-      title="My Invoices"
-      description="Shared with admin invoice management via features/invoices — presentation differs per workspace."
-    >
-      <InvoicesList />
-    </PlaceholderPage>
+    <div>
+      {/* <PlaceholderPage
+        title="My Invoices"
+        description="Shared with admin invoice management via features/invoices — presentation differs per workspace."
+      >
+        <InvoicesList />
+      </PlaceholderPage> */}
+      <Invoices />
+    </div>
   );
 }
