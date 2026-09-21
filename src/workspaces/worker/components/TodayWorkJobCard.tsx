@@ -19,15 +19,7 @@ export interface TodayWorkJobCardProps {
   className?: string;
 }
 
-/**
- * Reusable Today's Work Job Card component based on Figma spec:
- * - display: flex; flex-direction: column; align-items: flex-start; gap: 0.75rem (12px)
- * - padding: 0.75rem (12px, p-3)
- * - border-radius: 0.5rem (8px, rounded-lg)
- * - border: 1px solid var(--Blue-50, #E7F1FB)
- * - background: var(--Pure-white-Bg, #FFFFFF)
- * - box-shadow: 0 2px 12px 0 rgba(39, 53, 81, 0.06)
- */
+
 export function TodayWorkJobCard({
   imageSrc,
   imageAlt = "Job property photo",
@@ -80,14 +72,14 @@ export function TodayWorkJobCard({
           <h3 className="font-barlow text-xl font-medium leading-snug text-primary-heading">
             {title}
           </h3>
-          <p className="mt-0.5 flex items-center gap-1.5 text-xs font-normal text-secondary-subheading">
+          <p className="mt-0.5 flex items-center gap-1.5 text-sm font-normal text-secondary-subheading">
             <MapPin className="h-3.5 w-3.5 shrink-0 text-secondary-subheading" />
             <span>{address}</span>
           </p>
         </div>
 
         {/* Service */}
-        <p className="text-xs font-medium text-txt-primary">{service}</p>
+        <p className="text-sm font-medium text-txt-primary">{service}</p>
 
         {/* Customer Profile */}
         <div className="flex items-center gap-2 pt-0.5">
@@ -109,7 +101,7 @@ export function TodayWorkJobCard({
 
         {/* Bottom Status / Progress Divider */}
         {progressText && (
-          <div className="mt-1 border-t border-border/60 pt-2.5 flex items-center justify-between text-xs font-medium text-secondary-subheading w-full">
+          <div className="mt-1 border-t border-border/60 pt-2.5 flex items-center justify-between text-sm font-medium text-secondary-subheading w-full">
             <span>{progressText}</span>
             <ChevronRight className="h-4 w-4 shrink-0 text-secondary-subheading" />
           </div>
