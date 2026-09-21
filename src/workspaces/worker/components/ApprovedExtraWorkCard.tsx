@@ -65,11 +65,11 @@ export function ApprovedExtraWorkCard({
 
       {/* Location & Distance Row */}
       <div className="flex w-full items-center justify-between pt-1">
-        <div className="flex items-center gap-1 text-xs text-secondary-subheading">
+        <div className="flex items-center gap-1 text-sm text-secondary-subheading">
           <MapPin className="h-3.5 w-3.5 shrink-0 text-secondary-subheading" />
           <span>{location}</span>
         </div>
-        <span className="rounded-md bg-status-running-bg px-2 py-0.5 text-[11px] font-semibold text-status-running-text">
+        <span className="rounded-md bg-status-running-bg px-2 py-0.5 text-sm font-semibold text-status-running-text">
           {distance}
         </span>
       </div>
@@ -79,7 +79,7 @@ export function ApprovedExtraWorkCard({
         <button
           type="button"
           onClick={onViewApprovals}
-          className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline cursor-pointer"
+          className="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline cursor-pointer"
         >
           View approvals <ChevronRight className="h-3.5 w-3.5" />
         </button>

@@ -24,6 +24,7 @@
     --color-blue-50: #E7F1FB;
     --color-blue-100: #CADFF4;
     --color-nav-bg: #EAF2F9;
+    --color-surface: #E9E9EA;
 
     /* Borders */
     --color-border: #EAECF0;
@@ -51,6 +52,7 @@
         --Blue-100: #CADFF4;
         --Pure-white-Bg: #FFFFFF;
         --Info: #0777F6;
+        --Surface: #E9E9EA;
 
         --primary-heading: #1D1F20;
         --secondary-subheading: #5C5F60;
@@ -61,6 +63,7 @@
         --color-nav-bg: #EAF2F9;
         --color-page-bg: #F5F6F8;
         --color-card-bg: #FFFFFF;
+        --color-surface: #E9E9EA;
     }
 
     body {
