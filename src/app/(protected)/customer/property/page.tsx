@@ -1,13 +1,9 @@
 import type { Metadata } from "next";
 import { PlaceholderPage } from "@/components/shared/PlaceholderPage";
+import { MyProperties } from "@/features/customer/my-properties/components/MyProperties";
 
 export const metadata: Metadata = { title: "My Property" };
 
 export default function CustomerPropertyPage() {
-  return (
-    <PlaceholderPage
-      title="My Property"
-      description="Customer's own property records — implementation lives in features/properties."
-    />
-  );
+  return <MyProperties />;
 }
