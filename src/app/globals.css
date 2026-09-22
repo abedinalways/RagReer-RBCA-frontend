@@ -18,6 +18,7 @@
     /* Backgrounds & Surface */
     --color-layout-bg: #FFFFFF;
     --color-page-bg: #F5F6F8;
+    --color-app-bg: #FAFAFA;
     --color-input-bg: #FFFFFF;
     --color-card-bg: #FFFFFF;
     --color-pure-white-bg: #FFFFFF;
@@ -62,6 +63,7 @@
         --color-blue-100: #CADFF4;
         --color-nav-bg: #EAF2F9;
         --color-page-bg: #F5F6F8;
+        --color-app-bg: #FAFAFA;
         --color-card-bg: #FFFFFF;
         --color-surface: #E9E9EA;
     }
