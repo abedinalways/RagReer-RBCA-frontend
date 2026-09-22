@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { SegmentedTabs, type TabOption } from "@/components/shared/SegmentedTabs";
 import { TodayWorkJobCard } from "./TodayWorkJobCard";
 import { WorkerDateStrip } from "./WorkerDateStrip";
@@ -18,6 +18,7 @@ const TABS: TabOption[] = [
 ];
 
 export function WorkerJobList() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const currentTabParam = (searchParams.get("tab") || "all").toLowerCase();
 
@@ -93,7 +94,7 @@ export function WorkerJobList() {
               imageSrc={job.imageSrc}
               progressText={job.progressText}
               onCardClick={() => {
-                console.log("Job clicked:", job.id);
+                router.push(`/worker/jobs/${job.id}`);
               }}
             />
           ))

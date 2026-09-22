@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { WorkerStatCard } from "./WorkerStatCard";
 import { CurrentlyClockedInCard } from "./CurrentlyClockedInCard";
 import { ApprovedExtraWorkCard } from "./ApprovedExtraWorkCard";
@@ -13,6 +14,7 @@ import {
 } from "./icons/WorkerStatIcons";
 
 export function WorkerHomeView() {
+  const router = useRouter();
   const [hasJobs, setHasJobs] = useState(true);
 
   return (
@@ -86,6 +88,7 @@ export function WorkerHomeView() {
               customerAvatar="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=100"
               imageSrc="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&q=80&w=600"
               progressText="Work in Progress - 00:48:26"
+              onCardClick={() => router.push("/worker/jobs/job-1")}
             />
 
             {/* Upcoming Job Card */}
@@ -97,6 +100,7 @@ export function WorkerHomeView() {
               customerName="Mrs. Davis"
               imageSrc="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=600"
               progressText="Scheduled for 02:30 PM"
+              onCardClick={() => router.push("/worker/jobs/job-2")}
             />
           </div>
         )}
