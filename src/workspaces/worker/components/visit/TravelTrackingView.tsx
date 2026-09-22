@@ -2,9 +2,24 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, ChevronRight, Check, Navigation, Clock, MapPin } from "lucide-react";
+import dynamic from "next/dynamic";
+import { ArrowLeft, ChevronRight, Check, Clock, MapPin, Maximize2 } from "lucide-react";
 import { TravelCompletedModal } from "./TravelCompletedModal";
 import { MOCK_WORKER_JOBS } from "../../data/mockWorkerJobs";
+
+// Dynamically import Leaflet RealRouteMap on client side only (avoiding SSR issues)
+const RealRouteMap = dynamic(
+  () => import("./RealRouteMap").then((m) => m.RealRouteMap),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-full flex flex-col items-center justify-center bg-slate-900 text-white/80 text-xs gap-2 min-h-[280px]">
+        <div className="h-6 w-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+        <span>Loading live satellite GPS map...</span>
+      </div>
+    ),
+  }
+);
 
 interface TravelTrackingViewProps {
   jobId: string;
@@ -13,11 +28,12 @@ interface TravelTrackingViewProps {
 export function TravelTrackingView({ jobId }: TravelTrackingViewProps) {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMapFullscreen, setIsMapFullscreen] = useState(false);
   const [travelMinutes, setTravelMinutes] = useState(15); // Start at 0.25h for realistic Figma mock
 
   const job = MOCK_WORKER_JOBS.find((j) => j.id === jobId) || MOCK_WORKER_JOBS[1];
 
-  // Optional live timer incrementing every minute
+  // Live timer incrementing every minute
   useEffect(() => {
     const interval = setInterval(() => {
       setTravelMinutes((prev) => prev + 1);
@@ -46,48 +62,55 @@ export function TravelTrackingView({ jobId }: TravelTrackingViewProps) {
 
       {/* Main Content Area */}
       <div className="flex flex-col gap-4 p-4 max-w-md mx-auto w-full">
-        {/* GPS Satellite Route Map Card */}
-        <div className="relative w-full h-64 rounded-sm overflow-hidden border border-[#D9DADC] bg-slate-900 shadow-xs">
-          {/* Aerial Map Background Simulation */}
-          <div
-            className="absolute inset-0 bg-cover bg-center opacity-85"
-            style={{
-              backgroundImage:
-                "url('https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80&w=800')",
+        {/* Map Header with Fullscreen action */}
+        <div className="flex items-center justify-between px-0.5">
+          <span className="text-xs font-semibold text-primary-heading">
+            Live Route & GPS
+          </span>
+          <button
+            type="button"
+            onClick={() => setIsMapFullscreen(true)}
+            className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:text-primary-hover transition-colors cursor-pointer active:scale-95"
+          >
+            <Maximize2 className="h-3.5 w-3.5" />
+            <span>Full Screen</span>
+          </button>
+        </div>
+
+        {/* Real Interactive GPS Satellite Route Map Card */}
+        <div className="w-full h-72 rounded-sm overflow-hidden border border-[#D9DADC] shadow-sm bg-slate-900">
+          <RealRouteMap
+            startPoint={{
+              lat: 33.5358,
+              lng: -117.7075,
+              label: "Crew Vehicle (Alicia & Golden Lantern)",
             }}
+            destinationPoint={{
+              lat: 33.531,
+              lng: -117.7038,
+              label: job.address,
+            }}
+            destinationTitle={job.title}
+            destinationAddress={job.address}
+            initialFullscreen={isMapFullscreen}
+            onToggleFullscreen={(fs) => setIsMapFullscreen(fs)}
           />
-          {/* Dark Overlay gradient */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20" />
+        </div>
 
-          {/* SVG Route Path matching Figma red route line */}
-          <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 360 256">
-            <path
-              d="M 60 210 Q 120 180 160 140 T 240 90 T 290 60"
-              fill="none"
-              stroke="#EF4444"
-              strokeWidth="4"
-              strokeDasharray="4 2"
-              className="drop-shadow-md"
-            />
-            {/* Start location dot */}
-            <circle cx="60" cy="210" r="7" fill="#3B82F6" stroke="#FFFFFF" strokeWidth="2" />
-            {/* End location pin */}
-            <circle cx="290" cy="60" r="8" fill="#EF4444" stroke="#FFFFFF" strokeWidth="2.5" />
-          </svg>
-
-          {/* Destination Badge on Map */}
-          <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-sm border border-[#D9DADC] px-2.5 py-1.5 rounded-sm shadow-sm max-w-[85%]">
-            <div className="flex items-center gap-1.5 text-xs font-medium text-primary-heading truncate">
-              <MapPin className="h-3.5 w-3.5 text-primary shrink-0" />
-              <span className="truncate">{job.address}</span>
-            </div>
+        {/* Destination Location Info Box */}
+        <div className="flex items-center gap-2 p-2.5 rounded-sm bg-white border border-[#D9DADC] shadow-2xs">
+          <MapPin className="h-4 w-4 text-primary shrink-0" />
+          <div className="flex-1 min-w-0">
+            <p className="text-base font-semibold text-primary-heading truncate">
+              {job.title}
+            </p>
+            <p className="text-sm text-secondary-subheading truncate">
+              {job.address}
+            </p>
           </div>
-
-          {/* ETA / Distance Badge */}
-          <div className="absolute bottom-3 right-3 bg-primary text-white text-[11px] font-semibold px-2.5 py-1 rounded-sm shadow-md flex items-center gap-1">
-            <Navigation className="h-3 w-3" />
-            <span>ETA ~ 8 mins</span>
-          </div>
+          <span className="text-sm font-semibold text-primary px-2 py-0.5 rounded-sm bg-[#EAF2FA] shrink-0">
+            ETA ~ 8 mins
+          </span>
         </div>
 
         {/* Status Stage Pills: Traveling / Visiting */}
