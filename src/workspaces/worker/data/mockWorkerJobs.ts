@@ -1,0 +1,123 @@
+export interface JobData {
+  id: string;
+  status: "CURRENT" | "UPCOMING" | "COMPLETED";
+  title: string;
+  address: string;
+  service: string;
+  customerName: string;
+  customerAvatar?: string;
+  imageSrc: string;
+  progressText: string;
+  dateKey: string; // YYYY-MM-DD
+}
+
+export const MOCK_WORKER_JOBS: JobData[] = [
+  {
+    id: "job-0",
+    status: "UPCOMING",
+    title: "Pine Tree Cottage",
+    address: "88 Pine Tree Lane",
+    service: "Lawn Aeration & Seeding",
+    customerName: "David Miller",
+    customerAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=100",
+    imageSrc: "https://images.unsplash.com/photo-1592595896551-12b371d546d5?auto=format&fit=crop&q=80&w=600",
+    progressText: "Scheduled for Aug 08, 10:00 AM",
+    dateKey: "2026-08-08",
+  },
+  {
+    id: "job-1",
+    status: "CURRENT",
+    title: "Willow Creek Residence",
+    address: "100 Whispering Pines Blvd at Hwy 43",
+    service: "Lawn Mowing + Trimming",
+    customerName: "Mr. Aurora",
+    customerAvatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=100",
+    imageSrc: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&q=80&w=600",
+    progressText: "Work in Progress - 00:48:26",
+    dateKey: "2026-08-11",
+  },
+  {
+    id: "job-2",
+    status: "UPCOMING",
+    title: "Cedar Ridge Estates",
+    address: "450 Cedar Ridge Way",
+    service: "Hedge Trimming + Yard Clean",
+    customerName: "Mrs. Davis",
+    customerAvatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=100",
+    imageSrc: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=600",
+    progressText: "Scheduled for Today, 02:30 PM",
+    dateKey: "2026-08-11",
+  },
+  {
+    id: "job-3",
+    status: "UPCOMING",
+    title: "Oakwood Manor",
+    address: "782 Oakwood Ave, Suite B",
+    service: "Tree Pruning & Garden Edging",
+    customerName: "Robert Chen",
+    customerAvatar: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&q=80&w=100",
+    imageSrc: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=600",
+    progressText: "Scheduled for Aug 12, 09:00 AM",
+    dateKey: "2026-08-12",
+  },
+  {
+    id: "job-4",
+    status: "UPCOMING",
+    title: "Highland Park Villas",
+    address: "210 Highland Terrace",
+    service: "Landscape Irrigation Check",
+    customerName: "Sarah Jenkins",
+    customerAvatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100",
+    imageSrc: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&q=80&w=600",
+    progressText: "Scheduled for Aug 13, 01:15 PM",
+    dateKey: "2026-08-13",
+  },
+  {
+    id: "job-5",
+    status: "UPCOMING",
+    title: "Maple Grove Retreat",
+    address: "312 Maple Blossom Way",
+    service: "Garden Mulching & Weed Control",
+    customerName: "Emily Watson",
+    customerAvatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=100",
+    imageSrc: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&q=80&w=600",
+    progressText: "Scheduled for Aug 20, 11:00 AM",
+    dateKey: "2026-08-20",
+  },
+  {
+    id: "job-6",
+    status: "UPCOMING",
+    title: "Sunset Valley Ranch",
+    address: "704 Sunset Blvd",
+    service: "Full Lawn Mowing & Cleanup",
+    customerName: "Michael Chang",
+    customerAvatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=100",
+    imageSrc: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=600",
+    progressText: "Scheduled for Sep 05, 09:30 AM",
+    dateKey: "2026-09-05",
+  },
+  {
+    id: "job-7",
+    status: "UPCOMING",
+    title: "Emerald Bay Townhomes",
+    address: "520 Bayview Ave",
+    service: "Shrub Trimming & Flowerbed Care",
+    customerName: "Jessica Alba",
+    customerAvatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=100",
+    imageSrc: "https://images.unsplash.com/photo-1512915922686-57c11dde9b6b?auto=format&fit=crop&q=80&w=600",
+    progressText: "Scheduled for Sep 15, 02:00 PM",
+    dateKey: "2026-09-15",
+  },
+  {
+    id: "job-8",
+    status: "UPCOMING",
+    title: "Sunnycrest Villa",
+    address: "18 Sunnycrest Terrace",
+    service: "Aeration & Fertilization",
+    customerName: "Alexander Bell",
+    customerAvatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=100",
+    imageSrc: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&q=80&w=600",
+    progressText: "Scheduled for Jul 25, 10:30 AM",
+    dateKey: "2026-07-25",
+  },
+];
