@@ -34,8 +34,9 @@ export function TodayWorkJobCard({
   onCardClick,
   className,
 }: TodayWorkJobCardProps) {
-  const isCurrent = status === "CURRENT";
-  const badgeText = statusLabel || (isCurrent ? "Current" : "Upcoming");
+  const isCurrent = status.toUpperCase() === "CURRENT";
+  const isUpcoming = status.toUpperCase() === "UPCOMING";
+  const badgeText = statusLabel || (isCurrent ? "Current" : isUpcoming ? "Upcoming" : status);
 
   return (
     <article
@@ -58,7 +59,9 @@ export function TodayWorkJobCard({
             "absolute top-2.5 right-2.5 rounded-md px-2.5 py-1 text-xs font-medium leading-none shadow-2xs",
             isCurrent
               ? "bg-primary text-white"
-              : "bg-blue-50 text-status-running-text border border-[#D5E3F0]"
+              : isUpcoming
+              ? "bg-blue-50 text-status-running-text border border-[#D5E3F0]"
+              : "bg-emerald-50 text-emerald-700 border border-emerald-200"
           )}
         >
           {badgeText}
