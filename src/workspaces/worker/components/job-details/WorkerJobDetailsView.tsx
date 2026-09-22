@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { ChevronRight } from "lucide-react";
 import { JobDetailsHeader } from "./JobDetailsHeader";
 import { JobPropertyCard } from "./JobPropertyCard";
@@ -9,6 +10,7 @@ import { JobProcessStepsCard } from "./JobProcessStepsCard";
 import { JobEquipmentCard } from "./JobEquipmentCard";
 import { JobTeamCard } from "./JobTeamCard";
 import { MOCK_WORKER_JOBS } from "../../data/mockWorkerJobs";
+import { useIsTeamLeader } from "../../hooks/useIsTeamLeader";
 
 interface WorkerJobDetailsViewProps {
   jobId?: string;
@@ -16,10 +18,11 @@ interface WorkerJobDetailsViewProps {
 }
 
 export function WorkerJobDetailsView({
-  jobId,
+  jobId = "job-1",
   onBack,
 }: WorkerJobDetailsViewProps) {
-  const [isTraveling, setIsTraveling] = useState(false);
+  const router = useRouter();
+  const isTeamLeader = useIsTeamLeader();
 
   // Find job from mock data if provided, otherwise default to Figma design data
   const matchingJob = MOCK_WORKER_JOBS.find((j) => j.id === jobId);
@@ -35,7 +38,7 @@ export function WorkerJobDetailsView({
   };
 
   const handleStartTravel = () => {
-    setIsTraveling(true);
+    router.push(`/worker/jobs/${jobId}/travel`);
   };
 
   return (
@@ -54,16 +57,20 @@ export function WorkerJobDetailsView({
         <JobProcessStepsCard />
         <JobEquipmentCard />
         <JobTeamCard />
-        <div className="pt-2">
-          <button
-            type="button"
-            onClick={handleStartTravel}
-            className="w-full flex items-center justify-center gap-1.5 py-3 px-4 rounded-sm bg-primary text-white font-medium text-sm transition-all hover:bg-primary-hover active:scale-[0.99] shadow-sm cursor-pointer"
-          >
-            <span>{isTraveling ? "Traveling to site..." : "Start travel"}</span>
-            <ChevronRight className="h-4 w-4" />
-          </button>
-        </div>
+
+        {/* Start travel button - Exclusive for Team Leader */}
+        {isTeamLeader && (
+          <div className="pt-2">
+            <button
+              type="button"
+              onClick={handleStartTravel}
+              className="w-full flex items-center justify-center gap-1.5 py-3 px-4 rounded-sm bg-primary text-white font-medium text-sm transition-all hover:bg-primary-hover active:scale-[0.99] shadow-sm cursor-pointer"
+            >
+              <span>Start travel</span>
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

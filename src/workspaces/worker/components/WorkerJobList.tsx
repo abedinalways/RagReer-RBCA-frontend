@@ -7,20 +7,30 @@ import { TodayWorkJobCard } from "./TodayWorkJobCard";
 import { WorkerDateStrip } from "./WorkerDateStrip";
 import { WorkerJobEmptyState } from "./WorkerJobEmptyState";
 import { MOCK_WORKER_JOBS, type JobData } from "../data/mockWorkerJobs";
+import { useIsTeamLeader } from "../hooks/useIsTeamLeader";
 
 // Re-export JobData for backward compatibility
 export type { JobData };
-
-const TABS: TabOption[] = [
-  { key: "all", label: "All" },
-  { key: "current", label: "Current" },
-  { key: "upcoming", label: "Upcoming" },
-];
 
 export function WorkerJobList() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const currentTabParam = (searchParams.get("tab") || "all").toLowerCase();
+
+  // Check if current user has Team Leader access
+  const isTeamLeader = useIsTeamLeader();
+
+  const TABS: TabOption[] = useMemo(() => {
+    const baseTabs: TabOption[] = [
+      { key: "all", label: "All" },
+      { key: "current", label: "Current" },
+      { key: "upcoming", label: "Upcoming" },
+    ];
+    if (isTeamLeader) {
+      baseTabs.push({ key: "visit", label: "Visit" });
+    }
+    return baseTabs;
+  }, [isTeamLeader]);
 
   // Active view date for calendar (month and year) - defaults to August 2026
   const [viewDate, setViewDate] = useState<Date>(new Date(2026, 7, 11));
@@ -43,6 +53,12 @@ export function WorkerJobList() {
         }
         return job.status === "UPCOMING";
       }
+      if (currentTabParam === "visit") {
+        if (selectedDateKey) {
+          return job.isVisit && job.dateKey === selectedDateKey;
+        }
+        return Boolean(job.isVisit);
+      }
       // "all" tab
       if (selectedDateKey && currentTabParam === "all") {
         return job.dateKey === selectedDateKey || job.status === "CURRENT";
@@ -60,11 +76,11 @@ export function WorkerJobList() {
         </h1>
       </div>
 
-      {/* Top Tab Bar with URL Query persistence */}
+      {/* Top Tab Bar with URL Query persistence (Dynamic Visit tab for Team Leader) */}
       <SegmentedTabs tabs={TABS} defaultValue="all" paramName="tab" />
 
-      {/* Date Selector Strip (shown on UPCOMING tab or when browsing dates) */}
-      {currentTabParam === "upcoming" && (
+      {/* Date Selector Strip (shown on UPCOMING and VISIT tab or when browsing dates) */}
+      {(currentTabParam === "upcoming" || currentTabParam === "visit") && (
         <WorkerDateStrip
           viewDate={viewDate}
           onViewDateChange={setViewDate}

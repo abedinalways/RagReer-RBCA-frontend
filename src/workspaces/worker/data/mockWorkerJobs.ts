@@ -9,6 +9,7 @@ export interface JobData {
   imageSrc: string;
   progressText: string;
   dateKey: string; // YYYY-MM-DD
+  isVisit?: boolean;
 }
 
 export const MOCK_WORKER_JOBS: JobData[] = [
@@ -35,6 +36,7 @@ export const MOCK_WORKER_JOBS: JobData[] = [
     imageSrc: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&q=80&w=600",
     progressText: "Work in Progress - 00:48:26",
     dateKey: "2026-08-11",
+    isVisit: true,
   },
   {
     id: "job-2",
@@ -47,6 +49,7 @@ export const MOCK_WORKER_JOBS: JobData[] = [
     imageSrc: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=600",
     progressText: "Scheduled for Today, 02:30 PM",
     dateKey: "2026-08-11",
+    isVisit: true,
   },
   {
     id: "job-3",
