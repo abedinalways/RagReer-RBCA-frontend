@@ -1,84 +1,121 @@
 "use client";
 
-import { useState } from "react";
-import { cn } from "@/lib/utils";
-import { WorkerJobCard } from "./WorkerJobCard";
-import type { Job, JobStatus } from "@/features/jobs/types/job.types";
+import { useState, useMemo } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { SegmentedTabs, type TabOption } from "@/components/shared/SegmentedTabs";
+import { TodayWorkJobCard } from "./TodayWorkJobCard";
+import { WorkerDateStrip } from "./WorkerDateStrip";
+import { WorkerJobEmptyState } from "./WorkerJobEmptyState";
+import { MOCK_WORKER_JOBS, type JobData } from "../data/mockWorkerJobs";
+import { useIsTeamLeader } from "../hooks/useIsTeamLeader";
 
-type JobFilter = "ALL" | JobStatus;
+// Re-export JobData for backward compatibility
+export type { JobData };
 
-const MOCK_JOBS: Job[] = [
-  {
-    id: "job-1",
-    title: "Bathroom Renovation",
-    status: "CURRENT",
-    scheduledAt: "2026-09-01T09:00:00Z",
-    startedAt: "2026-09-01T09:05:00Z",
-    property: { id: "prop-1", address: "House 12, Road 7, Gulshan 1, Dhaka" },
-    customer: { id: "cus-1", name: "Rahim Uddin", phone: "+880 1711 234 567" },
-    description: "Full bathroom waterproofing and tiling.",
-  },
-  {
-    id: "job-2",
-    title: "Drainage Line Repair",
-    status: "UPCOMING",
-    scheduledAt: "2026-09-02T11:00:00Z",
-    property: { id: "prop-2", address: "Flat 3B, Lake View, Banani, Dhaka" },
-    customer: { id: "cus-2", name: "Salma Begum", phone: "+880 1811 876 543" },
-  },
-  {
-    id: "job-3",
-    title: "Office Interior Fit-out",
-    status: "UPCOMING",
-    scheduledAt: "2026-09-03T10:00:00Z",
-    property: { id: "prop-3", address: "Level 8, Sena Kalyan Bhaban, Motijheel, Dhaka" },
-    customer: { id: "cus-3", name: "Farhana Islam", phone: "+880 1611 111 222" },
-  },
-];
-
-const FILTERS: Array<{ key: JobFilter; label: string }> = [
-  { key: "ALL", label: "All" },
-  { key: "CURRENT", label: "Current" },
-  { key: "UPCOMING", label: "Upcoming" },
-];
-
-/**
- * Worker jobs tab — mirrors the screenshot (All / Current / Upcoming) using
- * features/jobs business UI inside the mobile PWA shell.
- */
 export function WorkerJobList() {
-  const [filter, setFilter] = useState<JobFilter>("ALL");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const currentTabParam = (searchParams.get("tab") || "all").toLowerCase();
 
-  const jobs = filter === "ALL" ? MOCK_JOBS : MOCK_JOBS.filter((job) => job.status === filter);
+  // Check if current user has Team Leader access
+  const isTeamLeader = useIsTeamLeader();
+
+  const TABS: TabOption[] = useMemo(() => {
+    const baseTabs: TabOption[] = [
+      { key: "all", label: "All" },
+      { key: "current", label: "Current" },
+      { key: "upcoming", label: "Upcoming" },
+    ];
+    if (isTeamLeader) {
+      baseTabs.push({ key: "visit", label: "Visit" });
+    }
+    return baseTabs;
+  }, [isTeamLeader]);
+
+  // Active view date for calendar (month and year) - defaults to August 2026
+  const [viewDate, setViewDate] = useState<Date>(new Date(2026, 7, 11));
+  const [selectedDateKey, setSelectedDateKey] = useState<string | null>("2026-08-11");
+
+  // Map of dates that have assigned jobs
+  const jobDateKeys = useMemo(() => {
+    return new Set(MOCK_WORKER_JOBS.map((job) => job.dateKey));
+  }, []);
+
+  // Filter jobs based on active tab & selected date
+  const filteredJobs = useMemo(() => {
+    return MOCK_WORKER_JOBS.filter((job) => {
+      if (currentTabParam === "current") {
+        return job.status === "CURRENT";
+      }
+      if (currentTabParam === "upcoming") {
+        if (selectedDateKey) {
+          return job.status === "UPCOMING" && job.dateKey === selectedDateKey;
+        }
+        return job.status === "UPCOMING";
+      }
+      if (currentTabParam === "visit") {
+        if (selectedDateKey) {
+          return job.isVisit && job.dateKey === selectedDateKey;
+        }
+        return Boolean(job.isVisit);
+      }
+      // "all" tab
+      if (selectedDateKey && currentTabParam === "all") {
+        return job.dateKey === selectedDateKey || job.status === "CURRENT";
+      }
+      return true;
+    });
+  }, [currentTabParam, selectedDateKey]);
 
   return (
-    <div className="space-y-4">
-      <div className="flex gap-2">
-        {FILTERS.map((item) => (
-          <button
-            key={item.key}
-            type="button"
-            onClick={() => setFilter(item.key)}
-            className={cn(
-              "flex-1 rounded-full px-3 py-2 text-sm font-medium transition-colors",
-              filter === item.key ? "bg-indigo-600 text-white" : "bg-white text-slate-600",
-            )}
-          >
-            {item.label}
-          </button>
-        ))}
+    <div className="space-y-4 w-full max-w-md mx-auto">
+      {/* Page Heading */}
+      <div className="flex items-center justify-between pt-1 pb-1 border-b border-border/40">
+        <h1 className="font-barlow text-2xl font-semibold leading-tight text-primary-heading">
+          Job's
+        </h1>
       </div>
 
-      {jobs.map((job) => (
-        <WorkerJobCard
-          key={job.id}
-          job={job}
-          onStartTimer={() => {
-            // Wire to features/time-tracking hooks later.
-            console.log("time-tracking start", job.id);
-          }}
+      {/* Top Tab Bar with URL Query persistence (Dynamic Visit tab for Team Leader) */}
+      <SegmentedTabs tabs={TABS} defaultValue="all" paramName="tab" />
+
+      {/* Date Selector Strip (shown on UPCOMING and VISIT tab or when browsing dates) */}
+      {(currentTabParam === "upcoming" || currentTabParam === "visit") && (
+        <WorkerDateStrip
+          viewDate={viewDate}
+          onViewDateChange={setViewDate}
+          selectedDateKey={selectedDateKey}
+          onSelectDate={setSelectedDateKey}
+          jobDateKeys={jobDateKeys}
         />
-      ))}
+      )}
+
+      {/* Job Cards List */}
+      <div className="space-y-3.5 pt-1">
+        {filteredJobs.length === 0 ? (
+          <WorkerJobEmptyState
+            selectedDateKey={selectedDateKey}
+            onClearDateFilter={() => setSelectedDateKey(null)}
+          />
+        ) : (
+          filteredJobs.map((job) => (
+            <TodayWorkJobCard
+              key={job.id}
+              status={job.status}
+              title={job.title}
+              address={job.address}
+              service={job.service}
+              customerName={job.customerName}
+              customerAvatar={job.customerAvatar}
+              imageSrc={job.imageSrc}
+              progressText={job.progressText}
+              onCardClick={() => {
+                router.push(`/worker/jobs/${job.id}`);
+              }}
+            />
+          ))
+        )}
+      </div>
     </div>
   );
 }

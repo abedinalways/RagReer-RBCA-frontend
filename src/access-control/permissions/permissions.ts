@@ -73,6 +73,7 @@ export const PERMISSIONS = {
     ASSIGN: "job.assign",
     START: "job.start",
     COMPLETE: "job.complete",
+    VISIT: "job.visit",
   },
   TIME_TRACKING: {
     VIEW: "time-tracking.view",
