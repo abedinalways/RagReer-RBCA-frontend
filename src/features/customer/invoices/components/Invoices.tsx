@@ -3,7 +3,6 @@ import React, { useState, useMemo } from "react";
 import { createInvoicesColumns } from "./InvoicesColumns";
 import { INITIAL_INVOICES_DATA } from "../data/invoicesData";
 import { Invoice } from "../types/invoicesTypes";
-import { Pagination } from "@/components/reusable/Pagination";
 import { ReusableTable } from "@/components/reusable/ReusableTable";
 import EmptyStateCard from "@/components/reusable/EmptyStateCard";
 import { DocumentIcon } from "@/components/icons/DocumentIcon";
@@ -48,23 +47,24 @@ export const Invoices: React.FC = () => {
           onAction={handleRequestClick}
         />
       ) : (
-        <div className="bg-card-bg rounded-xl border border-border">
-          <div className="p-4 flex items-center justify-between">
-            <h2 className="text-lg font-bold text-primary-heading">
+        <div className="bg-card-bg rounded-sm border border-border">
+          {/* Header Section */}
+          <div className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <h2 className="text-[1.25rem] font-medium text-primary-heading">
               All Invoices
             </h2>
-            <div className="flex items-center gap-3">
+            <div className="flex flex-col sm:flex-row items-center gap-3">
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Type to search"
-                className="border border-border bg-input-bg rounded-lg px-3 py-1.5 text-sm text-txt-primary"
+                className="border border-border bg-input-bg rounded-lg px-3 py-1.5 text-[1rem] text-txt-primary"
               />
               <select
                 value={selectedStatus}
                 onChange={(e) => setSelectedStatus(e.target.value)}
-                className="border border-border bg-input-bg rounded-lg px-3 py-1.5 text-sm text-txt-primary"
+                className="border border-border bg-input-bg rounded-lg px-3 py-1.5 text-[1rem] text-txt-primary"
               >
                 <option value="All Status">All Status</option>
                 <option value="Pending">Pending</option>
@@ -76,17 +76,15 @@ export const Invoices: React.FC = () => {
           </div>
 
           <ReusableTable
-            data={filteredInvoices.slice(0, itemsPerPage)}
+            data={filteredInvoices}
             columns={columns}
             keyExtractor={(item, idx) => idx}
-          />
-
-          <Pagination
-            currentPage={currentPage}
-            totalPages={Math.ceil(filteredInvoices.length / itemsPerPage)}
-            itemsPerPage={itemsPerPage}
-            onPageChange={setCurrentPage}
-            onItemsPerPageChange={setItemsPerPage}
+            pagination={{
+              currentPage,
+              itemsPerPage,
+              onPageChange: setCurrentPage,
+              onItemsPerPageChange: setItemsPerPage,
+            }}
           />
         </div>
       )}

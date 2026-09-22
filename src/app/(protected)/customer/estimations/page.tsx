@@ -1,13 +1,8 @@
 import type { Metadata } from "next";
-import { PlaceholderPage } from "@/components/shared/PlaceholderPage";
+import Estimate from "@/features/customer/estimate/components/Estimate";
 
 export const metadata: Metadata = { title: "Estimation" };
 
 export default function CustomerEstimationsPage() {
-  return (
-    <PlaceholderPage
-      title="Estimation"
-      description="Cost estimation views — implementation lives in features/estimations."
-    />
-  );
+  return <Estimate />;
 }
