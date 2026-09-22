@@ -7,6 +7,7 @@ import { WorkerHeader } from "../components/WorkerHeader";
 export function WorkerLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isJobDetails = pathname.startsWith("/worker/jobs/") && pathname !== "/worker/jobs";
+  const isProfile = pathname.startsWith("/worker/profile");
 
   if (isJobDetails) {
     return (
@@ -18,7 +19,7 @@ export function WorkerLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="mx-auto flex min-h-screen w-full max-w-md flex-col bg-app-bg shadow-sm">
-      <WorkerHeader />
+      {!isProfile && <WorkerHeader />}
       <main className="flex-1 p-4 pb-24">{children}</main>
       <WorkerBottomNav />
     </div>
