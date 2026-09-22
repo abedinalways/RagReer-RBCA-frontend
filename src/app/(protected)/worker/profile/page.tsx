@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { WorkerProfileView } from "@/workspaces/worker/components/profile/WorkerProfileView";
 
 export const metadata: Metadata = {
@@ -6,5 +7,9 @@ export const metadata: Metadata = {
 };
 
 export default function WorkerProfilePage() {
-  return <WorkerProfileView />;
+  return (
+    <Suspense fallback={<div className="p-4 text-center text-secondary-subheading text-sm font-medium">Loading profile...</div>}>
+      <WorkerProfileView />
+    </Suspense>
+  );
 }

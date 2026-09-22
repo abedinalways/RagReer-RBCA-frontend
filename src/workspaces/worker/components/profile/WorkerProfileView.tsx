@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { LogOut } from "lucide-react";
 import { useAuth } from "@/features/auth";
 import { INITIAL_WORKER_PROFILE, WorkerProfileData } from "../../data/mockWorkerProfile";
@@ -9,23 +9,61 @@ import { ProfileMainCard } from "./ProfileMainCard";
 import { ProfileMenuCard } from "./ProfileMenuCard";
 import { PersonalInfoView } from "./PersonalInfoView";
 import { EditPersonalInfoView } from "./EditPersonalInfoView";
+import { JobHistoryView } from "./JobHistoryView";
+import { WorkerJobDetailsView } from "../job-details/WorkerJobDetailsView";
 import { SupervisorContactModal } from "./SupervisorContactModal";
 import { WorkerSettingsModal } from "./WorkerSettingsModal";
-import { JobHistoryModal } from "./JobHistoryModal";
 
-export type ProfileViewStep = "menu" | "personal-info" | "edit-personal-info";
+export type ProfileViewStep =
+  | "menu"
+  | "personal-info"
+  | "edit-personal-info"
+  | "job-history"
+  | "job-history-details";
 
 export function WorkerProfileView() {
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const { logOut, isLogoutLoading } = useAuth();
 
-  const [currentStep, setCurrentStep] = useState<ProfileViewStep>("menu");
+  // Read sub-tab & jobId directly from search params for persistent refresh support
+  const tabParam = searchParams.get("tab");
+  const currentStep: ProfileViewStep =
+    tabParam === "personal-info" ||
+    tabParam === "edit-personal-info" ||
+    tabParam === "job-history" ||
+    tabParam === "job-history-details"
+      ? tabParam
+      : "menu";
+
+  const selectedHistoryJobId = searchParams.get("jobId") || "history-1";
+
   const [profile, setProfile] = useState<WorkerProfileData>(INITIAL_WORKER_PROFILE);
 
   // Modals state
   const [isSupervisorModalOpen, setIsSupervisorModalOpen] = useState(false);
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
-  const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
+
+  // Navigate between subtabs by updating search params
+  const navigateToStep = (step: ProfileViewStep, jobId?: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (step === "menu") {
+      params.delete("tab");
+      params.delete("jobId");
+    } else {
+      params.set("tab", step);
+      if (step === "job-history-details") {
+        if (jobId) {
+          params.set("jobId", jobId);
+        }
+      } else {
+        params.delete("jobId");
+      }
+    }
+    const queryString = params.toString();
+    router.push(queryString ? `${pathname}?${queryString}` : pathname);
+  };
 
   const handleLogout = async () => {
     await logOut();
@@ -34,7 +72,7 @@ export function WorkerProfileView() {
 
   const handleSaveProfile = (updated: WorkerProfileData) => {
     setProfile(updated);
-    setCurrentStep("personal-info");
+    navigateToStep("personal-info");
   };
 
   // View 2: Personal Information Details (Image 2)
@@ -42,8 +80,8 @@ export function WorkerProfileView() {
     return (
       <PersonalInfoView
         profile={profile}
-        onBack={() => setCurrentStep("menu")}
-        onEdit={() => setCurrentStep("edit-personal-info")}
+        onBack={() => navigateToStep("menu")}
+        onEdit={() => navigateToStep("edit-personal-info")}
       />
     );
   }
@@ -54,7 +92,30 @@ export function WorkerProfileView() {
       <EditPersonalInfoView
         profile={profile}
         onSave={handleSaveProfile}
-        onCancel={() => setCurrentStep("personal-info")}
+        onCancel={() => navigateToStep("personal-info")}
+      />
+    );
+  }
+
+  // View 4: Job History List (Figma Job History Image)
+  if (currentStep === "job-history") {
+    return (
+      <JobHistoryView
+        onBack={() => navigateToStep("menu")}
+        onSelectJob={(job) => {
+          navigateToStep("job-history-details", job.id);
+        }}
+      />
+    );
+  }
+
+  // View 5: Job History Details (No travel button, completed status)
+  if (currentStep === "job-history-details") {
+    return (
+      <WorkerJobDetailsView
+        jobId={selectedHistoryJobId}
+        showTravelButton={false}
+        onBack={() => navigateToStep("job-history")}
       />
     );
   }
@@ -72,13 +133,13 @@ export function WorkerProfileView() {
       {/* Top Profile Card */}
       <ProfileMainCard
         profile={profile}
-        onEditAvatar={() => setCurrentStep("personal-info")}
+        onEditAvatar={() => navigateToStep("personal-info")}
       />
 
       {/* Menu Options */}
       <ProfileMenuCard
-        onSelectPersonalInfo={() => setCurrentStep("personal-info")}
-        onSelectJobHistory={() => setIsHistoryModalOpen(true)}
+        onSelectPersonalInfo={() => navigateToStep("personal-info")}
+        onSelectJobHistory={() => navigateToStep("job-history")}
         onSelectSettings={() => setIsSettingsModalOpen(true)}
         onSelectContactSupervisor={() => setIsSupervisorModalOpen(true)}
       />
@@ -105,11 +166,6 @@ export function WorkerProfileView() {
       <WorkerSettingsModal
         isOpen={isSettingsModalOpen}
         onClose={() => setIsSettingsModalOpen(false)}
-      />
-
-      <JobHistoryModal
-        isOpen={isHistoryModalOpen}
-        onClose={() => setIsHistoryModalOpen(false)}
       />
     </div>
   );

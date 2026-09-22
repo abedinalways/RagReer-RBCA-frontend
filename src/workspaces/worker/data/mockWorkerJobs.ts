@@ -124,3 +124,43 @@ export const MOCK_WORKER_JOBS: JobData[] = [
     dateKey: "2026-07-25",
   },
 ];
+
+export const MOCK_JOB_HISTORY: JobData[] = [
+  {
+    id: "history-1",
+    status: "COMPLETED",
+    title: "Willow Creek Residence",
+    address: "100 Whispering Pines Blvd at Hwy 43",
+    service: "Lawn Mowing + Trimming",
+    customerName: "Mr. Aurora",
+    customerAvatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=100",
+    imageSrc: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800",
+    progressText: "Completed on Aug 05, 2026",
+    dateKey: "2026-08-05",
+  },
+  {
+    id: "history-2",
+    status: "COMPLETED",
+    title: "Willow Creek Residence",
+    address: "100 Whispering Pines Blvd at Hwy 43",
+    service: "Lawn Mowing + Trimming",
+    customerName: "Mr. Aurora",
+    customerAvatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=100",
+    imageSrc: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=800",
+    progressText: "Completed on Jul 28, 2026",
+    dateKey: "2026-07-28",
+  },
+  {
+    id: "history-3",
+    status: "COMPLETED",
+    title: "Willow Creek Residence",
+    address: "100 Whispering Pines Blvd at Hwy 43",
+    service: "Lawn Mowing + Trimming",
+    customerName: "Mr. Aurora",
+    customerAvatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=100",
+    imageSrc: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&q=80&w=800",
+    progressText: "Completed on Jul 15, 2026",
+    dateKey: "2026-07-15",
+  },
+];
+
