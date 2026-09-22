@@ -1,6 +1,12 @@
 "use client";
 
-import { Settings, Phone, ChevronRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
+import {
+  PersonalInfoIcon,
+  JobHistoryIcon,
+  ProfileSettingsIcon,
+  ContactSupervisorIcon,
+} from "../icons/profile";
 
 interface ProfileMenuCardProps {
   onSelectPersonalInfo: () => void;
@@ -16,7 +22,7 @@ export function ProfileMenuCard({
   onSelectContactSupervisor,
 }: ProfileMenuCardProps) {
   return (
-    <div className="rounded-sm border border-[#D9DADC] bg-white shadow-2xs divide-y divide-[#EAECF0]">
+    <div className="rounded-sm border border-surface bg-white shadow-2xs divide-y divide-surface">
       {/* 1. Personal Information */}
       <button
         type="button"
@@ -25,23 +31,9 @@ export function ProfileMenuCard({
       >
         <div className="flex items-center gap-3">
           <div className="text-primary shrink-0">
-            {/* Custom ID Card Badge Icon matching Figma */}
-            <svg
-              className="h-5 w-5 text-primary"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <rect width="18" height="14" x="3" y="5" rx="2" />
-              <path d="M7 9h4" />
-              <path d="M7 13h4" />
-              <circle cx="15.5" cy="11.5" r="2" />
-            </svg>
+            <PersonalInfoIcon className="h-6 w-6 text-primary" />
           </div>
-          <span className="text-sm font-medium text-txt-primary">
+          <span className="text-base font-medium text-secondary-subheading">
             Personal Information
           </span>
         </div>
@@ -56,23 +48,9 @@ export function ProfileMenuCard({
       >
         <div className="flex items-center gap-3">
           <div className="text-primary shrink-0">
-            {/* Document Clock Icon matching Figma */}
-            <svg
-              className="h-5 w-5 text-primary"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-              <polyline points="14 2 14 8 20 8" />
-              <circle cx="12" cy="14.5" r="2.8" />
-              <polyline points="12 13 12 14.5 13.5 14.5" />
-            </svg>
+            <JobHistoryIcon className="h-6 w-6 text-primary" />
           </div>
-          <span className="text-sm font-medium text-txt-primary">
+          <span className="text-base font-medium text-secondary-subheading">
             Job History
           </span>
         </div>
@@ -86,8 +64,10 @@ export function ProfileMenuCard({
         className="w-full flex items-center justify-between p-4 hover:bg-slate-50/80 transition-colors cursor-pointer text-left"
       >
         <div className="flex items-center gap-3">
-          <Settings className="h-5 w-5 text-primary shrink-0" />
-          <span className="text-sm font-medium text-txt-primary">
+          <div className="text-primary shrink-0">
+            <ProfileSettingsIcon className="h-6 w-6 text-primary" />
+          </div>
+          <span className="text-base font-medium text-secondary-subheading">
             Settings
           </span>
         </div>
@@ -101,9 +81,11 @@ export function ProfileMenuCard({
         className="w-full flex items-center justify-between p-4 hover:bg-slate-50/80 transition-colors cursor-pointer text-left"
       >
         <div className="flex items-center gap-3">
-          <Phone className="h-5 w-5 text-primary shrink-0" />
-          <span className="text-sm font-medium text-txt-primary">
-            Contat Supervisor
+          <div className="text-primary shrink-0">
+            <ContactSupervisorIcon className="h-6 w-6 text-primary" />
+          </div>
+          <span className="text-base font-medium text-secondary-subheading">
+            Contact Supervisor
           </span>
         </div>
       </button>

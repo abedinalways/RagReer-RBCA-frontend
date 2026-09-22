@@ -17,7 +17,7 @@ export function ProfileMainCard({
   onDeletePhoto,
 }: ProfileMainCardProps) {
   return (
-    <div className="flex flex-col items-center justify-center p-6 rounded-sm border border-[#D9DADC] bg-[#F8F9FA] shadow-2xs">
+    <div className="flex flex-col items-center justify-center p-6 rounded-sm border border-surface bg-[#F2F2F3] shadow-2xs">
       {/* Avatar Container */}
       <div className="relative">
         <div className="h-20 w-20 rounded-full overflow-hidden border-2 border-white shadow-xs bg-slate-200">
@@ -54,7 +54,7 @@ export function ProfileMainCard({
           <h2 className="font-barlow text-lg font-medium text-primary-heading leading-tight">
             {profile.fullName}
           </h2>
-          <p className="text-xs text-secondary-subheading font-normal mt-0.5">
+          <p className="text-sm text-secondary-subheading font-normal mt-0.5">
             Plumber • Electrician
           </p>
         </div>
@@ -63,7 +63,7 @@ export function ProfileMainCard({
         <button
           type="button"
           onClick={onDeletePhoto}
-          className="mt-3 inline-flex items-center gap-1.5 text-xs font-medium text-[#E11D48] hover:text-red-700 transition-colors cursor-pointer active:scale-95"
+          className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-[#E11D48] hover:text-red-700 transition-colors cursor-pointer active:scale-95"
         >
           <Trash2 className="h-3.5 w-3.5" />
           <span>Delete photo</span>

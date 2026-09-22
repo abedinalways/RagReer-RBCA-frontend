@@ -89,7 +89,7 @@ export function WorkerProfileView() {
           type="button"
           onClick={() => void handleLogout()}
           disabled={isLogoutLoading}
-          className="w-full flex items-center justify-center gap-2 py-3 rounded-sm border border-primary text-primary text-xs font-semibold hover:bg-primary/5 active:scale-[0.99] transition-all cursor-pointer bg-white disabled:opacity-50"
+          className="w-full flex items-center justify-center gap-2 py-3 rounded-sm border border-primary text-primary text-sm font-semibold hover:bg-primary/5 active:scale-[0.99] transition-all cursor-pointer bg-white disabled:opacity-50"
         >
           <LogOut className="h-4 w-4" />
           <span>{isLogoutLoading ? "Logging out..." : "Log Out"}</span>
