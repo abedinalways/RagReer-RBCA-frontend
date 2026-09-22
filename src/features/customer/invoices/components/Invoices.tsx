@@ -47,7 +47,7 @@ export const Invoices: React.FC = () => {
           onAction={handleRequestClick}
         />
       ) : (
-        <div className="bg-card-bg rounded-xl border border-border">
+        <div className="bg-card-bg rounded-sm border border-border">
           {/* Header Section */}
           <div className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <h2 className="text-[1.25rem] font-medium text-primary-heading">

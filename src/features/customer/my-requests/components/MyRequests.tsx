@@ -48,7 +48,7 @@ export const MyRequests: React.FC = () => {
           onAction={handleNewRequestClick}
         />
       ) : (
-        <div className="bg-card-bg rounded-xl border border-border">
+        <div className="bg-card-bg rounded-sm border border-border">
           {/* Header Section */}
           <div className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <h2 className="text-[1.25rem] font-medium text-primary-heading">
@@ -66,7 +66,9 @@ export const MyRequests: React.FC = () => {
                 <option value="Under Review">Under Review</option>
                 <option value="Site Visit Required">Site Visit Required</option>
                 <option value="Site Visit Pending">Site Visit Pending</option>
-                <option value="Site Visit Scheduled">Site Visit Scheduled</option>
+                <option value="Site Visit Scheduled">
+                  Site Visit Scheduled
+                </option>
                 <option value="Site Visit in Progress">
                   Site Visit in Progress
                 </option>
@@ -88,9 +90,7 @@ export const MyRequests: React.FC = () => {
                 <option value="Scheduled">Scheduled</option>
                 <option value="In Progress">In Progress</option>
                 <option value="Completed">Completed</option>
-                <option value="Waiting For Payment">
-                  Waiting For Payment
-                </option>
+                <option value="Waiting For Payment">Waiting For Payment</option>
                 <option value="Payment Due">Payment Due</option>
                 <option value="Payment Completed">Payment Completed</option>
                 <option value="On Hold">On Hold</option>

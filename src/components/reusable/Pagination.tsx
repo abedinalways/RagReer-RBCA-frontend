@@ -59,15 +59,15 @@ export const Pagination: React.FC<PaginationProps> = ({
   const pageNumbers = getPageNumbers();
 
   return (
-    <div className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 px-4 py-3 border-t border-border bg-card-bg">
+    <div className="flex flex-col md:flex-row items-center justify-between gap-3 md:gap-4 px-4 py-3 border-t border-border bg-card-bg">
       {/* Left: Show Items Selector */}
-      <div className="flex items-center gap-2 w-full sm:w-auto text-sm font-medium text-secondary-subheading">
-        <span className="hidden sm:inline">Show items</span>
-        <div className="relative inline-block flex-1 sm:flex-none">
+      <div className="flex items-center gap-2 text-[1rem] font-medium text-secondary-subheading flex-1 md:flex-none justify-center md:justify-start">
+        <span className="">Show items</span>
+        <div className="relative inline-block">
           <select
             value={itemsPerPage}
             onChange={(e) => onItemsPerPageChange(Number(e.target.value))}
-            className="appearance-none bg-card-bg border border-border rounded px-3 py-1.5 pr-8 text-sm text-secondary-subheading focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer w-full md:w-auto min-w-30"
+            className="appearance-none bg-card-bg border border-border rounded px-3 py-1.5 pr-8 text-[0.875rem] text-secondary-subheading focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer w-full md:w-auto min-w-30"
           >
             {pageSizeOptions.map((opt) => (
               <option key={opt} value={opt}>
@@ -80,16 +80,16 @@ export const Pagination: React.FC<PaginationProps> = ({
       </div>
 
       {/* Right: Pagination Navigation Controls */}
-      <div className="flex items-center gap-1.5 sm:gap-2 w-full justify-center sm:justify-end">
+      <div className="flex items-center gap-1.5 md:gap-2 justify-center md:justify-end flex-1 md:flex-none">
         {/* Previous Page Button */}
         <button
           type="button"
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center border border-border bg-card-bg rounded text-secondary-subheading hover:bg-border-subtle disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+          className="w-8 h-8 md:w-9 md:h-9 flex items-center justify-center border border-border bg-card-bg rounded text-secondary-subheading hover:bg-border-subtle disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
           aria-label="Previous page"
         >
-          <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+          <ChevronLeft className="w-4 h-4 md:w-5 md:h-5" />
         </button>
 
         {/* Page Number Group */}
@@ -99,7 +99,7 @@ export const Pagination: React.FC<PaginationProps> = ({
               return (
                 <span
                   key={`ellipsis-${index}`}
-                  className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center text-sm text-secondary-subheading bg-border-subtle select-none"
+                  className="w-8 h-8 md:w-9 md:h-9 flex items-center justify-center text-[0.875rem] text-secondary-subheading bg-border-subtle select-none"
                 >
                   ...
                 </span>
@@ -113,7 +113,7 @@ export const Pagination: React.FC<PaginationProps> = ({
                 key={page}
                 type="button"
                 onClick={() => onPageChange(Number(page))}
-                className={`w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center text-sm font-medium transition-colors cursor-pointer ${
+                className={`w-8 h-8 md:w-9 md:h-9 flex items-center justify-center text-[0.875rem] font-medium transition-colors cursor-pointer ${
                   isSelected
                     ? "bg-primary text-white font-semibold"
                     : "bg-border-subtle text-secondary-subheading hover:bg-border"
@@ -130,10 +130,10 @@ export const Pagination: React.FC<PaginationProps> = ({
           type="button"
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center border border-border bg-card-bg rounded text-secondary-subheading hover:bg-border-subtle disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+          className="w-8 h-8 md:w-9 md:h-9 flex items-center justify-center border border-border bg-card-bg rounded text-secondary-subheading hover:bg-border-subtle disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
           aria-label="Next page"
         >
-          <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+          <ChevronRight className="w-4 h-4 md:w-5 md:h-5" />
         </button>
       </div>
     </div>

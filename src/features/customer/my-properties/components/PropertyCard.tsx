@@ -1,17 +1,16 @@
 import React from "react";
+import Link from "next/link";
 import { Property } from "../types/PropertyTypes";
 import { MapPinIcon } from "@/components/icons/MapPinIcon";
 
 export interface PropertyCardProps {
   property: Property;
   onEdit?: (property: Property) => void;
-  onViewDetails?: (property: Property) => void;
 }
 
 export const PropertyCard: React.FC<PropertyCardProps> = ({
   property,
   onEdit,
-  onViewDetails,
 }) => {
   return (
     <div className="bg-card-bg border border-border rounded-xl p-3.5 flex flex-col justify-between shadow-xs hover:shadow-md transition-shadow duration-200">
@@ -73,17 +72,16 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
         <button
           type="button"
           onClick={() => onEdit?.(property)}
-          className="w-full py-2 px-3 border border-border hover:bg-blue-50 text-primary text-[0.875rem] font-semibold rounded-md transition-colors text-center cursor-pointer"
+          className="w-full py-2 px-3 border border-border hover:bg-blue-50 text-primary text-[0.875rem] font-medium rounded-md transition-colors text-center cursor-pointer"
         >
           Edit
         </button>
-        <button
-          type="button"
-          onClick={() => onViewDetails?.(property)}
-          className="w-full py-2 px-3 border border-border hover:bg-blue-50 text-primary text-[0.875rem] font-semibold rounded-md transition-colors text-center cursor-pointer"
+        <Link
+          href={`/customer/property/${property.id}`}
+          className="w-full py-2 px-3 border border-border hover:bg-blue-50 text-primary text-[0.875rem] font-medium rounded-md transition-colors text-center cursor-pointer"
         >
           View Details
-        </button>
+        </Link>
       </div>
     </div>
   );

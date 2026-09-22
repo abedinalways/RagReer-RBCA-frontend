@@ -89,7 +89,7 @@ export const MyPropertiesDetails: React.FC<MyPropertiesDetailsProps> = ({
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 bg-card-bg text-primary-heading rounded-xl p-6 shadow-md border border-border-subtle space-y-6">
+        <div className="lg:col-span-2 bg-card-bg text-primary-heading rounded-sm p-4 border border-border-subtle space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             <div className="md:col-span-2 relative h-64 md:h-80 rounded-lg overflow-hidden group">
               <Image
@@ -198,7 +198,7 @@ export const MyPropertiesDetails: React.FC<MyPropertiesDetailsProps> = ({
         </div>
 
         <div className="space-y-6">
-          <div className="bg-card-bg text-primary-heading rounded-xl p-5 shadow-md border border-border-subtle">
+          <div className="bg-card-bg text-primary-heading rounded-sm p-4 border border-border-subtle">
             <div className="flex items-center gap-2 text-primary font-medium text-[18px] mb-4">
               <User className="w-5 h-5" />
               <span>Property Maintainer</span>
@@ -226,7 +226,7 @@ export const MyPropertiesDetails: React.FC<MyPropertiesDetailsProps> = ({
             </div>
           </div>
 
-          <div className="bg-card-bg text-primary-heading rounded-xl p-5 shadow-md border border-border-subtle space-y-4">
+          <div className="bg-card-bg text-primary-heading rounded-sm p-4 border border-border-subtle space-y-4">
             <h3 className="font-medium text-primary-heading text-[18px]">
               Property Location
             </h3>
