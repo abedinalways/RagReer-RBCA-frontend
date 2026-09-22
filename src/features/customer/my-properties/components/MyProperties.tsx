@@ -15,28 +15,28 @@ export const MyProperties: React.FC = () => {
     <div>
       <div className="bg-card-bg border border-border rounded-2xl p-7 shadow-xs">
         {/* Header Section */}
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-primary-heading">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4 md:mb-6">
+          <h2 className="text-[1.25rem] font-medium text-primary-heading">
             My Properties
           </h2>
 
-          <div className="flex items-center gap-3">
+          <div className="flex flex-col sm:flex-row items-center gap-3">
             <select
               value={selectedType}
               onChange={(e) => setSelectedType(e.target.value)}
-              className="bg-input-bg border border-border rounded-md px-3 py-2 text-sm font-medium text-txt-primary"
+              className="bg-input-bg border border-border rounded-md px-3 py-2 text-[1rem] font-medium text-txt-primary"
             >
               <option value="All">All Property Type</option>
               <option value="Residential">Residential</option>
               <option value="Commercial">Commercial</option>
             </select>
 
-            <button className="bg-input-bg border border-border px-4 py-2 rounded-md text-sm font-medium text-txt-primary hover:bg-blue-50 cursor-pointer transition-colors flex items-center gap-2">
+            <button className="bg-input-bg border border-border px-4 py-2 rounded-md text-[1rem] font-medium text-txt-primary hover:bg-blue-50 cursor-pointer transition-colors flex items-center gap-2">
               Import
               <ImportIcon className="w-4 h-4" />
             </button>
 
-            <button className="bg-primary text-primary-text px-4 py-2 rounded-md text-sm font-medium hover:bg-primary-hover cursor-pointer transition-colors flex items-center gap-2">
+            <button className="bg-primary text-primary-text px-4 py-2 rounded-md text-[1rem] font-medium hover:bg-primary-hover cursor-pointer transition-colors flex items-center gap-2">
               <PlusIcon className="w-4 h-4" />
               Add New Property
             </button>

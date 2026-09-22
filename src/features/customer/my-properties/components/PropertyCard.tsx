@@ -26,24 +26,22 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
         </div>
 
         {/* Tag & Status Row */}
-        <div className="flex items-center justify-between min-h-6.5 mb-2">
-          <span className="inline-block bg-blue-50 text-secondary-subheading text-xs font-medium px-2.5 py-0.5 rounded">
+        <div className="flex items-center justify-between min-h-6.5 mb-2 text-[0.75rem]">
+          <span className="inline-block bg-blue-50 text-secondary-subheading  font-medium px-2.5 py-0.5 rounded">
             {property.type}
           </span>
 
           {property.status && (
             <span
-              className={`inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-0.5 rounded-full border ${
+              className={`inline-flex items-center gap-1.5 font-medium px-2.5 py-0.5 rounded-md border ${
                 property.status === "Active"
-                  ? "bg-status-running-bg text-status-running-text border-border-card"
+                  ? "bg-status-running-bg text-info border-border-card"
                   : "bg-trend-down/10 text-trend-down border-trend-down/20"
               }`}
             >
               <span
                 className={`w-1.5 h-1.5 rounded-full ${
-                  property.status === "Active"
-                    ? "bg-status-running-text"
-                    : "bg-trend-down"
+                  property.status === "Active" ? "bg-info" : "bg-trend-down"
                 }`}
               />
               {property.status}
@@ -52,18 +50,18 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
         </div>
 
         {/* Title */}
-        <h4 className="font-bold text-primary-heading text-[15px] leading-snug mb-1.5 line-clamp-1">
+        <h4 className="font-medium text-primary-heading text-[1rem] leading-snug mb-1.5 line-clamp-1">
           {property.title}
         </h4>
 
         {/* Location Row */}
-        <div className="flex items-start text-secondary-subheading text-xs mb-3">
+        <div className="flex gap-2 items-center text-secondary-subheading text-[0.875rem] mb-3">
           <MapPinIcon className="w-3.5 h-3.5 text-secondary-subheading mr-1 mt-0.5 shrink-0" />
           <span className="line-clamp-1">{property.address}</span>
         </div>
 
         {/* Size Row */}
-        <div className="text-xs text-secondary-subheading mb-4">
+        <div className="text-[0.875rem] font-medium text-secondary-subheading mb-4">
           Size:{" "}
           <span className="text-txt-primary font-medium">{property.size}</span>
         </div>
@@ -75,14 +73,14 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
         <button
           type="button"
           onClick={() => onEdit?.(property)}
-          className="w-full py-2 px-3 border border-border hover:bg-blue-50 text-primary text-xs font-semibold rounded-md transition-colors text-center"
+          className="w-full py-2 px-3 border border-border hover:bg-blue-50 text-primary text-[0.875rem] font-semibold rounded-md transition-colors text-center cursor-pointer"
         >
           Edit
         </button>
         <button
           type="button"
           onClick={() => onViewDetails?.(property)}
-          className="w-full py-2 px-3 border border-border hover:bg-blue-50 text-primary text-xs font-semibold rounded-md transition-colors text-center"
+          className="w-full py-2 px-3 border border-border hover:bg-blue-50 text-primary text-[0.875rem] font-semibold rounded-md transition-colors text-center cursor-pointer"
         >
           View Details
         </button>

@@ -21,12 +21,12 @@ export const Pagination: React.FC<PaginationProps> = ({
   return (
     <div className="flex items-center justify-between px-4 py-3 border-t border-border bg-card-bg">
       {/* Show Items Selector */}
-      <div className="flex items-center gap-2 text-sm text-secondary-subheading">
+      <div className="flex items-center gap-2 text-[1rem] font-medium text-secondary-subheading ">
         <span>Show items</span>
         <select
           value={itemsPerPage}
           onChange={(e) => onItemsPerPageChange(Number(e.target.value))}
-          className="border border-border rounded px-2 py-1 text-sm bg-input-bg text-secondary-subheading"
+          className="border border-border rounded px-2 py-1 text-[0.875rem] bg-input-bg text-secondary-subheading"
         >
           {pageSizeOptions.map((opt) => (
             <option key={opt} value={opt}>
@@ -46,7 +46,7 @@ export const Pagination: React.FC<PaginationProps> = ({
           <ChevronLeft className="w-4 h-4" />
         </button>
 
-        <button className="min-w-8 h-8 rounded text-sm bg-primary text-primary-text">
+        <button className="min-w-8 h-8 rounded text-[0.875rem] bg-primary text-primary-text">
           {currentPage}
         </button>
 
