@@ -16,7 +16,7 @@ export const Pagination: React.FC<PaginationProps> = ({
   itemsPerPage,
   onPageChange,
   onItemsPerPageChange,
-  pageSizeOptions = [10, 25, 50],
+  pageSizeOptions = [1, 5, 10, 25, 50, 100],
 }) => {
   return (
     <div className="flex items-center justify-between px-4 py-3 border-t border-border bg-card-bg">
