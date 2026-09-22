@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useMemo } from "react";
+import Link from "next/link";
 import { createMyRequestsColumns } from "./MyRequestsColumns";
 import { myRequestsData } from "../data/myRequestsData";
 import { RequestItem } from "../types/myRequestsTypes";
@@ -95,13 +96,13 @@ export const MyRequests: React.FC = () => {
                 <option value="Payment Completed">Payment Completed</option>
                 <option value="On Hold">On Hold</option>
               </select>
-              <button
-                onClick={handleNewRequestClick}
+              <Link
+                href="/customer/requests/new-request"
                 className="flex items-center gap-2 bg-primary text-white px-4 py-1.5 rounded-lg text-[1rem] font-medium hover:opacity-90 cursor-pointer"
               >
                 <PlusIcon className="w-4 h-4" />
                 New Request
-              </button>
+              </Link>
             </div>
           </div>
 
