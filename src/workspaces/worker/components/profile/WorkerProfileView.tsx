@@ -19,7 +19,9 @@ export type ProfileViewStep =
   | "personal-info"
   | "edit-personal-info"
   | "job-history"
-  | "job-history-details";
+  | "job-history-details"
+  | "settings"
+  | "change-password";
 
 export function WorkerProfileView() {
   const router = useRouter();
@@ -33,7 +35,9 @@ export function WorkerProfileView() {
     tabParam === "personal-info" ||
     tabParam === "edit-personal-info" ||
     tabParam === "job-history" ||
-    tabParam === "job-history-details"
+    tabParam === "job-history-details" ||
+    tabParam === "settings" ||
+    tabParam === "change-password"
       ? tabParam
       : "menu";
 
@@ -140,7 +144,10 @@ export function WorkerProfileView() {
       <ProfileMenuCard
         onSelectPersonalInfo={() => navigateToStep("personal-info")}
         onSelectJobHistory={() => navigateToStep("job-history")}
-        onSelectSettings={() => setIsSettingsModalOpen(true)}
+        onSelectSettings={() => {
+          setIsSettingsModalOpen(true);
+          navigateToStep("settings");
+        }}
         onSelectContactSupervisor={() => setIsSupervisorModalOpen(true)}
       />
 
@@ -163,9 +170,15 @@ export function WorkerProfileView() {
         onClose={() => setIsSupervisorModalOpen(false)}
       />
 
+      {/* Settings Modal with Settings & Change Password sub-views */}
       <WorkerSettingsModal
-        isOpen={isSettingsModalOpen}
-        onClose={() => setIsSettingsModalOpen(false)}
+        isOpen={isSettingsModalOpen || currentStep === "settings" || currentStep === "change-password"}
+        initialView={currentStep === "change-password" ? "change-password" : "settings"}
+        onViewChange={(view) => navigateToStep(view)}
+        onClose={() => {
+          setIsSettingsModalOpen(false);
+          navigateToStep("menu");
+        }}
       />
     </div>
   );
