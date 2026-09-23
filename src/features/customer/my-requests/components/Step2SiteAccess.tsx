@@ -19,7 +19,7 @@ export const Step2SiteAccess: React.FC<Step2Props> = ({ form }) => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-bold text-primary-heading">
+        <h2 className="text-xl font-medium text-primary-heading">
           Site Access & Conditions
         </h2>
         <p className="text-sm text-secondary-subheading mt-0.5">

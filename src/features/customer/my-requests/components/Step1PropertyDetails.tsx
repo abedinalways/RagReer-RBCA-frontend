@@ -36,19 +36,19 @@ export const Step1PropertyDetails: React.FC<Step1Props> = ({ form }) => {
   return (
     <div className="space-y-5">
       <div>
-        <h2 className="text-[20px] font-medium text-primary-heading">
+        <h2 className="text-xl font-medium text-primary-heading">
           Property Details
         </h2>
-        <p className="text-[14px] text-secondary-subheading mt-0.5">
+        <p className="text-sm text-secondary-subheading mt-0.5">
           Provide all the details of your property
         </p>
       </div>
 
       {/* Select Role */}
       <div>
-        <label className="block text-sm font-medium text-txt-primary mb-1">
+        <label className="block text-lg font-medium text-txt-primary mb-1">
           Select your role for the property{" "}
-          <span className="text-rose-500">*</span>
+          <span className="text-trend-down">*</span>
         </label>
         <div className="relative">
           <select
@@ -78,13 +78,13 @@ export const Step1PropertyDetails: React.FC<Step1Props> = ({ form }) => {
           </div>
         </div>
         {errors.role && (
-          <p className="text-xs text-rose-500 mt-1">{errors.role.message}</p>
+          <p className="text-xs text-trend-down mt-1">{errors.role.message}</p>
         )}
       </div>
 
       {/* Choose Saved Property */}
       <div>
-        <label className="block text-sm font-medium text-txt-primary mb-1">
+        <label className="block text-lg font-medium text-txt-primary mb-1">
           Choose from your saved property
         </label>
         <div className="relative">
@@ -120,7 +120,7 @@ export const Step1PropertyDetails: React.FC<Step1Props> = ({ form }) => {
 
       {/* Property Name */}
       <div>
-        <label className="block text-sm font-medium text-txt-primary mb-1">
+        <label className="block text-lg font-medium text-txt-primary mb-1">
           Property Name
         </label>
         <input
@@ -133,8 +133,8 @@ export const Step1PropertyDetails: React.FC<Step1Props> = ({ form }) => {
 
       {/* Address Block */}
       <div>
-        <label className="block text-sm font-medium text-txt-primary mb-1">
-          Address <span className="text-rose-500">*</span>
+        <label className="block text-lg font-medium text-txt-primary mb-1">
+          Address <span className="text-trend-down">*</span>
         </label>
         <div className="border border-border rounded-md overflow-hidden bg-card-bg divide-y divide-border">
           <input
@@ -174,7 +174,7 @@ export const Step1PropertyDetails: React.FC<Step1Props> = ({ form }) => {
           errors.city ||
           errors.state ||
           errors.postalCode) && (
-          <p className="text-xs text-rose-500 mt-1">
+          <p className="text-xs text-trend-down mt-1">
             Please provide complete address details
           </p>
         )}
@@ -182,8 +182,8 @@ export const Step1PropertyDetails: React.FC<Step1Props> = ({ form }) => {
 
       {/* Approximate Lot Size */}
       <div>
-        <label className="block text-sm font-medium text-txt-primary mb-1">
-          Approximate Lot Size <span className="text-rose-500">*</span>
+        <label className="block text-lg font-medium text-txt-primary mb-1">
+          Approximate Lot Size <span className="text-trend-down">*</span>
         </label>
         <div className="relative">
           <select
@@ -213,14 +213,16 @@ export const Step1PropertyDetails: React.FC<Step1Props> = ({ form }) => {
           </div>
         </div>
         {errors.lotSize && (
-          <p className="text-xs text-rose-500 mt-1">{errors.lotSize.message}</p>
+          <p className="text-xs text-trend-down mt-1">
+            {errors.lotSize.message}
+          </p>
         )}
       </div>
 
       {/* Choose What you Have */}
       <div>
-        <label className="block text-sm font-medium text-txt-primary mb-2">
-          Choose What you Have <span className="text-rose-500">*</span>
+        <label className="block text-lg font-medium text-txt-primary mb-2">
+          Choose What you Have <span className="text-trend-down">*</span>
         </label>
         <div className="space-y-2">
           {AMENITY_OPTIONS.map((item) => {
@@ -242,7 +244,7 @@ export const Step1PropertyDetails: React.FC<Step1Props> = ({ form }) => {
           })}
         </div>
         {errors.whatYouHave && (
-          <p className="text-xs text-rose-500 mt-1">
+          <p className="text-xs text-trend-down mt-1">
             {errors.whatYouHave.message}
           </p>
         )}
@@ -250,7 +252,7 @@ export const Step1PropertyDetails: React.FC<Step1Props> = ({ form }) => {
 
       {/* Describe about your property */}
       <div>
-        <label className="block text-sm font-medium text-txt-primary mb-1">
+        <label className="block text-lg font-medium text-txt-primary mb-1">
           Describe about your property
         </label>
         <div className="relative border border-border rounded-md bg-card-bg p-3">
@@ -270,7 +272,7 @@ export const Step1PropertyDetails: React.FC<Step1Props> = ({ form }) => {
       {/* Property Maintainer Contact */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-txt-primary mb-1">
+          <label className="block text-lg font-medium text-txt-primary mb-1">
             Property Maintainer Name
           </label>
           <input
@@ -281,7 +283,7 @@ export const Step1PropertyDetails: React.FC<Step1Props> = ({ form }) => {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-txt-primary mb-1">
+          <label className="block text-lg font-medium text-txt-primary mb-1">
             Property Maintainer Phone
           </label>
           <input

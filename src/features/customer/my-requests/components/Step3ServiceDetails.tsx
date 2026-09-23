@@ -1,5 +1,11 @@
 import React, { useState } from "react";
 import { UseFormReturn } from "react-hook-form";
+import { CommercialIcons } from "../../../../components/icons/CommercialIcons";
+import { EventIcons } from "../../../../components/icons/EventIcons";
+import { LandscapeIcons } from "../../../../components/icons/LandscapeIcons";
+import { OtherWorkIcons } from "../../../../components/icons/OtherWorkIcons";
+import { PhotographyIcons } from "../../../../components/icons/PhotographyIcons";
+import { ResidentialLawnCareIcons } from "../../../../components/icons/ResidentialLawnCareIcons";
 import { NewRequestFormData } from "../schema/requestSchema";
 
 interface Step3Props {
@@ -7,12 +13,24 @@ interface Step3Props {
 }
 
 const CATEGORIES = [
-  { id: "lawn", label: "Residential Lawn Care", icon: "🚜" },
-  { id: "landscape", label: "Landscape & Property Maintenance", icon: "🍃" },
-  { id: "commercial", label: "Commercial Services", icon: "🏢" },
-  { id: "photography", label: "Photography & Videography", icon: "📷" },
-  { id: "event", label: "DJ & Event Services", icon: "💿" },
-  { id: "other", label: "Other Work", icon: "🛠️" },
+  {
+    id: "lawn",
+    label: "Residential Lawn Care",
+    icon: ResidentialLawnCareIcons,
+  },
+  {
+    id: "landscape",
+    label: "Landscape & Property Maintenance",
+    icon: LandscapeIcons,
+  },
+  { id: "commercial", label: "Commercial Services", icon: CommercialIcons },
+  {
+    id: "photography",
+    label: "Photography & Videography",
+    icon: PhotographyIcons,
+  },
+  { id: "event", label: "DJ & Event Services", icon: EventIcons },
+  { id: "other", label: "Other Work", icon: OtherWorkIcons },
 ];
 
 const RESIDENTIAL_SERVICES = [
@@ -126,7 +144,9 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-bold text-primary-heading">Service Details</h2>
+        <h2 className="text-xl font-medium text-primary-heading">
+          Service Details
+        </h2>
         <p className="text-sm text-secondary-subheading mt-0.5">
           Select a category, then choose specific services & describe service
           details
@@ -135,9 +155,9 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
 
       {/* Categories Grid */}
       <div>
-        <label className="block text-sm font-medium text-txt-primary mb-3">
+        <label className="block text-lg font-medium text-txt-primary mb-3">
           What type of property service do you need?{" "}
-          <span className="text-rose-500">*</span>
+          <span className="text-trend-down">*</span>
         </label>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {CATEGORIES.map((cat) => {
@@ -147,9 +167,9 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
                 type="button"
                 key={cat.id}
                 onClick={() => handleCategorySelect(cat.label)}
-                className={`flex flex-col items-center justify-center p-5 rounded-lg border transition-all text-center ${
+                className={`flex flex-col items-center justify-center p-5 rounded-lg border transition-all text-center cursor-pointer ${
                   isSelected
-                    ? "bg-[#5B82A6] text-white border-[#5B82A6]"
+                    ? "bg-primary text-primary-text border-primary"
                     : "bg-card-bg text-txt-primary border-border hover:border-border"
                 }`}
               >
@@ -160,9 +180,9 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
                       : "bg-surface text-secondary-subheading"
                   }`}
                 >
-                  {cat.icon}
+                  <cat.icon />
                 </div>
-                <span className="font-semibold text-sm leading-snug">
+                <span className="font-medium text-xl leading-snug">
                   {cat.label}
                 </span>
               </button>
@@ -170,7 +190,7 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
           })}
         </div>
         {errors.serviceCategory && (
-          <p className="text-xs text-rose-500 mt-1">
+          <p className="text-xs text-trend-down mt-1">
             {errors.serviceCategory.message}
           </p>
         )}
@@ -179,9 +199,9 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
       {/* Commercial Specific Sub-Type */}
       {selectedCategory === "Commercial Services" && (
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-txt-primary">
+          <label className="block text-lg font-medium text-txt-primary">
             Select Specific Commercial Service Type{" "}
-            <span className="text-rose-500">*</span>
+            <span className="text-trend-down">*</span>
           </label>
           <div className="space-y-2">
             {COMMERCIAL_TYPES.map((type) => (
@@ -210,8 +230,9 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
           selectedCategory,
         ) && (
           <div>
-            <label className="block text-sm font-medium text-txt-primary mb-2">
-              Select Specific Services <span className="text-rose-500">*</span>
+            <label className="block text-lg font-medium text-txt-primary mb-2">
+              Select Specific Services{" "}
+              <span className="text-trend-down">*</span>
             </label>
             <div className="space-y-2">
               {(selectedCategory === "Residential Lawn Care"
@@ -258,7 +279,7 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
                         onClick={() => handleTagToggle(tag)}
                         className={`px-3 py-1.5 rounded-md text-xs font-medium flex items-center gap-1.5 transition-colors ${
                           isSelected
-                            ? "bg-[#5B82A6]/10 text-[#5B82A6] border border-[#5B82A6]/30"
+                            ? "bg-primary/10 text-primary border border-primary/30"
                             : "bg-card-bg text-secondary-subheading border border-border hover:bg-page-bg"
                         }`}
                       >
@@ -279,9 +300,9 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
       ) && (
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-txt-primary mb-1">
+            <label className="block text-lg font-medium text-txt-primary mb-1">
               If approved, which day is best for you?{" "}
-              <span className="text-rose-500">*</span>
+              <span className="text-trend-down">*</span>
             </label>
             <input
               type="date"
@@ -291,8 +312,8 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-txt-primary mb-1">
-              Event Type <span className="text-rose-500">*</span>
+            <label className="block text-lg font-medium text-txt-primary mb-1">
+              Event Type <span className="text-trend-down">*</span>
             </label>
             <input
               type="text"
@@ -304,7 +325,7 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-txt-primary mb-1">
+              <label className="block text-lg font-medium text-txt-primary mb-1">
                 Expected Guests
               </label>
               <input
@@ -315,7 +336,7 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-txt-primary mb-1">
+              <label className="block text-lg font-medium text-txt-primary mb-1">
                 Event Duration
               </label>
               <input
@@ -331,8 +352,9 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
 
       {/* What type of request is this? */}
       <div>
-        <label className="block text-sm font-medium text-txt-primary mb-2">
-          What type of request is this? <span className="text-rose-500">*</span>
+        <label className="block text-lg font-medium text-txt-primary mb-2">
+          What type of request is this?{" "}
+          <span className="text-trend-down">*</span>
         </label>
         <div className="flex flex-wrap gap-x-6 gap-y-2">
           {[
@@ -357,7 +379,7 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
           ))}
         </div>
         {errors.requestType && (
-          <p className="text-xs text-rose-500 mt-1">
+          <p className="text-xs text-trend-down mt-1">
             {errors.requestType.message}
           </p>
         )}
@@ -366,9 +388,9 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
       {/* Conditional: Recurring frequency dropdown */}
       {requestType === "Recurring" && (
         <div>
-          <label className="block text-sm font-medium text-txt-primary mb-1">
+          <label className="block text-lg font-medium text-txt-primary mb-1">
             How often you need this service?{" "}
-            <span className="text-rose-500">*</span>
+            <span className="text-trend-down">*</span>
           </label>
           <div className="relative">
             <select
@@ -402,8 +424,8 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
       {/* Conditional: Existing Contract dropdown */}
       {requestType === "Existing Contract" && (
         <div>
-          <label className="block text-sm font-medium text-txt-primary mb-1">
-            Select your contract <span className="text-rose-500">*</span>
+          <label className="block text-lg font-medium text-txt-primary mb-1">
+            Select your contract <span className="text-trend-down">*</span>
           </label>
           <div className="relative">
             <select
@@ -434,7 +456,7 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
 
       {/* Describe what you need in details */}
       <div>
-        <label className="block text-sm font-medium text-txt-primary mb-1">
+        <label className="block text-lg font-medium text-txt-primary mb-1">
           Describe what you need in details
         </label>
         <div className="relative border border-border rounded-md bg-card-bg p-3">
@@ -445,7 +467,7 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
             placeholder="Details description of your services,...."
             className="w-full text-sm text-txt-primary resize-none focus:outline-none"
           />
-          <div className="text-right text-xs text-secondary-subheading mt-1">
+          <div className="text-right text-sm text-secondary-subheading mt-1">
             {detailsDescription.length}/200
           </div>
         </div>

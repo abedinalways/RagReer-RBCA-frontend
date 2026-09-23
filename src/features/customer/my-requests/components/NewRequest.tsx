@@ -120,7 +120,7 @@ export const NewRequest: React.FC = () => {
             </h1>
             <button
               type="button"
-              className="inline-flex items-center gap-1.5 text-[1rem] font-medium text-secondary-subheading hover:text-txt-primary"
+              className="inline-flex items-center gap-1.5 text-[1rem] font-medium text-secondary-subheading hover:text-txt-primary cursor-pointer"
             >
               <span>Save</span>
               <Save className="w-5 h-5" />
@@ -150,9 +150,7 @@ export const NewRequest: React.FC = () => {
       {/* Main Form Body */}
       <form onSubmit={handleSubmit(onSubmit)} className="p-6">
         {isSubmitted ? (
-          <StepSubmitted
-            onReset={handleReset}
-          />
+          <StepSubmitted onReset={handleReset} />
         ) : (
           <>
             {currentStep === 1 && <Step1PropertyDetails form={form} />}

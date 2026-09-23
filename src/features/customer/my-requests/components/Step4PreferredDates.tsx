@@ -41,7 +41,7 @@ export const Step4PreferredDates: React.FC<Step4Props> = ({ form }) => {
     <div className="space-y-6">
       {/* Title section */}
       <div>
-        <h2 className="text-xl font-bold text-primary-heading">
+        <h2 className="text-xl font-medium text-primary-heading">
           Preferred dates & photos
         </h2>
         <p className="text-sm text-secondary-subheading mt-0.5">
@@ -51,9 +51,9 @@ export const Step4PreferredDates: React.FC<Step4Props> = ({ form }) => {
 
       {/* Field 1: Preferred Date */}
       <div>
-        <label className="block text-sm font-medium text-txt-primary mb-1.5">
+        <label className="block text-lg font-medium text-txt-primary mb-1.5">
           If approved, which day is best for you?{" "}
-          <span className="text-rose-500">*</span>
+          <span className="text-trend-down">*</span>
         </label>
         <div className="relative">
           <input
@@ -63,7 +63,7 @@ export const Step4PreferredDates: React.FC<Step4Props> = ({ form }) => {
           />
         </div>
         {errors.preferredDate && (
-          <p className="text-xs text-rose-500 mt-1">
+          <p className="text-xs text-trend-down mt-1">
             {errors.preferredDate.message}
           </p>
         )}
@@ -71,9 +71,11 @@ export const Step4PreferredDates: React.FC<Step4Props> = ({ form }) => {
 
       {/* Field 2: Secondary Date */}
       <div>
-        <label className="block text-sm font-medium text-txt-primary mb-1.5">
+        <label className="block text-lg font-medium text-txt-primary mb-1.5">
           What is another day that is suitable for you?{" "}
-          <span className="text-secondary-subheading font-normal">(optional)</span>
+          <span className="text-secondary-subheading font-normal">
+            (optional)
+          </span>
         </label>
         <div className="relative">
           <input
@@ -86,8 +88,8 @@ export const Step4PreferredDates: React.FC<Step4Props> = ({ form }) => {
 
       {/* Field 3: Add Photos */}
       <div>
-        <label className="block text-sm font-medium text-txt-primary mb-2">
-          Add Photos <span className="text-rose-500">*</span>{" "}
+        <label className="block text-lg font-medium text-txt-primary mb-2">
+          Add Photos <span className="text-trend-down">*</span>{" "}
           <span className="text-secondary-subheading font-normal">
             (Thumbnail, front view, side view, back view etc)
           </span>
@@ -105,10 +107,10 @@ export const Step4PreferredDates: React.FC<Step4Props> = ({ form }) => {
         <div className="flex flex-wrap gap-3 items-center">
           {/* Uploaded Thumbnails Preview */}
           {photos.map((photoUrl, idx) => (
-<div
-                key={idx}
-                className="relative w-24 h-24 rounded-md overflow-hidden border border-border group"
-              >
+            <div
+              key={idx}
+              className="relative w-24 h-24 rounded-md overflow-hidden border border-border group"
+            >
               <img
                 src={photoUrl}
                 alt={`Property upload ${idx + 1}`}
@@ -117,7 +119,7 @@ export const Step4PreferredDates: React.FC<Step4Props> = ({ form }) => {
               <button
                 type="button"
                 onClick={() => handleRemovePhoto(idx)}
-                className="absolute top-1 right-1 w-5 h-5 bg-rose-500 text-white rounded-full flex items-center justify-center text-xs opacity-80 hover:opacity-100"
+                className="absolute top-1 right-1 w-5 h-5 bg-trend-down text-white rounded-full flex items-center justify-center text-xs opacity-80 hover:opacity-100"
               >
                 ✕
               </button>
@@ -146,13 +148,15 @@ export const Step4PreferredDates: React.FC<Step4Props> = ({ form }) => {
           </button>
         </div>
         {errors.photos && (
-          <p className="text-xs text-rose-500 mt-1">{errors.photos.message}</p>
+          <p className="text-xs text-trend-down mt-1">
+            {errors.photos.message}
+          </p>
         )}
       </div>
 
       {/* Amber/Yellow Disclaimer Callout Box */}
-      <div className="p-3.5 bg-[#FFFBEB] border border-[#FCD34D] rounded-md">
-        <p className="text-xs text-txt-primary leading-relaxed font-normal">
+      <div className="p-3.5 bg-tag-rescheduling-bg/10 border border-tag-rescheduling-bg rounded-md">
+        <p className="text-sm text-txt-primary leading-relaxed font-normal">
           Submit a request does not authorize work, guarantee pricing, or
           confirm scheduling.
         </p>
