@@ -152,7 +152,6 @@ export const NewRequest: React.FC = () => {
         {isSubmitted ? (
           <StepSubmitted
             onReset={handleReset}
-            onRequestView={() => alert("Viewing Request REQ-124")}
           />
         ) : (
           <>
