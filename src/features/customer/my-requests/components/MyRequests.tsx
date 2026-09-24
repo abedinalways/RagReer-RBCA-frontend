@@ -100,7 +100,7 @@ export const MyRequests: React.FC = () => {
                 href="/customer/requests/new-request"
                 className="flex items-center gap-2 bg-primary text-white px-4 py-1.5 rounded-lg text-[1rem] font-medium hover:opacity-90 cursor-pointer"
               >
-                <PlusIcon className="w-4 h-4" />
+                <PlusIcon className="w-5 h-5" />
                 New Request
               </Link>
             </div>
