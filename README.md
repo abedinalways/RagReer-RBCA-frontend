@@ -6,7 +6,7 @@ Role-based construction & home-services platform with **three workspaces**
 > Scaffolded with `npx create-next-app@latest`. Workspaces, features and the
 > permission system are wired so the app runs out of the box.
 
-## Run it
+# Run it
 
 ```bash
 npm install
