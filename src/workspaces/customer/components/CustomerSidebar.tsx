@@ -50,7 +50,7 @@ export function CustomerSidebar({ onClose, isMobile = false }: CustomerSidebarPr
   );
 
   return (
-    <aside className="flex h-full min-h-screen w-64 flex-col border-r border-border bg-layout-bg select-none">
+    <aside className="flex h-full w-64 flex-col  bg-layout-bg select-none">
       {/* Brand Header */}
       <div className="flex items-center justify-between px-5 py-5">
         <div className="flex items-center gap-3">
@@ -65,10 +65,10 @@ export function CustomerSidebar({ onClose, isMobile = false }: CustomerSidebarPr
             />
           </div>
           <div className="flex flex-col">
-            <h2 className="text-base font-semibold leading-tight tracking-tight text-primary-heading">
+            <h2 className="text-lg font-semibold leading-tight tracking-tight text-primary-heading">
               Customer Portal
             </h2>
-            <p className="text-[11px] font-normal leading-tight text-secondary-subheading mt-1">
+            <p className="text-sm font-normal leading-tight text-secondary-subheading mt-1">
               Powered By HALF STACHE
             </p>
           </div>
@@ -116,7 +116,7 @@ export function CustomerSidebar({ onClose, isMobile = false }: CustomerSidebarPr
                   active ? "text-primary-text" : "text-primary"
                 )}
               />
-              <span className="leading-none">{item.label}</span>
+              <span className="leading-none text-sm md:text-lg">{item.label}</span>
             </Link>
           );
         })}
