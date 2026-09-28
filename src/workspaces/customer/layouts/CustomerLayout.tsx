@@ -8,7 +8,8 @@ import { cn } from "@/lib/utils";
 
 /**
  * CustomerLayout — fully responsive workspace shell for the Customer Portal.
- * Supports permanent sidebar on desktop and an accessible off-canvas drawer on mobile/tablet.
+ * Supports a fixed/persistent sidebar on desktop while the main content area
+ * scrolls independently, preventing the sidebar from scrolling along with page content.
  */
 export function CustomerLayout({ children }: { children: React.ReactNode }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -32,9 +33,9 @@ export function CustomerLayout({ children }: { children: React.ReactNode }) {
   }, [isMobileMenuOpen]);
 
   return (
-    <div className="flex min-h-screen bg-page-bg">
-      {/* Desktop Sidebar (visible on lg screens and up) */}
-      <div className="hidden lg:block w-fit shrink-0 bg-layout-bg">
+    <div className="flex h-screen overflow-hidden bg-page-bg">
+      {/* Desktop Sidebar (fixed to the left, independent of main content scrolling) */}
+      <div className="hidden lg:flex lg:h-screen lg:shrink-0 lg:flex-col bg-layout-bg">
         <CustomerSidebar />
       </div>
 
@@ -65,10 +66,10 @@ export function CustomerLayout({ children }: { children: React.ReactNode }) {
         />
       </div>
 
-      {/* Main Content Area */}
-      <div className="min-w-0 flex-1 flex flex-col">
+      {/* Main View Area: scrolls independently on both desktop and mobile */}
+      <div className="flex min-w-0 flex-1 flex-col h-screen overflow-y-auto">
         <CustomerHeader onMenuToggle={() => setIsMobileMenuOpen(true)} />
-        <main className="flex-1 p-3 sm:p-5 lg:p-8">{children}</main>
+        <main className="flex-1 p-3 md:p-5 ">{children}</main>
       </div>
     </div>
   );

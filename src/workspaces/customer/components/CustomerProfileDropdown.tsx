@@ -69,7 +69,7 @@ export function CustomerProfileDropdown({ className }: CustomerProfileDropdownPr
         onClick={() => setIsOpen((prev) => !prev)}
         aria-expanded={isOpen}
         aria-haspopup="true"
-        className="flex items-center gap-2.5 rounded-lg py-1 px-1.5 transition-colors hover:bg-page-bg focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer select-none"
+        className="flex items-center gap-2.5 rounded-lg py-1 px-1.5 transition-colors hover:bg-page-bg  cursor-pointer select-none"
       >
         <div className="relative h-9 w-9 overflow-hidden rounded-full ring-1 ring-border shrink-0">
           <img

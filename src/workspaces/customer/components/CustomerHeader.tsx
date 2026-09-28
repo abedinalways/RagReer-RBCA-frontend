@@ -58,17 +58,13 @@ function getHeaderMetadata(pathname: string): HeaderMetadata {
   return DEFAULT_HEADER;
 }
 
-/**
- * CustomerHeader component matching the exact Figma/Screenshot design.
- * Fully responsive across mobile, tablet and desktop viewports.
- * Adheres to SOLID principles and exclusively uses Global CSS tokens.
- */
+
 export function CustomerHeader({ onMenuToggle }: CustomerHeaderProps) {
   const pathname = usePathname();
   const { title, subtitle } = getHeaderMetadata(pathname);
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 sm:h-20 items-center justify-between border-b border-border bg-layout-bg px-3 sm:px-6 py-3 sm:py-4">
+    <header className="sticky top-0 z-30 flex h-16 sm:h-20 items-center justify-between  bg-layout-bg px-3 sm:px-6 py-3 sm:py-4">
       {/* Left: Hamburger (mobile) + Dynamic Title & Subtitle */}
       <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
         {onMenuToggle && (
@@ -82,10 +78,10 @@ export function CustomerHeader({ onMenuToggle }: CustomerHeaderProps) {
           </button>
         )}
         <div className="min-w-0">
-          <h1 className="text-base sm:text-lg lg:text-xl font-medium tracking-tight text-primary-heading truncate">
+          <h1 className="text-base lg:text-lg font-medium tracking-tight text-primary-heading truncate">
             {title}
           </h1>
-          <p className="text-[11px] sm:text-xs text-secondary-subheading mt-0.5 line-clamp-1">
+          <p className="text-sm text-secondary-subheading mt-0.5 line-clamp-1">
             {subtitle}
           </p>
         </div>

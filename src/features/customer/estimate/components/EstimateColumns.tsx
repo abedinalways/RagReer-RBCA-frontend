@@ -12,7 +12,7 @@ export const StatusBadge: React.FC<{ status: EstimateStatus }> = ({
   const style = estimateStatusStyles[status];
   return (
     <span
-      className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-[0.75rem] font-semibold ${style.badgeBg} ${style.badgeText} border ${style.badgeBorder}`}
+      className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-xs font-semibold ${style.badgeBg} ${style.badgeText} border ${style.badgeBorder}`}
     >
       <span className={`w-2 h-2 rounded-full ${style.dotBg}`}></span>
       {style.label}
@@ -29,7 +29,7 @@ export const createEstimateColumns = (
     cell: (row) => (
       <button
         onClick={() => onActionClick(row)}
-        className="text-primary text-[0.875rem] hover:underline cursor-pointer"
+        className="text-primary hover:underline cursor-pointer font-medium"
       >
         {row.estimateId}
       </button>
@@ -39,7 +39,7 @@ export const createEstimateColumns = (
     header: "Request ID",
     accessorKey: "requestId",
     cell: (row) => (
-      <span className="text-primary text-[0.875rem] hover:underline cursor-pointer">
+      <span className="text-primary hover:underline cursor-pointer">
         {row.requestId}
       </span>
     ),
@@ -48,7 +48,7 @@ export const createEstimateColumns = (
     header: "Property Address",
     accessorKey: "propertyAddress",
     cell: (row) => (
-      <span className="text-txt-primary text-[0.875rem]">
+      <span className="text-txt-primary">
         {row.propertyAddress}
       </span>
     ),
@@ -57,7 +57,7 @@ export const createEstimateColumns = (
     header: "Service Type",
     accessorKey: "serviceType",
     cell: (row) => (
-      <span className="text-txt-primary text-[0.875rem] truncate block">
+      <span className="text-txt-primary truncate block">
         {row.serviceType}
       </span>
     ),
@@ -66,7 +66,7 @@ export const createEstimateColumns = (
     header: "Issue Date",
     accessorKey: "issueDate",
     cell: (row) => (
-      <span className="text-secondary-subheading text-[0.875rem]">
+      <span className="text-secondary-subheading">
         {row.issueDate}
       </span>
     ),
@@ -80,7 +80,7 @@ export const createEstimateColumns = (
     header: "Amount",
     accessorKey: "amount",
     cell: (row) => (
-      <span className="text-primary-heading font-medium text-[0.875rem]">
+      <span className="text-primary-heading font-medium">
         {row.amount}
       </span>
     ),
@@ -90,7 +90,7 @@ export const createEstimateColumns = (
     cell: (row) => (
       <button
         onClick={() => onActionClick(row)}
-        className="bg-card-bg border border-border text-txt-primary hover:bg-blue-50 text-[0.875rem] font-medium px-3 py-1.5 rounded-md shadow-2xs cursor-pointer"
+        className="bg-card-bg border border-border text-txt-primary hover:bg-blue-50 font-medium px-3 py-1.5 rounded-md shadow-2xs cursor-pointer text-xs lg:text-sm"
       >
         View Details
       </button>
