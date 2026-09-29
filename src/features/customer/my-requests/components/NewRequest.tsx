@@ -3,24 +3,46 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { usePathname, useRouter } from "next/navigation";
 import { Step1PropertyDetails } from "./Step1PropertyDetails";
 import { Step2SiteAccess } from "./Step2SiteAccess";
 import { Step3ServiceDetails } from "./Step3ServiceDetails";
 import { Step4PreferredDates } from "./Step4PreferredDates";
 import { StepSubmitted } from "./StepSubmitted";
 import { NewRequestFormData, newRequestSchema } from "../schema/requestSchema";
+import {
+  REQUEST_STEP_TITLES,
+  TOTAL_REQUEST_STEPS,
+  clampRequestStep,
+  requestStepUrl,
+} from "../utils/newRequestSteps.utils";
 import { Save, ArrowLeft, ArrowRight } from "lucide-react";
 
-const STEP_TITLES = [
-  "Property Details",
-  "Site access & conditions",
-  "Services",
-  "Schedule",
-];
+interface NewRequestProps {
+  /**
+   * Step restored from the URL (`?step=2`). Read on the server so a page
+   * refresh renders the same step instead of starting over at step 1.
+   */
+  initialStep?: number;
+}
 
-export const NewRequest: React.FC = () => {
-  const [currentStep, setCurrentStep] = useState<number>(1);
+export const NewRequest: React.FC<NewRequestProps> = ({ initialStep = 1 }) => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const [currentStep, setCurrentStep] = useState<number>(() =>
+    clampRequestStep(initialStep),
+  );
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+
+  /**
+   * Move to a step and mirror it in the address bar, so refreshing (or sharing)
+   * the URL brings the user back to that same step.
+   */
+  const goToStep = (step: number) => {
+    const nextStep = clampRequestStep(step);
+    setCurrentStep(nextStep);
+    router.replace(requestStepUrl(pathname, nextStep), { scroll: false });
+  };
 
   const form = useForm<NewRequestFormData>({
     resolver: zodResolver(newRequestSchema),
@@ -89,13 +111,13 @@ export const NewRequest: React.FC = () => {
       isValid = await trigger(["preferredDate", "photos"]);
     }
 
-    if (isValid && currentStep < 4) {
-      setCurrentStep((prev) => prev + 1);
+    if (isValid && currentStep < TOTAL_REQUEST_STEPS) {
+      goToStep(currentStep + 1);
     }
   };
 
   const handleBack = () => {
-    setCurrentStep((prev) => Math.max(prev - 1, 1));
+    goToStep(currentStep - 1);
   };
 
   const onSubmit = (data: NewRequestFormData) => {
@@ -106,7 +128,7 @@ export const NewRequest: React.FC = () => {
   const handleReset = () => {
     form.reset();
     setIsSubmitted(false);
-    setCurrentStep(1);
+    goToStep(1);
   };
 
   return (
@@ -129,8 +151,10 @@ export const NewRequest: React.FC = () => {
 
           {/* Subtitle & Step Number */}
           <div className="flex items-center justify-between text-xs text-secondary-subheading mb-3">
-            <span>{STEP_TITLES[currentStep - 1]}</span>
-            <span>Step {currentStep} of 4</span>
+            <span>{REQUEST_STEP_TITLES[currentStep - 1]}</span>
+            <span>
+              Step {currentStep} of {TOTAL_REQUEST_STEPS}
+            </span>
           </div>
 
           {/* 4 Segmented Progress Bars */}
@@ -171,7 +195,7 @@ export const NewRequest: React.FC = () => {
                 </button>
               )}
 
-              {currentStep < 4 ? (
+              {currentStep < TOTAL_REQUEST_STEPS ? (
                 <button
                   type="button"
                   onClick={handleNext}
