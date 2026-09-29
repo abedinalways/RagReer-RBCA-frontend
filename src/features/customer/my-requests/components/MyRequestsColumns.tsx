@@ -22,9 +22,9 @@ export const createMyRequestsColumns = (
   onActionClick: (request: RequestItem) => void,
 ): ColumnDef<RequestItem>[] => [
   {
-    header: "Request ID",
-    accessorKey: "requestId",
-    cell: (row) => (
+    header: 'Request ID',
+    accessorKey: 'requestId',
+    cell: row => (
       <button
         onClick={() => onActionClick(row)}
         className="text-primary hover:underline cursor-pointer font-medium"
@@ -34,43 +34,37 @@ export const createMyRequestsColumns = (
     ),
   },
   {
-    header: "Property Address",
-    accessorKey: "propertyAddress",
-    cell: (row) => (
-      <span className="text-txt-primary">
-        {row.propertyAddress}
-      </span>
+    header: 'Property Address',
+    accessorKey: 'propertyAddress',
+    cell: row => (
+      <span className="text-txt-primary">{row.propertyAddress}</span>
     ),
   },
   {
-    header: "Service Type",
-    accessorKey: "serviceType",
-    cell: (row) => (
-      <span className="text-txt-primary truncate block">
-        {row.serviceType}
-      </span>
+    header: 'Service Type',
+    accessorKey: 'serviceType',
+    cell: row => (
+      <span className="text-txt-primary truncate block">{row.serviceType}</span>
     ),
   },
   {
-    header: "Submitted On",
-    accessorKey: "submittedOn",
-    cell: (row) => (
-      <span className="text-secondary-subheading">
-        {row.submittedOn}
-      </span>
+    header: 'Submitted On',
+    accessorKey: 'submittedOn',
+    cell: row => (
+      <span className="text-secondary-subheading">{row.submittedOn}</span>
     ),
   },
   {
-    header: "Status",
-    accessorKey: "status",
-    cell: (row) => <StatusBadge status={row.status} />,
+    header: 'Status',
+    accessorKey: 'status',
+    cell: row => <StatusBadge status={row.status} />,
   },
   {
-    header: "Action",
-    cell: (row) => (
+    header: 'Action',
+    cell: row => (
       <Link
         href={`/customer/requests/${row.id}`}
-        className="bg-card-bg border border-border text-txt-primary hover:bg-blue-50 font-medium px-3 py-1.5 rounded-md shadow-2xs cursor-pointer text-xs lg:text-sm"
+        className="bg-card-bg border border-border hover:bg-primary-hover hover:text-primary-text hover:border-none text-txt-primary font-medium px-3 py-1.5 rounded-sm shadow-2xs cursor-pointer text-xs lg:text-sm"
       >
         View
       </Link>
