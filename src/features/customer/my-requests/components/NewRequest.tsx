@@ -16,7 +16,7 @@ import {
   clampRequestStep,
   requestStepUrl,
 } from "../utils/newRequestSteps.utils";
-import { Save, ArrowLeft, ArrowRight } from "lucide-react";
+import { Save, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface NewRequestProps {
   /**
@@ -241,7 +241,7 @@ export const NewRequest: React.FC<NewRequestProps> = ({ initialStep = 1 }) => {
                   onClick={handleBack}
                   className="w-1/2 sm:w-auto flex-1 h-11 border border-primary text-primary font-medium rounded-md hover:bg-page-bg transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
                 >
-                  <ArrowLeft className="w-4 h-4" />
+                  <ChevronLeft className="w-4 h-4" />
                   Back
                 </button>
               )}
@@ -253,7 +253,7 @@ export const NewRequest: React.FC<NewRequestProps> = ({ initialStep = 1 }) => {
                   className="w-full sm:w-auto flex-1 h-11 bg-primary text-primary-text font-medium rounded-md hover:bg-primary-hover transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
                 >
                   Continue
-                  <ArrowRight className="w-4 h-4" />
+                  <ChevronRight className="w-4 h-4" />
                 </button>
               ) : (
                 <button
@@ -261,7 +261,7 @@ export const NewRequest: React.FC<NewRequestProps> = ({ initialStep = 1 }) => {
                   className="w-full sm:w-auto flex-1 h-11 bg-primary text-primary-text font-medium rounded-md hover:bg-primary-hover transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
                 >
                   Continue
-                  <ArrowRight className="w-4 h-4" />
+                  <ChevronRight className="w-4 h-4" />
                 </button>
               )}
             </div>
