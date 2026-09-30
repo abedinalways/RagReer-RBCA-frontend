@@ -139,7 +139,7 @@ export const NewRequest: React.FC<NewRequestProps> = ({ initialStep = 1 }) => {
         <div className="p-6 pb-4 border-b border-border-subtle">
           {/* Header Title Bar */}
           <div className="flex items-center justify-between mb-2">
-            <h1 className="tex-[24px] font-medium text-primary-heading tracking-tight">
+            <h1 className="text-lg md:text-2xl font-medium text-primary-heading tracking-tight">
               New Request
             </h1>
             <button
@@ -152,7 +152,7 @@ export const NewRequest: React.FC<NewRequestProps> = ({ initialStep = 1 }) => {
           </div>
 
           {/* Subtitle & Step Number */}
-          <div className="flex items-center justify-between text-sm text-secondary-subheading mb-3">
+          <div className="flex items-center justify-between text-xs md:text-sm text-secondary-subheading mb-3">
             <span>{REQUEST_STEP_TITLES[currentStep - 1]}</span>
             <span>
               Step {currentStep} of {TOTAL_REQUEST_STEPS}
