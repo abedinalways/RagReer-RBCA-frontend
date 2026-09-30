@@ -3,6 +3,7 @@
 import React, { useRef } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { NewRequestFormData } from "../schema/requestSchema";
+import { Calendar, Plus, X } from "lucide-react";
 
 interface Step4Props {
   form: UseFormReturn<NewRequestFormData>;
@@ -58,9 +59,11 @@ export const Step4PreferredDates: React.FC<Step4Props> = ({ form }) => {
         <div className="relative">
           <input
             type="date"
+            placeholder="dd/mm/yyyy"
             {...register("preferredDate")}
-            className="w-full h-12 px-3 pr-10 text-txt-primary bg-card-bg border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-border font-normal"
+            className="w-full h-11 px-3.5 pr-10 text-txt-primary bg-card-bg border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-border text-base relative [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer cursor-pointer"
           />
+          <Calendar className="w-5 h-5 text-secondary-subheading absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none stroke-[1.5]" />
         </div>
         {errors.preferredDate && (
           <p className="text-xs text-trend-down mt-1">
@@ -80,9 +83,11 @@ export const Step4PreferredDates: React.FC<Step4Props> = ({ form }) => {
         <div className="relative">
           <input
             type="date"
+            placeholder="dd/mm/yyyy"
             {...register("secondaryDate")}
-            className="w-full h-12 px-3 pr-10 text-txt-primary bg-card-bg border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-border font-normal"
+            className="w-full h-11 px-3.5 pr-10 text-txt-primary bg-card-bg border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-border text-base relative [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer cursor-pointer"
           />
+          <Calendar className="w-5 h-5 text-secondary-subheading absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none stroke-[1.5]" />
         </div>
       </div>
 
@@ -109,7 +114,7 @@ export const Step4PreferredDates: React.FC<Step4Props> = ({ form }) => {
           {photos.map((photoUrl, idx) => (
             <div
               key={idx}
-              className="relative w-24 h-24 rounded-md overflow-hidden border border-border group"
+              className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden border border-border group shadow-2xs"
             >
               <img
                 src={photoUrl}
@@ -119,9 +124,9 @@ export const Step4PreferredDates: React.FC<Step4Props> = ({ form }) => {
               <button
                 type="button"
                 onClick={() => handleRemovePhoto(idx)}
-                className="absolute top-1 right-1 w-5 h-5 bg-trend-down text-white rounded-full flex items-center justify-center text-xs opacity-80 hover:opacity-100"
+                className="absolute top-1 right-1 w-5 h-5 bg-txt-primary/70 hover:bg-trend-down text-white rounded-full flex items-center justify-center transition-colors cursor-pointer"
               >
-                ✕
+                <X className="w-3 h-3 stroke-[2.5]" />
               </button>
             </div>
           ))}
@@ -130,21 +135,9 @@ export const Step4PreferredDates: React.FC<Step4Props> = ({ form }) => {
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="w-24 h-24 border-2 border-dashed border-border rounded-md flex items-center justify-center text-secondary-subheading hover:border-border hover:text-txt-primary transition-colors bg-page-bg/50"
+            className="w-20 h-20 sm:w-24 sm:h-24 border border-dashed border-[#D0D5DD] hover:border-primary rounded-lg flex items-center justify-center text-primary/70 hover:text-primary transition-colors bg-card-bg cursor-pointer group"
           >
-            <svg
-              className="w-7 h-7"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="1.8"
-                d="M12 4v16m8-8H4"
-              />
-            </svg>
+            <Plus className="w-8 h-8 text-primary stroke-[1.25] group-hover:scale-105 transition-transform" />
           </button>
         </div>
         {errors.photos && (
@@ -155,10 +148,9 @@ export const Step4PreferredDates: React.FC<Step4Props> = ({ form }) => {
       </div>
 
       {/* Amber/Yellow Disclaimer Callout Box */}
-      <div className="p-3.5 bg-tag-rescheduling-bg/10 border border-tag-rescheduling-bg rounded-md">
-        <p className="text-sm text-txt-primary leading-relaxed font-normal">
-          Submit a request does not authorize work, guarantee pricing, or
-          confirm scheduling.
+      <div className="p-4 bg-[#FFFDF5] border border-[#F5B517] rounded-sm">
+        <p className="text-xs sm:text-sm text-secondary-subheading leading-relaxed font-normal">
+          Submit a request does not authorize work, guarantee pricing, or confirm scheduling.
         </p>
       </div>
     </div>
