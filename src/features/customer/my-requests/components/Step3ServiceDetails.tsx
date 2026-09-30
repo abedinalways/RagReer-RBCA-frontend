@@ -7,6 +7,7 @@ import { OtherWorkIcons } from "../../../../components/icons/OtherWorkIcons";
 import { PhotographyIcons } from "../../../../components/icons/PhotographyIcons";
 import { ResidentialLawnCareIcons } from "../../../../components/icons/ResidentialLawnCareIcons";
 import { NewRequestFormData } from "../schema/requestSchema";
+import { CustomSelect } from "@/components/ui/CustomSelect";
 
 interface Step3Props {
   form: UseFormReturn<NewRequestFormData>;
@@ -387,71 +388,40 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
 
       {/* Conditional: Recurring frequency dropdown */}
       {requestType === "Recurring" && (
-        <div>
-          <label className="block text-lg font-medium text-txt-primary mb-1">
-            How often you need this service?{" "}
-            <span className="text-trend-down">*</span>
-          </label>
-          <div className="relative">
-            <select
-              {...register("recurringFrequency")}
-              className="w-full h-11 px-3 pr-8 text-txt-primary bg-card-bg border border-border rounded-md appearance-none focus:outline-none focus:ring-2 focus:ring-border"
-            >
-              <option value="">Choose an option</option>
-              <option value="Weekly">Weekly</option>
-              <option value="Bi-Weekly">Bi-Weekly</option>
-              <option value="Monthly">Monthly</option>
-            </select>
-            <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none text-secondary-subheading">
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
+        <CustomSelect
+          id="recurring-frequency-select"
+          label="How often you need this service?"
+          required
+          placeholder="Choose an option"
+          value={watch("recurringFrequency")}
+          onChange={(val) =>
+            setValue("recurringFrequency", val, { shouldValidate: true })
+          }
+          options={[
+            "Weekly",
+            "Bi-Weekly",
+            "One-time",
+            "Seasonal",
+            "12 months",
+          ]}
+          error={errors.recurringFrequency?.message}
+        />
       )}
 
       {/* Conditional: Existing Contract dropdown */}
       {requestType === "Existing Contract" && (
-        <div>
-          <label className="block text-lg font-medium text-txt-primary mb-1">
-            Select your contract <span className="text-trend-down">*</span>
-          </label>
-          <div className="relative">
-            <select
-              {...register("contractNumber")}
-              className="w-full h-11 px-3 pr-8 text-txt-primary bg-card-bg border border-border rounded-md appearance-none focus:outline-none focus:ring-2 focus:ring-border"
-            >
-              <option value="Contract #CN-12586">Contract #CN-12586</option>
-              <option value="Contract #CN-1024">Contract #CN-1024</option>
-            </select>
-            <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none text-secondary-subheading">
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
+        <CustomSelect
+          id="contract-number-select"
+          label="Select your contract"
+          required
+          placeholder="Select contract"
+          value={watch("contractNumber")}
+          onChange={(val) =>
+            setValue("contractNumber", val, { shouldValidate: true })
+          }
+          options={["Contract #CN-12586", "Contract #CN-1024"]}
+          error={errors.contractNumber?.message}
+        />
       )}
 
       {/* Describe what you need in details */}

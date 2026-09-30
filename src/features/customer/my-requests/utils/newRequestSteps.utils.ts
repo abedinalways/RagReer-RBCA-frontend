@@ -1,12 +1,4 @@
-/**
- * newRequestSteps.utils.ts — URL ⇄ wizard-step helpers for the New Request form.
- *
- * The active step lives in the query string (`?step=2`) so refreshing the page,
- * reopening a bookmark or sharing the link restores the same step instead of
- * restarting the wizard from step 1.
- */
 
-/** Wizard step titles, in order. Index 0 is step 1. */
 export const REQUEST_STEP_TITLES = [
   "Property Details",
   "Site access & conditions",
