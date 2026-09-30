@@ -17,6 +17,10 @@ export interface CustomSelectProps {
   error?: string;
   disabled?: boolean;
   className?: string;
+  triggerClassName?: string;
+  dropdownClassName?: string;
+  size?: "sm" | "md" | "lg";
+  align?: "left" | "right";
   id?: string;
 }
 
@@ -30,6 +34,10 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
   error,
   disabled = false,
   className,
+  triggerClassName,
+  dropdownClassName,
+  size = "md",
+  align = "left",
   id,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -75,8 +83,14 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
     setIsOpen(false);
   };
 
+  const sizeClasses = {
+    sm: "h-9 px-3 text-sm rounded-md",
+    md: "h-11 px-3.5 text-sm rounded-md",
+    lg: "h-12 px-4 text-base rounded-md",
+  };
+
   return (
-    <div className={cn("w-full", className)} ref={containerRef}>
+    <div className={cn("w-full relative", className)} ref={containerRef}>
       {label && (
         <label
           htmlFor={id}
@@ -86,24 +100,26 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
         </label>
       )}
 
-      <div className="relative">
+      <div className="relative w-full">
         <button
           type="button"
           id={id}
           disabled={disabled}
           onClick={() => !disabled && setIsOpen((prev) => !prev)}
           className={cn(
-            "w-full h-11 px-3.5 text-left bg-card-bg border rounded-md transition-colors flex items-center justify-between select-none focus:outline-none focus:ring-2 focus:ring-primary/20",
+            "w-full text-left bg-card-bg border transition-colors flex items-center justify-between select-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/20",
+            sizeClasses[size],
             error ? "border-trend-down" : "border-border hover:border-slate-300",
             isOpen && "ring-2 ring-primary/20 border-primary",
             disabled && "opacity-60 cursor-not-allowed bg-slate-50",
+            triggerClassName,
           )}
           aria-haspopup="listbox"
           aria-expanded={isOpen}
         >
           <span
             className={cn(
-              "text-sm truncate",
+              "truncate",
               selectedOption ? "text-txt-primary" : "text-secondary-subheading",
             )}
           >
@@ -119,7 +135,13 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
 
         {isOpen && (
           <div
-            className="absolute z-50 left-0 right-0 mt-1.5 bg-card-bg border border-border rounded-lg shadow-lg shadow-black/5 p-1 max-h-64 overflow-y-auto animate-in fade-in-50 zoom-in-95 duration-100"
+            className={cn(
+              "absolute z-50 mt-1.5 bg-card-bg border border-border rounded-lg shadow-lg shadow-black/10 p-1 max-h-64 overflow-y-auto animate-in fade-in-50 zoom-in-95 duration-100",
+              align === "right"
+                ? "right-0 min-w-full md:min-w-[220px]"
+                : "left-0 right-0 min-w-full",
+              dropdownClassName,
+            )}
             role="listbox"
           >
             {normalizedOptions.map((opt) => {
@@ -131,16 +153,16 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
                   aria-selected={isSelected}
                   onClick={() => handleSelect(opt.value)}
                   className={cn(
-                    "flex items-center justify-between px-3 py-2.5 rounded-md text-sm cursor-pointer transition-colors select-none",
+                    "flex items-center justify-between px-3 py-2 rounded-md text-sm cursor-pointer transition-colors select-none",
                     isSelected
                       ? "bg-blue-50/80 text-txt-primary font-medium"
                       : "text-txt-primary hover:bg-slate-50",
                   )}
                 >
-                  <span className="truncate">{opt.label}</span>
+                  <span className="truncate pr-2">{opt.label}</span>
                   {isSelected && (
                     <Check
-                      className="w-4 h-4 text-info shrink-0 ml-2 stroke-[2.5]"
+                      className="w-4 h-4 text-info shrink-0 stroke-[2.5]"
                       aria-hidden="true"
                     />
                   )}
