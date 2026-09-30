@@ -1,10 +1,19 @@
 import React from "react";
 import { UseFormReturn } from "react-hook-form";
 import { NewRequestFormData } from "../schema/requestSchema";
+import SelectBox from "@/components/icons/customer/SelectBox";
 
 interface Step2Props {
   form: UseFormReturn<NewRequestFormData>;
 }
+
+const CustomCheckbox: React.FC<{ checked?: boolean }> = ({ checked }) => {
+  return checked ? (
+    <SelectBox className="w-[18px] h-[18px] shrink-0" />
+  ) : (
+    <div className="w-[18px] h-[18px] rounded-[3px] border border-border-input bg-card-bg shrink-0 transition-colors hover:border-primary/60" />
+  );
+};
 
 export const Step2SiteAccess: React.FC<Step2Props> = ({ form }) => {
   const { register, watch } = form;
@@ -15,6 +24,7 @@ export const Step2SiteAccess: React.FC<Step2Props> = ({ form }) => {
   const hasUtilities = watch("hasUtilities");
   const isTenantOccupied = watch("isTenantOccupied");
   const hasParkingRestrictions = watch("hasParkingRestrictions");
+  const mustBePresent = watch("mustBePresent");
 
   return (
     <div className="space-y-6">
@@ -30,17 +40,18 @@ export const Step2SiteAccess: React.FC<Step2Props> = ({ form }) => {
       <div className="space-y-5">
         {/* Item 1: Gate Code */}
         <div className="pb-4 border-b border-border-subtle space-y-3">
-          <label className="flex items-center gap-2 cursor-pointer text-sm font-medium text-txt-primary">
+          <label className="flex items-center gap-2 cursor-pointer text-base font-normal text-secondary-subheading select-none">
             <input
               type="checkbox"
               {...register("hasGateCode")}
-              className="w-4 h-4 text-secondary-subheading rounded border-border focus:ring-border"
+              className="sr-only"
             />
+            <CustomCheckbox checked={hasGateCode} />
             Gate or access code required
           </label>
           {hasGateCode && (
             <div className="pl-6 space-y-1">
-              <label className="block text-sm font-medium text-txt-primary">
+              <label className="block text-base font-medium text-primary-heading">
                 Access instructions
               </label>
               <input
@@ -55,17 +66,18 @@ export const Step2SiteAccess: React.FC<Step2Props> = ({ form }) => {
 
         {/* Item 2: Pets */}
         <div className="pb-4 border-b border-border-subtle space-y-3">
-          <label className="flex items-center gap-2 cursor-pointer text-sm font-medium text-txt-primary">
+          <label className="flex items-center gap-2 cursor-pointer text-base font-normal text-secondary-subheading select-none">
             <input
               type="checkbox"
               {...register("hasPets")}
-              className="w-4 h-4 text-secondary-subheading rounded border-border focus:ring-border"
+              className="sr-only"
             />
+            <CustomCheckbox checked={hasPets} />
             Pets on property
           </label>
           {hasPets && (
             <div className="pl-6 space-y-1">
-              <label className="block text-sm font-medium text-txt-primary">
+              <label className="block text-base font-medium text-primary-heading">
                 Describe if you have any pet
               </label>
               <input
@@ -80,17 +92,18 @@ export const Step2SiteAccess: React.FC<Step2Props> = ({ form }) => {
 
         {/* Item 3: Hazards */}
         <div className="pb-4 border-b border-border-subtle space-y-3">
-          <label className="flex items-center gap-2 cursor-pointer text-sm font-medium text-txt-primary">
+          <label className="flex items-center gap-2 cursor-pointer text-base font-normal text-secondary-subheading select-none">
             <input
               type="checkbox"
               {...register("hasHazards")}
-              className="w-4 h-4 text-secondary-subheading rounded border-border focus:ring-border"
+              className="sr-only"
             />
+            <CustomCheckbox checked={hasHazards} />
             Known hazards on site
           </label>
           {hasHazards && (
             <div className="pl-6 space-y-1">
-              <label className="block text-sm font-medium text-txt-primary">
+              <label className="block text-base font-medium text-primary-heading">
                 Describe if there is any hazard
               </label>
               <input
@@ -105,17 +118,18 @@ export const Step2SiteAccess: React.FC<Step2Props> = ({ form }) => {
 
         {/* Item 4: Underground Utilities */}
         <div className="pb-4 border-b border-border-subtle space-y-3">
-          <label className="flex items-center gap-2 cursor-pointer text-sm font-medium text-txt-primary">
+          <label className="flex items-center gap-2 cursor-pointer text-base font-normal text-secondary-subheading select-none">
             <input
               type="checkbox"
               {...register("hasUtilities")}
-              className="w-4 h-4 text-secondary-subheading rounded border-border focus:ring-border"
+              className="sr-only"
             />
+            <CustomCheckbox checked={hasUtilities} />
             Underground utilities present
           </label>
           {hasUtilities && (
             <div className="pl-6 space-y-1">
-              <label className="block text-sm font-medium text-txt-primary">
+              <label className="block text-base font-medium text-primary-heading">
                 Notes
               </label>
               <input
@@ -130,36 +144,37 @@ export const Step2SiteAccess: React.FC<Step2Props> = ({ form }) => {
 
         {/* Item 5: Tenant Occupied */}
         <div className="pb-4 border-b border-border-subtle space-y-3">
-          <label className="flex items-center gap-2 cursor-pointer text-sm font-medium text-txt-primary">
+          <label className="flex items-center gap-2 cursor-pointer text-base font-normal text-secondary-subheading select-none">
             <input
               type="checkbox"
               {...register("isTenantOccupied")}
-              className="w-4 h-4 text-secondary-subheading rounded border-border focus:ring-border"
+              className="sr-only"
             />
+            <CustomCheckbox checked={isTenantOccupied} />
             Tenant currently occupying property
           </label>
           {isTenantOccupied && (
             <div className="pl-6 grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-txt-primary mb-1">
+                <label className="block text-base font-medium text-primary-heading mb-1">
                   Tenant Name
                 </label>
                 <input
                   type="text"
                   placeholder="Enter Name"
                   {...register("tenantName")}
-                  className="w-full h-11 px-3 text-txt-primary bg-page-bg border border-border rounded-md focus:outline-none focus:bg-card-bg focus:ring-2 focus:ring-border"
+                  className="w-full h-11 px-3 text-secondary-subheading bg-page-bg border border-border rounded-md focus:outline-none focus:bg-card-bg focus:ring-2 focus:ring-border"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-txt-primary mb-1">
+                <label className="block text-base font-medium text-primary-heading mb-1">
                   Tenant Phone
                 </label>
                 <input
                   type="text"
                   placeholder="XXX-(XXXX)-XXX"
                   {...register("tenantPhone")}
-                  className="w-full h-11 px-3 text-txt-primary bg-page-bg border border-border rounded-md focus:outline-none focus:bg-card-bg focus:ring-2 focus:ring-border"
+                  className="w-full h-11 px-3 text-secondary-subheading bg-page-bg border border-border rounded-md focus:outline-none focus:bg-card-bg focus:ring-2 focus:ring-border"
                 />
               </div>
             </div>
@@ -168,17 +183,18 @@ export const Step2SiteAccess: React.FC<Step2Props> = ({ form }) => {
 
         {/* Item 6: Parking Restrictions */}
         <div className="pb-4 border-b border-border-subtle space-y-3">
-          <label className="flex items-center gap-2 cursor-pointer text-sm font-medium text-txt-primary">
+          <label className="flex items-center gap-2 cursor-pointer text-base font-normal text-secondary-subheading select-none">
             <input
               type="checkbox"
               {...register("hasParkingRestrictions")}
-              className="w-4 h-4 text-secondary-subheading rounded border-border focus:ring-border"
+              className="sr-only"
             />
+            <CustomCheckbox checked={hasParkingRestrictions} />
             Parking restrictions apply
           </label>
           {hasParkingRestrictions && (
             <div className="pl-6 space-y-1">
-              <label className="block text-sm font-medium text-txt-primary">
+              <label className="block text-base font-medium text-primary-heading">
                 Notes
               </label>
               <input
@@ -193,12 +209,13 @@ export const Step2SiteAccess: React.FC<Step2Props> = ({ form }) => {
 
         {/* Item 7: Must be Present */}
         <div>
-          <label className="flex items-center gap-2 cursor-pointer text-sm font-medium text-txt-primary">
+          <label className="flex items-center gap-2 cursor-pointer text-base font-normal text-secondary-subheading select-none">
             <input
               type="checkbox"
               {...register("mustBePresent")}
-              className="w-4 h-4 text-secondary-subheading rounded border-border focus:ring-border"
+              className="sr-only"
             />
+            <CustomCheckbox checked={mustBePresent} />
             I must be present during service
           </label>
         </div>

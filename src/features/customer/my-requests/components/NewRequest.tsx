@@ -69,7 +69,7 @@ export const NewRequest: React.FC<NewRequestProps> = ({ initialStep = 1 }) => {
       isTenantOccupied: false,
       hasParkingRestrictions: false,
       mustBePresent: false,
-      serviceCategory: "",
+      serviceCategory: "Residential Lawn Care",
       specificCommercialTypes: [],
       specificServices: [],
       additionalServices: [],
