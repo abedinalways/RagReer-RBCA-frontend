@@ -6,8 +6,10 @@ import { LandscapeIcons } from "../../../../components/icons/LandscapeIcons";
 import { OtherWorkIcons } from "../../../../components/icons/OtherWorkIcons";
 import { PhotographyIcons } from "../../../../components/icons/PhotographyIcons";
 import { ResidentialLawnCareIcons } from "../../../../components/icons/ResidentialLawnCareIcons";
-import { NewRequestFormData } from "../schema/requestSchema";
+import SelectBox from "@/components/icons/customer/SelectBox";
 import { CustomSelect } from "@/components/ui/CustomSelect";
+import { Plus, X } from "lucide-react";
+import { NewRequestFormData } from "../schema/requestSchema";
 
 interface Step3Props {
   form: UseFormReturn<NewRequestFormData>;
@@ -83,6 +85,30 @@ const ADDITIONAL_TAGS = [
   "Pressure Washing",
 ];
 
+const RECURRING_FREQUENCY_OPTIONS = [
+  "Weekly",
+  "Bi-Weekly",
+  "One-time",
+  "Seasonal",
+  "12 months",
+];
+
+const CustomCheckbox: React.FC<{ checked?: boolean }> = ({ checked }) => {
+  return checked ? (
+    <SelectBox className="w-[18px] h-[18px] shrink-0" />
+  ) : (
+    <div className="w-[18px] h-[18px] rounded-[3px] border border-border-input bg-card-bg shrink-0 transition-colors hover:border-primary/60" />
+  );
+};
+
+const CustomRadio: React.FC<{ checked?: boolean }> = ({ checked }) => {
+  return (
+    <div className="w-4 h-4 rounded-full border border-border-input bg-card-bg flex items-center justify-center shrink-0 transition-colors hover:border-primary/60">
+      {checked && <div className="w-2 h-2 rounded-full bg-primary" />}
+    </div>
+  );
+};
+
 export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
   const {
     register,
@@ -91,13 +117,14 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
     formState: { errors },
   } = form;
 
-  const selectedCategory = watch("serviceCategory");
+  const selectedCategory = watch("serviceCategory") || "Residential Lawn Care";
   const selectedServices = watch("specificServices") || [];
   const selectedCommercialTypes = watch("specificCommercialTypes") || [];
   const selectedAdditional = watch("additionalServices") || [];
   const requestType = watch("requestType");
   const detailsDescription = watch("serviceDetailsDescription") || "";
 
+  // Collapsed by default, toggleable per user click
   const [showAddMore, setShowAddMore] = useState(false);
 
   const handleCategorySelect = (catLabel: string) => {
@@ -142,6 +169,47 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
     }
   };
 
+  // Render additional services tags section
+  const renderAdditionalTags = () => (
+    <div className="mt-3">
+      <button
+        type="button"
+        onClick={() => setShowAddMore(!showAddMore)}
+        className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary-hover cursor-pointer select-none transition-colors mb-2"
+      >
+        <Plus className="w-4 h-4" />
+        <span>Add additional Services</span>
+      </button>
+
+      {showAddMore && (
+        <div className="p-3 border border-border rounded-lg bg-card-bg flex flex-wrap gap-2.5 shadow-xs">
+          {ADDITIONAL_TAGS.map((tag) => {
+            const isSelected = selectedAdditional.includes(tag);
+            return (
+              <button
+                key={tag}
+                type="button"
+                onClick={() => handleTagToggle(tag)}
+                className={`px-3 py-1.5 rounded-md text-xs sm:text-sm transition-all cursor-pointer select-none flex items-center gap-1.5 active:scale-95 ${
+                  isSelected
+                    ? "bg-blue-50 text-primary border border-blue-100 font-medium hover:bg-blue-100/50"
+                    : "bg-card-bg text-secondary-subheading border border-border hover:border-slate-300 hover:text-txt-primary hover:bg-slate-50 font-normal"
+                }`}
+              >
+                <span>{tag}</span>
+                {isSelected ? (
+                  <X className="w-3.5 h-3.5 stroke-[2.5]" />
+                ) : (
+                  <Plus className="w-3.5 h-3.5 stroke-[2]" />
+                )}
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+
   return (
     <div className="space-y-6">
       <div>
@@ -168,22 +236,22 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
                 type="button"
                 key={cat.id}
                 onClick={() => handleCategorySelect(cat.label)}
-                className={`flex flex-col items-center justify-center p-5 rounded-lg border transition-all text-center cursor-pointer ${
+                className={`flex flex-col items-center justify-center p-5 rounded-lg border transition-all text-center cursor-pointer select-none ${
                   isSelected
-                    ? "bg-primary text-primary-text border-primary"
-                    : "bg-card-bg text-txt-primary border-border hover:border-border"
+                    ? "bg-primary text-primary-text border-primary shadow-sm"
+                    : "bg-card-bg text-txt-primary border-border hover:border-slate-300 hover:shadow-xs"
                 }`}
               >
                 <div
-                  className={`w-12 h-12 rounded-full flex items-center justify-center text-xl mb-3 ${
+                  className={`w-12 h-12 rounded-full flex items-center justify-center text-xl mb-3 transition-colors ${
                     isSelected
-                      ? "bg-white/20 text-white"
+                      ? "bg-card-bg text-primary"
                       : "bg-surface text-secondary-subheading"
                   }`}
                 >
                   <cat.icon />
                 </div>
-                <span className="font-medium text-xl leading-snug">
+                <span className="font-medium text-lg leading-snug">
                   {cat.label}
                 </span>
               </button>
@@ -197,105 +265,138 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
         )}
       </div>
 
-      {/* Commercial Specific Sub-Type */}
-      {selectedCategory === "Commercial Services" && (
-        <div className="space-y-2">
-          <label className="block text-lg font-medium text-txt-primary">
-            Select Specific Commercial Service Type{" "}
-            <span className="text-trend-down">*</span>
+      {/* 1. Residential Lawn Care Specific Services */}
+      {selectedCategory === "Residential Lawn Care" && (
+        <div>
+          <label className="block text-lg font-medium text-txt-primary mb-2">
+            Select Specific Services <span className="text-trend-down">*</span>
           </label>
-          <div className="space-y-2">
-            {COMMERCIAL_TYPES.map((type) => (
-              <label
-                key={type}
-                className="flex items-center gap-2 cursor-pointer text-txt-primary text-sm"
-              >
-                <input
-                  type="checkbox"
-                  checked={selectedCommercialTypes.includes(type)}
-                  onChange={(e) =>
-                    handleCommercialTypeToggle(type, e.target.checked)
-                  }
-                  className="w-4 h-4 text-secondary-subheading rounded border-border focus:ring-border"
-                />
-                <span>{type}</span>
-              </label>
-            ))}
+          <div className="space-y-2.5">
+            {RESIDENTIAL_SERVICES.map((service) => {
+              const isChecked = selectedServices.includes(service);
+              return (
+                <label
+                  key={service}
+                  className="flex items-center gap-2.5 cursor-pointer select-none text-base text-secondary-subheading hover:text-txt-primary transition-colors py-0.5"
+                >
+                  <input
+                    type="checkbox"
+                    checked={isChecked}
+                    onChange={(e) =>
+                      handleServiceToggle(service, e.target.checked)
+                    }
+                    className="sr-only"
+                  />
+                  <CustomCheckbox checked={isChecked} />
+                  <span>{service}</span>
+                </label>
+              );
+            })}
           </div>
+
+          {renderAdditionalTags()}
         </div>
       )}
 
-      {/* Dynamic Sub Services Checkboxes */}
-      {selectedCategory &&
-        !["Photography & Videography", "DJ & Event Services"].includes(
-          selectedCategory,
-        ) && (
+      {/* 2. Landscape & Property Maintenance Specific Services */}
+      {selectedCategory === "Landscape & Property Maintenance" && (
+        <div>
+          <label className="block text-lg font-medium text-txt-primary mb-2">
+            Select Specific Services <span className="text-trend-down">*</span>
+          </label>
+          <div className="space-y-2.5">
+            {LANDSCAPE_SERVICES.map((service) => {
+              const isChecked = selectedServices.includes(service);
+              return (
+                <label
+                  key={service}
+                  className="flex items-center gap-2.5 cursor-pointer select-none text-base text-secondary-subheading hover:text-txt-primary transition-colors py-0.5"
+                >
+                  <input
+                    type="checkbox"
+                    checked={isChecked}
+                    onChange={(e) =>
+                      handleServiceToggle(service, e.target.checked)
+                    }
+                    className="sr-only"
+                  />
+                  <CustomCheckbox checked={isChecked} />
+                  <span>{service}</span>
+                </label>
+              );
+            })}
+          </div>
+
+          {renderAdditionalTags()}
+        </div>
+      )}
+
+      {/* 3. Commercial Services Specific Services */}
+      {selectedCategory === "Commercial Services" && (
+        <div className="space-y-4">
+          <div>
+            <label className="block text-lg font-medium text-txt-primary mb-2">
+              Select Specific Commercial Service Type{" "}
+              <span className="text-trend-down">*</span>
+            </label>
+            <div className="space-y-2.5">
+              {COMMERCIAL_TYPES.map((type) => {
+                const isChecked = selectedCommercialTypes.includes(type);
+                return (
+                  <label
+                    key={type}
+                    className="flex items-center gap-2.5 cursor-pointer select-none text-base text-secondary-subheading hover:text-txt-primary transition-colors py-0.5"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={isChecked}
+                      onChange={(e) =>
+                        handleCommercialTypeToggle(type, e.target.checked)
+                      }
+                      className="sr-only"
+                    />
+                    <CustomCheckbox checked={isChecked} />
+                    <span>{type}</span>
+                  </label>
+                );
+              })}
+            </div>
+          </div>
+
           <div>
             <label className="block text-lg font-medium text-txt-primary mb-2">
               Select Specific Services{" "}
               <span className="text-trend-down">*</span>
             </label>
-            <div className="space-y-2">
-              {(selectedCategory === "Residential Lawn Care"
-                ? RESIDENTIAL_SERVICES
-                : selectedCategory === "Landscape & Property Maintenance"
-                  ? LANDSCAPE_SERVICES
-                  : COMMERCIAL_SERVICES
-              ).map((service) => (
-                <label
-                  key={service}
-                  className="flex items-center gap-2 cursor-pointer text-txt-primary text-sm"
-                >
-                  <input
-                    type="checkbox"
-                    checked={selectedServices.includes(service)}
-                    onChange={(e) =>
-                      handleServiceToggle(service, e.target.checked)
-                    }
-                    className="w-4 h-4 text-secondary-subheading rounded border-border focus:ring-border"
-                  />
-                  <span>{service}</span>
-                </label>
-              ))}
-            </div>
-
-            {/* Add Additional Services button & tags */}
-            <div className="mt-3">
-              <button
-                type="button"
-                onClick={() => setShowAddMore(!showAddMore)}
-                className="inline-flex items-center gap-1.5 text-sm font-medium text-secondary-subheading hover:text-txt-primary"
-              >
-                <span className="text-lg">+</span> Add additional Services
-              </button>
-
-              {showAddMore && (
-                <div className="mt-3 p-3 border border-border rounded-md bg-page-bg flex flex-wrap gap-2">
-                  {ADDITIONAL_TAGS.map((tag) => {
-                    const isSelected = selectedAdditional.includes(tag);
-                    return (
-                      <button
-                        key={tag}
-                        type="button"
-                        onClick={() => handleTagToggle(tag)}
-                        className={`px-3 py-1.5 rounded-md text-xs font-medium flex items-center gap-1.5 transition-colors ${
-                          isSelected
-                            ? "bg-primary/10 text-primary border border-primary/30"
-                            : "bg-card-bg text-secondary-subheading border border-border hover:bg-page-bg"
-                        }`}
-                      >
-                        <span>{tag}</span>
-                        <span>{isSelected ? "✕" : "+"}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
+            <div className="space-y-2.5">
+              {COMMERCIAL_SERVICES.map((service) => {
+                const isChecked = selectedServices.includes(service);
+                return (
+                  <label
+                    key={service}
+                    className="flex items-center gap-2.5 cursor-pointer select-none text-base text-secondary-subheading hover:text-txt-primary transition-colors py-0.5"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={isChecked}
+                      onChange={(e) =>
+                        handleServiceToggle(service, e.target.checked)
+                      }
+                      className="sr-only"
+                    />
+                    <CustomCheckbox checked={isChecked} />
+                    <span>{service}</span>
+                  </label>
+                );
+              })}
             </div>
           </div>
-        )}
 
-      {/* Date & Event Details for DJ / Event / Photography */}
+          {renderAdditionalTags()}
+        </div>
+      )}
+
+      {/* 4. Photography & Videography / DJ & Event Services Details */}
       {["Photography & Videography", "DJ & Event Services"].includes(
         selectedCategory,
       ) && (
@@ -318,7 +419,7 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
             </label>
             <input
               type="text"
-              placeholder="eg. community party"
+              placeholder="e.g. Community party, corporate event, wedding"
               {...register("eventType")}
               className="w-full h-11 px-3 text-txt-primary bg-card-bg border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-border"
             />
@@ -331,7 +432,7 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
               </label>
               <input
                 type="text"
-                placeholder="04"
+                placeholder="e.g. 50"
                 {...register("expectedGuests")}
                 className="w-full h-11 px-3 text-txt-primary bg-card-bg border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-border"
               />
@@ -342,12 +443,34 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
               </label>
               <input
                 type="text"
-                placeholder="eg. 4 hours"
+                placeholder="e.g. 4 hours"
                 {...register("eventDuration")}
                 className="w-full h-11 px-3 text-txt-primary bg-card-bg border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-border"
               />
             </div>
           </div>
+        </div>
+      )}
+
+      {/* 5. Other Work */}
+      {selectedCategory === "Other Work" && (
+        <div>
+          <label className="block text-lg font-medium text-txt-primary mb-1">
+            Specify Service Needed <span className="text-trend-down">*</span>
+          </label>
+          <input
+            type="text"
+            placeholder="e.g. Fence repair, painting, custom installation"
+            value={selectedServices[0] || ""}
+            onChange={(e) =>
+              setValue(
+                "specificServices",
+                e.target.value ? [e.target.value] : [],
+                { shouldValidate: true },
+              )
+            }
+            className="w-full h-11 px-3 text-txt-primary bg-card-bg border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-border"
+          />
         </div>
       )}
 
@@ -357,27 +480,31 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
           What type of request is this?{" "}
           <span className="text-trend-down">*</span>
         </label>
-        <div className="flex flex-wrap gap-x-6 gap-y-2">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-y-3.5 gap-x-4">
           {[
             "One-time",
             "Recurring",
             "Emergency / Rush",
             "Estimate Only",
             "Existing Contract",
-          ].map((type) => (
-            <label
-              key={type}
-              className="flex items-center gap-2 cursor-pointer text-sm text-txt-primary"
-            >
-              <input
-                type="radio"
-                value={type}
-                {...register("requestType")}
-                className="w-4 h-4 text-secondary-subheading border-border focus:ring-border"
-              />
-              <span>{type}</span>
-            </label>
-          ))}
+          ].map((type) => {
+            const isChecked = requestType === type;
+            return (
+              <label
+                key={type}
+                className="flex items-center gap-2.5 cursor-pointer text-base text-secondary-subheading hover:text-txt-primary select-none transition-colors"
+              >
+                <input
+                  type="radio"
+                  value={type}
+                  {...register("requestType")}
+                  className="sr-only"
+                />
+                <CustomRadio checked={isChecked} />
+                <span>{type}</span>
+              </label>
+            );
+          })}
         </div>
         {errors.requestType && (
           <p className="text-xs text-trend-down mt-1">
@@ -386,7 +513,7 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
         )}
       </div>
 
-      {/* Conditional: Recurring frequency dropdown */}
+      {/* Conditional: How often you need this service? (Shown when Recurring is chosen) */}
       {requestType === "Recurring" && (
         <CustomSelect
           id="recurring-frequency-select"
@@ -397,30 +524,8 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
           onChange={(val) =>
             setValue("recurringFrequency", val, { shouldValidate: true })
           }
-          options={[
-            "Weekly",
-            "Bi-Weekly",
-            "One-time",
-            "Seasonal",
-            "12 months",
-          ]}
+          options={RECURRING_FREQUENCY_OPTIONS}
           error={errors.recurringFrequency?.message}
-        />
-      )}
-
-      {/* Conditional: Existing Contract dropdown */}
-      {requestType === "Existing Contract" && (
-        <CustomSelect
-          id="contract-number-select"
-          label="Select your contract"
-          required
-          placeholder="Select contract"
-          value={watch("contractNumber")}
-          onChange={(val) =>
-            setValue("contractNumber", val, { shouldValidate: true })
-          }
-          options={["Contract #CN-12586", "Contract #CN-1024"]}
-          error={errors.contractNumber?.message}
         />
       )}
 
@@ -432,12 +537,12 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
         <div className="relative border border-border rounded-md bg-card-bg p-3">
           <textarea
             {...register("serviceDetailsDescription")}
-            rows={3}
+            rows={4}
             maxLength={200}
             placeholder="Details description of your services,...."
-            className="w-full text-sm text-txt-primary resize-none focus:outline-none"
+            className="w-full text-base text-txt-primary resize-none focus:outline-none placeholder:text-secondary-subheading/60"
           />
-          <div className="text-right text-sm text-secondary-subheading mt-1">
+          <div className="text-right text-xs text-secondary-subheading mt-1">
             {detailsDescription.length}/200
           </div>
         </div>
