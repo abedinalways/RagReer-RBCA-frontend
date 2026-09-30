@@ -1,6 +1,8 @@
 import React from "react";
-import { UseFormReturn } from "react-hook-form";
+import { UseFormReturn, useFieldArray } from "react-hook-form";
 import { NewRequestFormData } from "../schema/requestSchema";
+import { CustomSelect } from "@/components/ui/CustomSelect";
+import { Trash2 } from "lucide-react";
 
 interface Step1Props {
   form: UseFormReturn<NewRequestFormData>;
@@ -8,13 +10,88 @@ interface Step1Props {
 
 const AMENITY_OPTIONS = ["Gym", "Parking", "Pool", "Garden View"];
 
+const ROLE_OPTIONS = [
+  "Property Owner",
+  "Property Manager",
+  "Tenant",
+  "Authorized Person",
+];
+
+const YARD_SIZE_OPTIONS = [
+  "Small (up to 1/4 acre)",
+  "Medium (1/4 - 1/2 acre)",
+  "Large (1/2 - 1 acre)",
+  "X-Large (1+ acre)",
+  "Unknown - please assess",
+];
+
+const SAVED_PROPERTIES = [
+  {
+    id: "prop-1",
+    name: "North Entrance Monument & Islands",
+    role: "Property Owner",
+    street1: "742 Evergreen Terrace",
+    street2: "Building B, Suite 100",
+    city: "Springfield",
+    state: "Oregon",
+    postalCode: "97477",
+    whatYouHave: ["Gym", "Parking"],
+    maintainerName: "John Anderson",
+    maintainerPhone: "555-234-5678",
+  },
+  {
+    id: "prop-2",
+    name: "124 Oak Street Residence",
+    role: "Property Manager",
+    street1: "124 Oak Street",
+    street2: "Apt 4B",
+    city: "Seattle",
+    state: "Washington",
+    postalCode: "98101",
+    whatYouHave: ["Pool", "Garden View"],
+    maintainerName: "Sarah Jenkins",
+    maintainerPhone: "555-876-5432",
+  },
+  {
+    id: "prop-3",
+    name: "Sunset Valley Commercial Park",
+    role: "Authorized Person",
+    street1: "890 Sunset Blvd",
+    street2: "",
+    city: "Portland",
+    state: "Oregon",
+    postalCode: "97201",
+    whatYouHave: ["Parking", "Garden View"],
+    maintainerName: "Robert Vance",
+    maintainerPhone: "555-345-6789",
+  },
+];
+
 export const Step1PropertyDetails: React.FC<Step1Props> = ({ form }) => {
   const {
     register,
     watch,
     setValue,
+    control,
     formState: { errors },
   } = form;
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "additionalAddresses",
+  });
+
+  const handleAddAddress = () => {
+    append({
+      street1: "",
+      street2: "",
+      city: "",
+      state: "",
+      postalCode: "",
+      maintainerName: "",
+      maintainerPhone: "",
+    });
+  };
 
   const descriptionValue = watch("propertyDescription") || "";
   const selectedAmenities = watch("whatYouHave") || [];
@@ -33,6 +110,35 @@ export const Step1PropertyDetails: React.FC<Step1Props> = ({ form }) => {
     }
   };
 
+  /**
+   * Designer note logic:
+   * "if the customer import all property address he can choose a particular property from this dropdown.
+   * except description and size all the filed will be auto filled.
+   * if any customer wants to request any additional work for an existing contract then he can choose
+   * the property and the form will auto filled as the related information were already provided earlier"
+   */
+  const handleSavedPropertyChange = (propertyName: string) => {
+    setValue("savedProperty", propertyName, { shouldValidate: true });
+    const selected = SAVED_PROPERTIES.find((p) => p.name === propertyName);
+    if (selected) {
+      setValue("propertyName", selected.name, { shouldValidate: true });
+      setValue("role", selected.role, { shouldValidate: true });
+      setValue("street1", selected.street1, { shouldValidate: true });
+      setValue("street2", selected.street2 || "", { shouldValidate: true });
+      setValue("city", selected.city, { shouldValidate: true });
+      setValue("state", selected.state, { shouldValidate: true });
+      setValue("postalCode", selected.postalCode, { shouldValidate: true });
+      setValue("whatYouHave", selected.whatYouHave, { shouldValidate: true });
+      setValue("maintainerName", selected.maintainerName || "", {
+        shouldValidate: true,
+      });
+      setValue("maintainerPhone", selected.maintainerPhone || "", {
+        shouldValidate: true,
+      });
+      // description and size are left untouched per designer specification!
+    }
+  };
+
   return (
     <div className="space-y-5">
       <div>
@@ -45,78 +151,30 @@ export const Step1PropertyDetails: React.FC<Step1Props> = ({ form }) => {
       </div>
 
       {/* Select Role */}
-      <div>
-        <label className="block text-lg font-medium text-txt-primary mb-1">
-          Select your role for the property{" "}
-          <span className="text-trend-down">*</span>
-        </label>
-        <div className="relative">
-          <select
-            {...register("role")}
-            className="w-full h-11 px-3 pr-8 text-txt-primary bg-card-bg border border-border rounded-md appearance-none focus:outline-none focus:ring-2 focus:ring-border"
-          >
-            <option value="">Select Role</option>
-            <option value="Owner">Property Owner</option>
-            <option value="Property Manager">Property Manager</option>
-            <option value="Tenant">Tenant</option>
-            <option value="Agent">Real Estate Agent</option>
-          </select>
-          <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none text-secondary-subheading">
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M19 9l-7 7-7-7"
-              />
-            </svg>
-          </div>
-        </div>
-        {errors.role && (
-          <p className="text-xs text-trend-down mt-1">{errors.role.message}</p>
-        )}
-      </div>
+      <CustomSelect
+        id="role-select"
+        label="Select your role for the property"
+        required
+        placeholder="Select Role"
+        value={watch("role")}
+        onChange={(val) => setValue("role", val, { shouldValidate: true })}
+        options={ROLE_OPTIONS}
+        error={errors.role?.message}
+      />
 
       {/* Choose Saved Property */}
-      <div>
-        <label className="block text-lg font-medium text-txt-primary mb-1">
-          Choose from your saved property
-        </label>
-        <div className="relative">
-          <select
-            {...register("savedProperty")}
-            className="w-full h-11 px-3 pr-8 text-txt-primary bg-card-bg border border-border rounded-md appearance-none focus:outline-none focus:ring-2 focus:ring-border"
-          >
-            <option value="">Choose Property</option>
-            <option value="North Entrance Monument & Islands">
-              North Entrance Monument & Islands
-            </option>
-            <option value="Oak Street Residence">
-              124 Oak Street Residence
-            </option>
-          </select>
-          <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none text-secondary-subheading">
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M19 9l-7 7-7-7"
-              />
-            </svg>
-          </div>
-        </div>
-      </div>
+      <CustomSelect
+        id="saved-property-select"
+        label="Choose from your saved property"
+        placeholder="Choose Property"
+        value={watch("savedProperty")}
+        onChange={handleSavedPropertyChange}
+        options={SAVED_PROPERTIES.map((p) => ({
+          value: p.name,
+          label: p.name,
+        }))}
+        error={errors.savedProperty?.message}
+      />
 
       {/* Property Name */}
       <div>
@@ -180,44 +238,17 @@ export const Step1PropertyDetails: React.FC<Step1Props> = ({ form }) => {
         )}
       </div>
 
-      {/* Approximate Lot Size */}
-      <div>
-        <label className="block text-lg font-medium text-txt-primary mb-1">
-          Approximate Lot Size <span className="text-trend-down">*</span>
-        </label>
-        <div className="relative">
-          <select
-            {...register("lotSize")}
-            className="w-full h-11 px-3 pr-8 text-txt-primary bg-card-bg border border-border rounded-md appearance-none focus:outline-none focus:ring-2 focus:ring-border"
-          >
-            <option value="">Select size</option>
-            <option value="Under 0.25 Acres">Under 0.25 Acres</option>
-            <option value="0.25 - 0.5 Acres">0.25 - 0.5 Acres</option>
-            <option value="0.5 - 1 Acre">0.5 - 1 Acre</option>
-            <option value="1+ Acres">1+ Acres</option>
-          </select>
-          <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none text-secondary-subheading">
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M19 9l-7 7-7-7"
-              />
-            </svg>
-          </div>
-        </div>
-        {errors.lotSize && (
-          <p className="text-xs text-trend-down mt-1">
-            {errors.lotSize.message}
-          </p>
-        )}
-      </div>
+      {/* Approximate Yard Size */}
+      <CustomSelect
+        id="yard-size-select"
+        label="Approximate Yard Size"
+        required
+        placeholder="Select size"
+        value={watch("lotSize")}
+        onChange={(val) => setValue("lotSize", val, { shouldValidate: true })}
+        options={YARD_SIZE_OPTIONS}
+        error={errors.lotSize?.message}
+      />
 
       {/* Choose What you Have */}
       <div>
@@ -295,14 +326,124 @@ export const Step1PropertyDetails: React.FC<Step1Props> = ({ form }) => {
         </div>
       </div>
 
+      {/* Additional Property Addresses */}
+      {fields.length > 0 && (
+        <div className="space-y-4 pt-2">
+          {fields.map((field, index) => {
+            const addressErrors = errors.additionalAddresses?.[index];
+            return (
+              <div
+                key={field.id}
+                className="p-4 rounded-lg border border-border bg-page-bg/40 space-y-4 relative"
+              >
+                <div className="flex items-center justify-between pb-2 border-b border-border">
+                  <h4 className="text-base font-medium text-txt-primary">
+                    Additional Property Address #{index + 1}
+                  </h4>
+                  <button
+                    type="button"
+                    onClick={() => remove(index)}
+                    className="inline-flex items-center gap-1.5 text-xs text-trend-down hover:underline font-medium cursor-pointer"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" /> Remove
+                  </button>
+                </div>
+
+                {/* Address block */}
+                <div>
+                  <label className="block text-sm font-medium text-txt-primary mb-1">
+                    Address <span className="text-trend-down">*</span>
+                  </label>
+                  <div className="border border-border rounded-md overflow-hidden bg-card-bg divide-y divide-border">
+                    <input
+                      type="text"
+                      placeholder="Street 1"
+                      {...register(`additionalAddresses.${index}.street1` as const)}
+                      className="w-full h-11 px-3 text-txt-primary focus:outline-none focus:bg-page-bg text-sm"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Street 2"
+                      {...register(`additionalAddresses.${index}.street2` as const)}
+                      className="w-full h-11 px-3 text-txt-primary focus:outline-none focus:bg-page-bg text-sm"
+                    />
+                    <div className="grid grid-cols-3 divide-x divide-border">
+                      <input
+                        type="text"
+                        placeholder="City"
+                        {...register(`additionalAddresses.${index}.city` as const)}
+                        className="w-full h-11 px-3 text-txt-primary focus:outline-none focus:bg-page-bg text-sm"
+                      />
+                      <input
+                        type="text"
+                        placeholder="State"
+                        {...register(`additionalAddresses.${index}.state` as const)}
+                        className="w-full h-11 px-3 text-txt-primary focus:outline-none focus:bg-page-bg text-sm"
+                      />
+                      <input
+                        type="text"
+                        placeholder="Postal Code"
+                        {...register(`additionalAddresses.${index}.postalCode` as const)}
+                        className="w-full h-11 px-3 text-txt-primary focus:outline-none focus:bg-page-bg text-sm"
+                      />
+                    </div>
+                  </div>
+                  {(addressErrors?.street1 ||
+                    addressErrors?.city ||
+                    addressErrors?.state ||
+                    addressErrors?.postalCode) && (
+                    <p className="text-xs text-trend-down mt-1">
+                      Please provide complete address details
+                    </p>
+                  )}
+                </div>
+
+                {/* Maintainer Info for this address */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-txt-primary mb-1">
+                      Property Maintainer Name
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Enter the person name"
+                      {...register(
+                        `additionalAddresses.${index}.maintainerName` as const
+                      )}
+                      className="w-full h-11 px-3 text-txt-primary bg-card-bg border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-border text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-txt-primary mb-1">
+                      Property Maintainer Phone
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="XXX-(XXXX)-XXX"
+                      {...register(
+                        `additionalAddresses.${index}.maintainerPhone` as const
+                      )}
+                      className="w-full h-11 px-3 text-txt-primary bg-card-bg border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-border text-sm"
+                    />
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
       {/* Add another address button */}
-      <button
-        type="button"
-        className="inline-flex items-center gap-1.5 text-sm font-medium text-secondary-subheading hover:text-txt-primary"
-      >
-        <span className="text-lg font-normal">+</span> Add another property
-        address
-      </button>
+      <div>
+        <button
+          type="button"
+          onClick={handleAddAddress}
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-secondary-subheading hover:text-txt-primary cursor-pointer select-none transition-colors"
+        >
+          <span className="text-lg font-normal leading-none">+</span> Add another property
+          address
+        </button>
+      </div>
     </div>
   );
 };

@@ -61,6 +61,7 @@ export const NewRequest: React.FC<NewRequestProps> = ({ initialStep = 1 }) => {
       propertyDescription: "",
       maintainerName: "",
       maintainerPhone: "",
+      additionalAddresses: [],
       hasGateCode: false,
       hasPets: false,
       hasHazards: false,
@@ -94,6 +95,7 @@ export const NewRequest: React.FC<NewRequestProps> = ({ initialStep = 1 }) => {
         "postalCode",
         "lotSize",
         "whatYouHave",
+        "additionalAddresses",
       ]);
     } else if (currentStep === 2) {
       isValid = await trigger([
@@ -150,7 +152,7 @@ export const NewRequest: React.FC<NewRequestProps> = ({ initialStep = 1 }) => {
           </div>
 
           {/* Subtitle & Step Number */}
-          <div className="flex items-center justify-between text-xs text-secondary-subheading mb-3">
+          <div className="flex items-center justify-between text-sm text-secondary-subheading mb-3">
             <span>{REQUEST_STEP_TITLES[currentStep - 1]}</span>
             <span>
               Step {currentStep} of {TOTAL_REQUEST_STEPS}

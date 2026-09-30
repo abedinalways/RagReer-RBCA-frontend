@@ -1,5 +1,15 @@
 import { z } from "zod";
 
+export const additionalAddressSchema = z.object({
+  street1: z.string().min(1, "Street address is required"),
+  street2: z.string().optional(),
+  city: z.string().min(1, "City is required"),
+  state: z.string().min(1, "State is required"),
+  postalCode: z.string().min(1, "Postal code is required"),
+  maintainerName: z.string().optional(),
+  maintainerPhone: z.string().optional(),
+});
+
 export const step1Schema = z.object({
   role: z.string().min(1, "Please select your role"),
   savedProperty: z.string().optional(),
@@ -17,6 +27,7 @@ export const step1Schema = z.object({
     .optional(),
   maintainerName: z.string().optional(),
   maintainerPhone: z.string().optional(),
+  additionalAddresses: z.array(additionalAddressSchema).optional(),
 });
 
 export const step2Schema = z.object({
