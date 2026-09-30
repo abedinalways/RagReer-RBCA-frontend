@@ -43,7 +43,7 @@ export const myRequestsData: RequestItem[] = [
     propertyAddress: "124 Oak Street",
     serviceType: "Residential Lawn Care",
     submittedOn: "Aug 12, 2026",
-    status: "Site Visit Pending",
+    status: "Site Visit Confirmed",
   },
   {
     id: "req-6",
@@ -213,6 +213,13 @@ export const requestStatusStyles: Record<RequestStatus, StatusStyle> = {
     badgeText: "text-tag-rescheduling-text",
     badgeBorder: "border-tag-rescheduling-border",
     dotBg: "bg-tag-rescheduling-text",
+  },
+  "Site Visit Confirmed": {
+    label: "Site Visit Confirmed",
+    badgeBg: "bg-trend-up/10",
+    badgeText: "text-trend-up",
+    badgeBorder: "border-trend-up/20",
+    dotBg: "bg-trend-up",
   },
   "Site Visit Scheduled": {
     label: "Site Visit Scheduled",
