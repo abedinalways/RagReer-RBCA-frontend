@@ -52,6 +52,7 @@ export const step3Schema = z.object({
   specificCommercialTypes: z.array(z.string()).optional(),
   specificServices: z.array(z.string()).optional(),
   additionalServices: z.array(z.string()).optional(),
+  photoIndoorOutdoor: z.string().optional(),
   requestType: z.enum(
     [
       "One-time",

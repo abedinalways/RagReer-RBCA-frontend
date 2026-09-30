@@ -8,7 +8,7 @@ import { PhotographyIcons } from "../../../../components/icons/PhotographyIcons"
 import { ResidentialLawnCareIcons } from "../../../../components/icons/ResidentialLawnCareIcons";
 import SelectBox from "@/components/icons/customer/SelectBox";
 import { CustomSelect } from "@/components/ui/CustomSelect";
-import { Plus, X } from "lucide-react";
+import { Plus, X, Calendar, ChevronUp, ChevronDown } from "lucide-react";
 import { NewRequestFormData } from "../schema/requestSchema";
 
 interface Step3Props {
@@ -96,6 +96,26 @@ const COMMERCIAL_PROPERTY_TYPES = [
   "Industrial Facility",
 ];
 
+const PHOTOGRAPHY_SERVICES = [
+  "Real State Photography",
+  "Drone Photography",
+  "Listing Videos",
+  "Before/after Photos",
+];
+
+const INDOOR_OUTDOOR_OPTIONS = [
+  "Indoor Only",
+  "Outdoor Only",
+  "Both",
+];
+
+const EXISTING_CONTRACT_OPTIONS = [
+  "Contract #CN-12586",
+  "Contract #CN-1024",
+  "Contract #CN-1025",
+  "Contract #CN-1026",
+];
+
 const ADDITIONAL_TAGS = [
   "Leaf Removal",
   "Hedge/Shrub Trimming",
@@ -144,6 +164,7 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
   const selectedServices = watch("specificServices") || [];
   const selectedCommercialTypes = watch("specificCommercialTypes") || [];
   const selectedAdditional = watch("additionalServices") || [];
+  const photoIndoorOutdoor = watch("photoIndoorOutdoor");
   const requestType = watch("requestType");
   const detailsDescription = watch("serviceDetailsDescription") || "";
 
@@ -566,56 +587,175 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
         </div>
       )}
 
-      {/* 4. Photography & Videography / DJ & Event Services Details */}
-      {["Photography & Videography", "DJ & Event Services"].includes(
-        selectedCategory,
-      ) && (
+      {/* 4. Photography & Videography */}
+      {selectedCategory === "Photography & Videography" && (
+        <div className="space-y-5">
+          {/* Select Specific Services */}
+          <div>
+            <label className="block text-lg font-medium text-txt-primary mb-2">
+              Select Specific Services <span className="text-trend-down">*</span>
+            </label>
+            <div className="space-y-2.5">
+              {PHOTOGRAPHY_SERVICES.map((service) => {
+                const isChecked = selectedServices.includes(service);
+                return (
+                  <label
+                    key={service}
+                    className="group relative flex items-center gap-2.5 cursor-pointer select-none text-base text-secondary-subheading hover:text-txt-primary transition-colors py-0.5"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={isChecked}
+                      onChange={(e) =>
+                        handleServiceToggle(service, e.target.checked)
+                      }
+                      className="absolute inset-0 opacity-0 w-full h-full cursor-pointer z-10"
+                    />
+                    <CustomCheckbox checked={isChecked} />
+                    <span>{service}</span>
+                  </label>
+                );
+              })}
+            </div>
+            {errors.specificServices && (
+              <p className="text-xs text-trend-down mt-1">
+                {errors.specificServices.message}
+              </p>
+            )}
+          </div>
+
+          {/* Indoor or Outdoor? */}
+          <div>
+            <label className="block text-lg font-medium text-txt-primary mb-2">
+              Indoor or Outdoor? <span className="text-trend-down">*</span>
+            </label>
+            <div className="flex flex-wrap items-center gap-6 sm:gap-8">
+              {INDOOR_OUTDOOR_OPTIONS.map((option) => {
+                const isChecked = photoIndoorOutdoor === option;
+                return (
+                  <label
+                    key={option}
+                    className="group relative flex items-center gap-2.5 cursor-pointer text-base text-secondary-subheading hover:text-txt-primary select-none transition-colors py-0.5"
+                  >
+                    <input
+                      type="radio"
+                      value={option}
+                      {...register("photoIndoorOutdoor")}
+                      onChange={(e) => {
+                        setValue("photoIndoorOutdoor", e.target.value, {
+                          shouldValidate: true,
+                        });
+                        form.clearErrors("photoIndoorOutdoor");
+                      }}
+                      className="absolute inset-0 opacity-0 w-full h-full cursor-pointer z-10"
+                    />
+                    <CustomRadio checked={isChecked} />
+                    <span>{option}</span>
+                  </label>
+                );
+              })}
+            </div>
+            {errors.photoIndoorOutdoor && (
+              <p className="text-xs text-trend-down mt-1">
+                {errors.photoIndoorOutdoor.message}
+              </p>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* 5. DJ & Event Services Details */}
+      {selectedCategory === "DJ & Event Services" && (
         <div className="space-y-4">
           <div>
-            <label className="block text-lg font-medium text-txt-primary mb-1">
+            <label className="block text-lg font-medium text-txt-primary mb-1.5">
               If approved, which day is best for you?{" "}
               <span className="text-trend-down">*</span>
             </label>
-            <input
-              type="date"
-              {...register("preferredDate")}
-              className="w-full h-11 px-3 text-txt-primary bg-card-bg border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-border"
-            />
+            <div className="relative">
+              <input
+                type="date"
+                placeholder="dd/mm/yyyy"
+                {...register("preferredDate")}
+                className="w-full h-11 px-3.5 pr-10 text-txt-primary bg-card-bg border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-border text-base relative [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer cursor-pointer"
+              />
+              <Calendar className="w-5 h-5 text-secondary-subheading absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none stroke-[1.5]" />
+            </div>
+            {errors.preferredDate && (
+              <p className="text-xs text-trend-down mt-1">
+                {errors.preferredDate.message}
+              </p>
+            )}
           </div>
 
           <div>
-            <label className="block text-lg font-medium text-txt-primary mb-1">
+            <label className="block text-lg font-medium text-txt-primary mb-1.5">
               Event Type <span className="text-trend-down">*</span>
             </label>
             <input
               type="text"
-              placeholder="e.g. Community party, corporate event, wedding"
+              placeholder="eg. community party"
               {...register("eventType")}
-              className="w-full h-11 px-3 text-txt-primary bg-card-bg border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-border"
+              className="w-full h-11 px-3.5 text-txt-primary bg-card-bg border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-border text-base placeholder:text-secondary-subheading/60"
             />
+            {errors.eventType && (
+              <p className="text-xs text-trend-down mt-1">
+                {errors.eventType.message}
+              </p>
+            )}
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-lg font-medium text-txt-primary mb-1">
+              <label className="block text-lg font-medium text-txt-primary mb-1.5">
                 Expected Guests
               </label>
-              <input
-                type="text"
-                placeholder="e.g. 50"
-                {...register("expectedGuests")}
-                className="w-full h-11 px-3 text-txt-primary bg-card-bg border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-border"
-              />
+              <div className="relative">
+                <input
+                  type="number"
+                  min="1"
+                  placeholder="04"
+                  {...register("expectedGuests")}
+                  className="w-full h-11 px-3.5 pr-8 text-txt-primary bg-card-bg border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-border text-base placeholder:text-secondary-subheading/60 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                />
+                <div className="absolute right-2.5 top-1/2 -translate-y-1/2 flex flex-col items-center justify-center">
+                  <button
+                    type="button"
+                    tabIndex={-1}
+                    onClick={() => {
+                      const current = parseInt(watch("expectedGuests") || "0", 10);
+                      const next = isNaN(current) ? 1 : current + 1;
+                      setValue("expectedGuests", String(next).padStart(2, "0"));
+                    }}
+                    className="text-secondary-subheading hover:text-txt-primary p-0.5 cursor-pointer leading-none"
+                  >
+                    <ChevronUp className="w-3.5 h-3.5" />
+                  </button>
+                  <button
+                    type="button"
+                    tabIndex={-1}
+                    onClick={() => {
+                      const current = parseInt(watch("expectedGuests") || "1", 10);
+                      if (current > 1) {
+                        setValue("expectedGuests", String(current - 1).padStart(2, "0"));
+                      }
+                    }}
+                    className="text-secondary-subheading hover:text-txt-primary p-0.5 cursor-pointer leading-none"
+                  >
+                    <ChevronDown className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
             </div>
             <div>
-              <label className="block text-lg font-medium text-txt-primary mb-1">
+              <label className="block text-lg font-medium text-txt-primary mb-1.5">
                 Event Duration
               </label>
               <input
                 type="text"
-                placeholder="e.g. 4 hours"
+                placeholder="eg. 4 hours"
                 {...register("eventDuration")}
-                className="w-full h-11 px-3 text-txt-primary bg-card-bg border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-border"
+                className="w-full h-11 px-3.5 text-txt-primary bg-card-bg border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-border text-base placeholder:text-secondary-subheading/60"
               />
             </div>
           </div>
@@ -696,6 +836,22 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
           }
           options={RECURRING_FREQUENCY_OPTIONS}
           error={errors.recurringFrequency?.message}
+        />
+      )}
+
+      {/* Conditional: Select your contract * (Shown when Existing Contract is chosen) */}
+      {requestType === "Existing Contract" && (
+        <CustomSelect
+          id="existing-contract-select"
+          label="Select your contract"
+          required
+          placeholder="Select a contract"
+          value={watch("contractNumber")}
+          onChange={(val) =>
+            setValue("contractNumber", val, { shouldValidate: true })
+          }
+          options={EXISTING_CONTRACT_OPTIONS}
+          error={errors.contractNumber?.message}
         />
       )}
 
