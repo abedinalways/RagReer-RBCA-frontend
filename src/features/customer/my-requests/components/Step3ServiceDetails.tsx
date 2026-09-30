@@ -63,14 +63,37 @@ const COMMERCIAL_TYPES = [
   "Commercial Office Properties",
 ];
 
-const COMMERCIAL_SERVICES = [
+const COMMERCIAL_SERVICES_LEFT = [
   "Lawn Restoration",
   "Initial Cleanup",
   "Shrub Trimming",
   "Mulching",
+];
+
+const COMMERCIAL_SERVICES_RIGHT = [
   "Pressure Washing",
   "Debris Removal",
   "Listing Preparation Package",
+];
+
+const HOA_COMMUNITY_SIZES = [
+  "Entrance Only",
+  "Medium HOA",
+  "Small HOA",
+  "Large HOA",
+];
+
+const CHURCH_CAMPUS_SIZES = [
+  "Small Church",
+  "Medium Church",
+  "Large Campus",
+];
+
+const COMMERCIAL_PROPERTY_TYPES = [
+  "Small Office",
+  "Retail Strip Center",
+  "Medical Office",
+  "Industrial Facility",
 ];
 
 const ADDITIONAL_TAGS = [
@@ -95,15 +118,15 @@ const RECURRING_FREQUENCY_OPTIONS = [
 
 const CustomCheckbox: React.FC<{ checked?: boolean }> = ({ checked }) => {
   return checked ? (
-    <SelectBox className="w-[18px] h-[18px] shrink-0" />
+    <SelectBox className="w-[18px] h-[18px] shrink-0 pointer-events-none" />
   ) : (
-    <div className="w-[18px] h-[18px] rounded-[3px] border border-border-input bg-card-bg shrink-0 transition-colors hover:border-primary/60" />
+    <div className="w-[18px] h-[18px] rounded-[3px] border border-border-input bg-card-bg shrink-0 transition-colors group-hover:border-primary/60 pointer-events-none" />
   );
 };
 
 const CustomRadio: React.FC<{ checked?: boolean }> = ({ checked }) => {
   return (
-    <div className="w-4 h-4 rounded-full border border-border-input bg-card-bg flex items-center justify-center shrink-0 transition-colors hover:border-primary/60">
+    <div className="w-4 h-4 rounded-full border border-border-input bg-card-bg flex items-center justify-center shrink-0 transition-colors group-hover:border-primary/60 pointer-events-none">
       {checked && <div className="w-2 h-2 rounded-full bg-primary" />}
     </div>
   );
@@ -124,13 +147,29 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
   const requestType = watch("requestType");
   const detailsDescription = watch("serviceDetailsDescription") || "";
 
+  // Dynamic commercial sub-fields
+  const commercialCommunitySize = watch("commercialCommunitySize");
+  const commercialCampusSize = watch("commercialCampusSize");
+  const commercialPropertyType = watch("commercialPropertyType");
+
+  const activeCommercialType =
+    selectedCommercialTypes[0] || "Rental Property Turnover";
+
   // Collapsed by default, toggleable per user click
   const [showAddMore, setShowAddMore] = useState(false);
 
   const handleCategorySelect = (catLabel: string) => {
     setValue("serviceCategory", catLabel, { shouldValidate: true });
     setValue("specificServices", []);
-    setValue("specificCommercialTypes", []);
+    if (catLabel === "Commercial Services") {
+      setValue("specificCommercialTypes", ["Rental Property Turnover"]);
+    } else {
+      setValue("specificCommercialTypes", []);
+    }
+  };
+
+  const handleCommercialTypeSelect = (type: string) => {
+    setValue("specificCommercialTypes", [type], { shouldValidate: true });
   };
 
   const handleServiceToggle = (service: string, checked: boolean) => {
@@ -143,17 +182,6 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
         "specificServices",
         selectedServices.filter((s) => s !== service),
         { shouldValidate: true },
-      );
-    }
-  };
-
-  const handleCommercialTypeToggle = (type: string, checked: boolean) => {
-    if (checked) {
-      setValue("specificCommercialTypes", [...selectedCommercialTypes, type]);
-    } else {
-      setValue(
-        "specificCommercialTypes",
-        selectedCommercialTypes.filter((t) => t !== type),
       );
     }
   };
@@ -277,7 +305,7 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
               return (
                 <label
                   key={service}
-                  className="flex items-center gap-2.5 cursor-pointer select-none text-base text-secondary-subheading hover:text-txt-primary transition-colors py-0.5"
+                  className="group relative flex items-center gap-2.5 cursor-pointer select-none text-base text-secondary-subheading hover:text-txt-primary transition-colors py-0.5"
                 >
                   <input
                     type="checkbox"
@@ -285,7 +313,7 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
                     onChange={(e) =>
                       handleServiceToggle(service, e.target.checked)
                     }
-                    className="sr-only"
+                    className="absolute inset-0 opacity-0 w-full h-full cursor-pointer z-10"
                   />
                   <CustomCheckbox checked={isChecked} />
                   <span>{service}</span>
@@ -310,7 +338,7 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
               return (
                 <label
                   key={service}
-                  className="flex items-center gap-2.5 cursor-pointer select-none text-base text-secondary-subheading hover:text-txt-primary transition-colors py-0.5"
+                  className="group relative flex items-center gap-2.5 cursor-pointer select-none text-base text-secondary-subheading hover:text-txt-primary transition-colors py-0.5"
                 >
                   <input
                     type="checkbox"
@@ -318,7 +346,7 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
                     onChange={(e) =>
                       handleServiceToggle(service, e.target.checked)
                     }
-                    className="sr-only"
+                    className="absolute inset-0 opacity-0 w-full h-full cursor-pointer z-10"
                   />
                   <CustomCheckbox checked={isChecked} />
                   <span>{service}</span>
@@ -333,7 +361,8 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
 
       {/* 3. Commercial Services Specific Services */}
       {selectedCategory === "Commercial Services" && (
-        <div className="space-y-4">
+        <div className="space-y-5">
+          {/* Select Specific Commercial Service Type */}
           <div>
             <label className="block text-lg font-medium text-txt-primary mb-2">
               Select Specific Commercial Service Type{" "}
@@ -341,21 +370,19 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
             </label>
             <div className="space-y-2.5">
               {COMMERCIAL_TYPES.map((type) => {
-                const isChecked = selectedCommercialTypes.includes(type);
+                const isSelected = activeCommercialType === type;
                 return (
                   <label
                     key={type}
-                    className="flex items-center gap-2.5 cursor-pointer select-none text-base text-secondary-subheading hover:text-txt-primary transition-colors py-0.5"
+                    className="group relative flex items-center gap-2.5 cursor-pointer select-none text-base text-secondary-subheading hover:text-txt-primary transition-colors py-0.5"
                   >
                     <input
                       type="checkbox"
-                      checked={isChecked}
-                      onChange={(e) =>
-                        handleCommercialTypeToggle(type, e.target.checked)
-                      }
-                      className="sr-only"
+                      checked={isSelected}
+                      onChange={() => handleCommercialTypeSelect(type)}
+                      className="absolute inset-0 opacity-0 w-full h-full cursor-pointer z-10"
                     />
-                    <CustomCheckbox checked={isChecked} />
+                    <CustomCheckbox checked={isSelected} />
                     <span>{type}</span>
                   </label>
                 );
@@ -363,36 +390,179 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
             </div>
           </div>
 
+          {/* Dynamic Sub-Option Field: HOA Maintenance */}
+          {activeCommercialType === "HOA Maintenance" && (
+            <div>
+              <label className="block text-lg font-medium text-txt-primary mb-2">
+                Community Size <span className="text-trend-down">*</span>
+              </label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-2.5 gap-x-6">
+                {HOA_COMMUNITY_SIZES.map((size) => {
+                  const isChecked = commercialCommunitySize === size;
+                  return (
+                    <label
+                      key={size}
+                      className="group relative flex items-center gap-2.5 cursor-pointer text-base text-secondary-subheading hover:text-txt-primary select-none transition-colors py-0.5"
+                    >
+                      <input
+                        type="radio"
+                        value={size}
+                        {...register("commercialCommunitySize")}
+                        className="absolute inset-0 opacity-0 w-full h-full cursor-pointer z-10"
+                      />
+                      <CustomRadio checked={isChecked} />
+                      <span>{size}</span>
+                    </label>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Dynamic Sub-Option Field: Church Maintenance */}
+          {activeCommercialType === "Church Maintenance" && (
+            <div>
+              <label className="block text-lg font-medium text-txt-primary mb-2">
+                Campus Size <span className="text-trend-down">*</span>
+              </label>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-y-2.5 gap-x-4">
+                {CHURCH_CAMPUS_SIZES.map((size) => {
+                  const isChecked = commercialCampusSize === size;
+                  return (
+                    <label
+                      key={size}
+                      className="group relative flex items-center gap-2.5 cursor-pointer text-base text-secondary-subheading hover:text-txt-primary select-none transition-colors py-0.5"
+                    >
+                      <input
+                        type="radio"
+                        value={size}
+                        {...register("commercialCampusSize")}
+                        className="absolute inset-0 opacity-0 w-full h-full cursor-pointer z-10"
+                      />
+                      <CustomRadio checked={isChecked} />
+                      <span>{size}</span>
+                    </label>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Dynamic Sub-Option Field: Municipal Services */}
+          {activeCommercialType === "Municipal Services" && (
+            <div>
+              <label className="block text-lg font-medium text-txt-primary mb-2">
+                Campus Size <span className="text-trend-down">*</span>
+              </label>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-y-2.5 gap-x-4">
+                {CHURCH_CAMPUS_SIZES.map((size) => {
+                  const isChecked = commercialCampusSize === size;
+                  return (
+                    <label
+                      key={size}
+                      className="group relative flex items-center gap-2.5 cursor-pointer text-base text-secondary-subheading hover:text-txt-primary select-none transition-colors py-0.5"
+                    >
+                      <input
+                        type="radio"
+                        value={size}
+                        {...register("commercialCampusSize")}
+                        className="absolute inset-0 opacity-0 w-full h-full cursor-pointer z-10"
+                      />
+                      <CustomRadio checked={isChecked} />
+                      <span>{size}</span>
+                    </label>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Dynamic Sub-Option Field: Commercial Office Properties */}
+          {activeCommercialType === "Commercial Office Properties" && (
+            <div>
+              <label className="block text-lg font-medium text-txt-primary mb-2">
+                Property Type <span className="text-trend-down">*</span>
+              </label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-2.5 gap-x-6">
+                {COMMERCIAL_PROPERTY_TYPES.map((propType) => {
+                  const isChecked = commercialPropertyType === propType;
+                  return (
+                    <label
+                      key={propType}
+                      className="group relative flex items-center gap-2.5 cursor-pointer text-base text-secondary-subheading hover:text-txt-primary select-none transition-colors py-0.5"
+                    >
+                      <input
+                        type="radio"
+                        value={propType}
+                        {...register("commercialPropertyType")}
+                        className="absolute inset-0 opacity-0 w-full h-full cursor-pointer z-10"
+                      />
+                      <CustomRadio checked={isChecked} />
+                      <span>{propType}</span>
+                    </label>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Select Specific Services in 2 Columns */}
           <div>
             <label className="block text-lg font-medium text-txt-primary mb-2">
-              Select Specific Services{" "}
-              <span className="text-trend-down">*</span>
+              Select Specific Services <span className="text-trend-down">*</span>
             </label>
-            <div className="space-y-2.5">
-              {COMMERCIAL_SERVICES.map((service) => {
-                const isChecked = selectedServices.includes(service);
-                return (
-                  <label
-                    key={service}
-                    className="flex items-center gap-2.5 cursor-pointer select-none text-base text-secondary-subheading hover:text-txt-primary transition-colors py-0.5"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={isChecked}
-                      onChange={(e) =>
-                        handleServiceToggle(service, e.target.checked)
-                      }
-                      className="sr-only"
-                    />
-                    <CustomCheckbox checked={isChecked} />
-                    <span>{service}</span>
-                  </label>
-                );
-              })}
-            </div>
-          </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-2.5 gap-x-6">
+              {/* Left Column (4 items) */}
+              <div className="space-y-2.5">
+                {COMMERCIAL_SERVICES_LEFT.map((service) => {
+                  const isChecked = selectedServices.includes(service);
+                  return (
+                    <label
+                      key={service}
+                      className="group relative flex items-center gap-2.5 cursor-pointer select-none text-base text-secondary-subheading hover:text-txt-primary transition-colors py-0.5"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={isChecked}
+                        onChange={(e) =>
+                          handleServiceToggle(service, e.target.checked)
+                        }
+                        className="absolute inset-0 opacity-0 w-full h-full cursor-pointer z-10"
+                      />
+                      <CustomCheckbox checked={isChecked} />
+                      <span>{service}</span>
+                    </label>
+                  );
+                })}
+              </div>
 
-          {renderAdditionalTags()}
+              {/* Right Column (3 items) */}
+              <div className="space-y-2.5">
+                {COMMERCIAL_SERVICES_RIGHT.map((service) => {
+                  const isChecked = selectedServices.includes(service);
+                  return (
+                    <label
+                      key={service}
+                      className="group relative flex items-center gap-2.5 cursor-pointer select-none text-base text-secondary-subheading hover:text-txt-primary transition-colors py-0.5"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={isChecked}
+                        onChange={(e) =>
+                          handleServiceToggle(service, e.target.checked)
+                        }
+                        className="absolute inset-0 opacity-0 w-full h-full cursor-pointer z-10"
+                      />
+                      <CustomCheckbox checked={isChecked} />
+                      <span>{service}</span>
+                    </label>
+                  );
+                })}
+              </div>
+            </div>
+
+            {renderAdditionalTags()}
+          </div>
         </div>
       )}
 
@@ -492,13 +662,13 @@ export const Step3ServiceDetails: React.FC<Step3Props> = ({ form }) => {
             return (
               <label
                 key={type}
-                className="flex items-center gap-2.5 cursor-pointer text-base text-secondary-subheading hover:text-txt-primary select-none transition-colors"
+                className="group relative flex items-center gap-2.5 cursor-pointer text-base text-secondary-subheading hover:text-txt-primary select-none transition-colors py-0.5"
               >
                 <input
                   type="radio"
                   value={type}
                   {...register("requestType")}
-                  className="sr-only"
+                  className="absolute inset-0 opacity-0 w-full h-full cursor-pointer z-10"
                 />
                 <CustomRadio checked={isChecked} />
                 <span>{type}</span>
