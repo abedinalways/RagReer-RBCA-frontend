@@ -111,7 +111,53 @@ export const NewRequest: React.FC<NewRequestProps> = ({ initialStep = 1 }) => {
         "parkingNotes",
       ]);
     } else if (currentStep === 3) {
-      isValid = await trigger(["serviceCategory", "requestType"]);
+      const cat = form.getValues("serviceCategory");
+      const reqType = form.getValues("requestType");
+      let categorySpecificValid = true;
+
+      if (cat === "Photography & Videography" && !form.getValues("photoIndoorOutdoor")) {
+        form.setError("photoIndoorOutdoor", {
+          type: "manual",
+          message: "Please select indoor, outdoor, or both",
+        });
+        categorySpecificValid = false;
+      }
+
+      if (cat === "DJ & Event Services") {
+        if (!form.getValues("preferredDate")) {
+          form.setError("preferredDate", {
+            type: "manual",
+            message: "Please select your preferred date",
+          });
+          categorySpecificValid = false;
+        }
+        if (!form.getValues("eventType")) {
+          form.setError("eventType", {
+            type: "manual",
+            message: "Please specify event type",
+          });
+          categorySpecificValid = false;
+        }
+      }
+
+      if (reqType === "Existing Contract" && !form.getValues("contractNumber")) {
+        form.setError("contractNumber", {
+          type: "manual",
+          message: "Please select your contract",
+        });
+        categorySpecificValid = false;
+      }
+
+      if (reqType === "Recurring" && !form.getValues("recurringFrequency")) {
+        form.setError("recurringFrequency", {
+          type: "manual",
+          message: "Please choose how often you need this service",
+        });
+        categorySpecificValid = false;
+      }
+
+      const baseValid = await trigger(["serviceCategory", "requestType"]);
+      isValid = baseValid && categorySpecificValid;
     } else if (currentStep === 4) {
       isValid = await trigger(["preferredDate", "photos"]);
     }
