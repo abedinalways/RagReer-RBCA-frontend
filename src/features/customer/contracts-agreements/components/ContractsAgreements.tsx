@@ -6,6 +6,7 @@ import { ContractItem } from "../types/contractsAgreementsTypes";
 import { ReusableTable } from "@/components/reusable/ReusableTable";
 import EmptyStateCard from "@/components/reusable/EmptyStateCard";
 import { DocumentIcon } from "@/components/icons/DocumentIcon";
+import { CustomSelect } from "@/components/ui/CustomSelect";
 
 export const ContractsAgreements: React.FC = () => {
   const [contracts] = useState<ContractItem[]>(contractsAgreementsData);
@@ -60,19 +61,23 @@ export const ContractsAgreements: React.FC = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Type to search"
-                className="border border-border bg-input-bg rounded-lg px-3 py-1.5 text-[1rem] text-txt-primary"
+                className="w-full sm:w-48 h-9 border border-border bg-input-bg rounded-md px-3 text-sm text-txt-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
               />
-              <select
-                value={selectedStatus}
-                onChange={(e) => setSelectedStatus(e.target.value)}
-                className="border border-border bg-input-bg rounded-lg px-3 py-1.5 text-[1rem] text-txt-primary"
-              >
-                <option value="All Status">All Status</option>
-                <option value="Pending Approval">Pending Approval</option>
-                <option value="Active">Active</option>
-                <option value="Expired">Expired</option>
-                <option value="Declined">Declined</option>
-              </select>
+              <div className="w-full sm:w-44">
+                <CustomSelect
+                  value={selectedStatus}
+                  onChange={(val) => setSelectedStatus(val)}
+                  options={[
+                    "All Status",
+                    "Pending Approval",
+                    "Active",
+                    "Expired",
+                    "Declined",
+                  ]}
+                  size="sm"
+                  align="right"
+                />
+              </div>
             </div>
           </div>
 
