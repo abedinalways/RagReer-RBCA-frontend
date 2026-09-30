@@ -70,6 +70,9 @@ export const step3Schema = z.object({
     .string()
     .max(200, "Maximum 200 characters allowed")
     .optional(),
+  commercialCommunitySize: z.string().optional(),
+  commercialCampusSize: z.string().optional(),
+  commercialPropertyType: z.string().optional(),
   eventType: z.string().optional(),
   expectedGuests: z.string().optional(),
   eventDuration: z.string().optional(),
