@@ -138,7 +138,7 @@ export const AddPropertyModal: React.FC<AddPropertyModalProps> = ({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title={initialProperty ? "Edit Property" : "Add New Property"}
+      title={initialProperty ? "Edit Property Details" : "Add New Property"}
       maxWidth="2xl"
     >
       <form onSubmit={handleSubmit} className="space-y-5">
