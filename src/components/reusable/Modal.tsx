@@ -10,8 +10,10 @@ export interface ModalProps {
   title?: React.ReactNode;
   children: React.ReactNode;
   footer?: React.ReactNode;
-  maxWidth?: "sm" | "md" | "lg" | "xl" | "2xl" | "3xl";
+  maxWidth?: "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl" | "6xl" | "7xl" | "full";
   className?: string;
+  contentClassName?: string;
+  overlayClassName?: string;
   showCloseButton?: boolean;
 }
 
@@ -22,6 +24,11 @@ const MAX_WIDTH_CLASSES = {
   xl: "max-w-xl",
   "2xl": "max-w-2xl",
   "3xl": "max-w-3xl",
+  "4xl": "max-w-4xl",
+  "5xl": "max-w-5xl",
+  "6xl": "max-w-6xl",
+  "7xl": "max-w-7xl",
+  full: "max-w-full",
 };
 
 export const Modal: React.FC<ModalProps> = ({
@@ -32,6 +39,8 @@ export const Modal: React.FC<ModalProps> = ({
   footer,
   maxWidth = "lg",
   className,
+  contentClassName,
+  overlayClassName,
   showCloseButton = true,
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
@@ -60,7 +69,10 @@ export const Modal: React.FC<ModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-3 sm:p-4 overflow-y-auto animate-in fade-in duration-200"
+      className={cn(
+        "fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md p-3 sm:p-4 overflow-y-auto animate-in fade-in duration-200",
+        overlayClassName
+      )}
       onClick={(e) => {
         if (e.target === e.currentTarget) {
           onClose();
@@ -95,7 +107,9 @@ export const Modal: React.FC<ModalProps> = ({
           </div>
         )}
 
-        <div className="p-6 overflow-y-auto flex-1">{children}</div>
+        <div className={cn("p-6 overflow-y-auto flex-1", contentClassName)}>
+          {children}
+        </div>
 
         {footer && (
           <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-border bg-card-bg shrink-0">
