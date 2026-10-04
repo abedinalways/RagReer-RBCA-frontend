@@ -10,6 +10,7 @@ import { AddPropertyModal } from "./AddPropertyModal";
 import { Pagination } from "@/components/reusable/Pagination";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 import { ImportIcon } from "@/components/icons/ImportIcon";
+import { useModal } from "@/hooks/useModal";
 import { propertiesData } from "../data/propertiesData";
 import { Property, PropertyType } from "../types/PropertyTypes";
 
@@ -25,10 +26,9 @@ export const MyProperties: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [itemsPerPage, setItemsPerPage] = useState<number>(25);
 
-  const [isImportModalOpen, setIsImportModalOpen] = useState(false);
-  const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [editingProperty, setEditingProperty] = useState<Property | null>(null);
+  const importModal = useModal();
+  const previewModal = useModal();
+  const propertyModal = useModal<Property>();
 
   const filteredProperties = useMemo(() => {
     if (selectedType === "All Property Type") {
@@ -48,13 +48,12 @@ export const MyProperties: React.FC = () => {
   );
 
   const handleOpenAddModal = () => {
-    setEditingProperty(null);
-    setIsAddModalOpen(true);
+    propertyModal.setData(null);
+    propertyModal.open();
   };
 
   const handleEditProperty = (prop: Property) => {
-    setEditingProperty(prop);
-    setIsAddModalOpen(true);
+    propertyModal.open(prop);
   };
 
   const handleSaveProperty = (savedProp: Property) => {
@@ -65,25 +64,24 @@ export const MyProperties: React.FC = () => {
       }
       return [savedProp, ...prev];
     });
-    setIsAddModalOpen(false);
-    setEditingProperty(null);
+    propertyModal.close();
   };
 
   const handleUploadSuccess = () => {
-    setIsImportModalOpen(false);
-    setIsPreviewModalOpen(true);
+    importModal.close();
+    previewModal.open();
   };
 
   const handleConfirmImport = (importedList: Property[]) => {
     setProperties((prev) => [...importedList, ...prev]);
-    setIsPreviewModalOpen(false);
+    previewModal.close();
   };
 
   return (
     <div className="space-y-6">
       {properties.length === 0 ? (
         <PropertyEmptyState
-          onImportClick={() => setIsImportModalOpen(true)}
+          onImportClick={() => importModal.open()}
           onAddClick={handleOpenAddModal}
         />
       ) : (
@@ -108,7 +106,7 @@ export const MyProperties: React.FC = () => {
 
               <button
                 type="button"
-                onClick={() => setIsImportModalOpen(true)}
+                onClick={() => importModal.open()}
                 className="inline-flex items-center justify-center gap-2 bg-card-bg border border-border px-4 py-2 rounded-md text-sm font-medium text-txt-primary hover:bg-blue-50/70 transition-colors cursor-pointer"
               >
                 <span>Import</span>
@@ -150,25 +148,19 @@ export const MyProperties: React.FC = () => {
       )}
 
       <ImportPropertyModal
-        isOpen={isImportModalOpen}
-        onClose={() => setIsImportModalOpen(false)}
+        {...importModal.bind}
         onUploadSuccess={handleUploadSuccess}
       />
 
       <ImportPreviewModal
-        isOpen={isPreviewModalOpen}
-        onClose={() => setIsPreviewModalOpen(false)}
+        {...previewModal.bind}
         onConfirmImport={handleConfirmImport}
       />
 
       <AddPropertyModal
-        isOpen={isAddModalOpen}
-        onClose={() => {
-          setIsAddModalOpen(false);
-          setEditingProperty(null);
-        }}
+        {...propertyModal.bind}
         onSave={handleSaveProperty}
-        initialProperty={editingProperty}
+        initialProperty={propertyModal.data}
       />
     </div>
   );
