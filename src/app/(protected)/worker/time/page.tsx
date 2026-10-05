@@ -1,13 +1,19 @@
 import type { Metadata } from "next";
-import { PlaceholderPage } from "@/components/shared/PlaceholderPage";
+import { Suspense } from "react";
+import { WorkerTimeSheetView } from "@/workspaces/worker/components/WorkerTimeSheetView";
 
-export const metadata: Metadata = { title: "Time" };
+export const metadata: Metadata = { title: "Time — Worker Workspace" };
 
 export default function WorkerTimePage() {
   return (
-    <PlaceholderPage
-      title="Time"
-      description="Work logs & weekly summary — implementation lives in features/time-tracking."
-    />
+    <Suspense
+      fallback={
+        <div className="p-4 text-center text-secondary-subheading text-sm font-medium">
+          Loading time sheet...
+        </div>
+      }
+    >
+      <WorkerTimeSheetView />
+    </Suspense>
   );
 }
