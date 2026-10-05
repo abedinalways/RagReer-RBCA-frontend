@@ -1,0 +1,273 @@
+"use client";
+
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { usePathname, useRouter } from "next/navigation";
+import { Step1PropertyDetails } from "./Step1PropertyDetails";
+import { Step2SiteAccess } from "./Step2SiteAccess";
+import { Step3ServiceDetails } from "./Step3ServiceDetails";
+import { Step4PreferredDates } from "./Step4PreferredDates";
+import { StepSubmitted } from "./StepSubmitted";
+import { NewRequestFormData, newRequestSchema } from "../schema/requestSchema";
+import {
+  REQUEST_STEP_TITLES,
+  TOTAL_REQUEST_STEPS,
+  clampRequestStep,
+  requestStepUrl,
+} from "../utils/newRequestSteps.utils";
+import { Save, ChevronLeft, ChevronRight } from "lucide-react";
+
+interface NewRequestProps {
+  /**
+   * Step restored from the URL (`?step=2`). Read on the server so a page
+   * refresh renders the same step instead of starting over at step 1.
+   */
+  initialStep?: number;
+}
+
+export const NewRequest: React.FC<NewRequestProps> = ({ initialStep = 1 }) => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const [currentStep, setCurrentStep] = useState<number>(() =>
+    clampRequestStep(initialStep),
+  );
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+
+  /**
+   * Move to a step and mirror it in the address bar, so refreshing (or sharing)
+   * the URL brings the user back to that same step.
+   */
+  const goToStep = (step: number) => {
+    const nextStep = clampRequestStep(step);
+    setCurrentStep(nextStep);
+    router.replace(requestStepUrl(pathname, nextStep), { scroll: false });
+  };
+
+  const form = useForm<NewRequestFormData>({
+    resolver: zodResolver(newRequestSchema),
+    mode: "onChange",
+    defaultValues: {
+      role: "",
+      savedProperty: "",
+      propertyName: "North Entrance Monument & Islands",
+      street1: "",
+      street2: "",
+      city: "",
+      state: "",
+      postalCode: "",
+      lotSize: "",
+      whatYouHave: [],
+      propertyDescription: "",
+      maintainerName: "",
+      maintainerPhone: "",
+      additionalAddresses: [],
+      hasGateCode: false,
+      hasPets: false,
+      hasHazards: false,
+      hasUtilities: false,
+      isTenantOccupied: false,
+      hasParkingRestrictions: false,
+      mustBePresent: false,
+      serviceCategory: "Residential Lawn Care",
+      specificCommercialTypes: [],
+      specificServices: [],
+      additionalServices: [],
+      requestType: "One-time",
+      serviceDetailsDescription: "",
+      commercialCommunitySize: "",
+      commercialCampusSize: "",
+      commercialPropertyType: "",
+      preferredDate: "",
+      secondaryDate: "",
+      photos: [],
+    },
+  });
+
+  const { trigger, handleSubmit } = form;
+
+  const handleNext = async () => {
+    let isValid = false;
+
+    if (currentStep === 1) {
+      isValid = await trigger([
+        "role",
+        "street1",
+        "city",
+        "state",
+        "postalCode",
+        "lotSize",
+        "whatYouHave",
+        "additionalAddresses",
+      ]);
+    } else if (currentStep === 2) {
+      isValid = await trigger([
+        "gateCodeInstructions",
+        "petDetails",
+        "hazardDetails",
+        "utilityNotes",
+        "tenantName",
+        "tenantPhone",
+        "parkingNotes",
+      ]);
+    } else if (currentStep === 3) {
+      const cat = form.getValues("serviceCategory");
+      const reqType = form.getValues("requestType");
+      let categorySpecificValid = true;
+
+      if (cat === "Photography & Videography" && !form.getValues("photoIndoorOutdoor")) {
+        form.setError("photoIndoorOutdoor", {
+          type: "manual",
+          message: "Please select indoor, outdoor, or both",
+        });
+        categorySpecificValid = false;
+      }
+
+      if (cat === "DJ & Event Services") {
+        if (!form.getValues("preferredDate")) {
+          form.setError("preferredDate", {
+            type: "manual",
+            message: "Please select your preferred date",
+          });
+          categorySpecificValid = false;
+        }
+        if (!form.getValues("eventType")) {
+          form.setError("eventType", {
+            type: "manual",
+            message: "Please specify event type",
+          });
+          categorySpecificValid = false;
+        }
+      }
+
+      if (reqType === "Existing Contract" && !form.getValues("contractNumber")) {
+        form.setError("contractNumber", {
+          type: "manual",
+          message: "Please select your contract",
+        });
+        categorySpecificValid = false;
+      }
+
+      if (reqType === "Recurring" && !form.getValues("recurringFrequency")) {
+        form.setError("recurringFrequency", {
+          type: "manual",
+          message: "Please choose how often you need this service",
+        });
+        categorySpecificValid = false;
+      }
+
+      const baseValid = await trigger(["serviceCategory", "requestType"]);
+      isValid = baseValid && categorySpecificValid;
+    } else if (currentStep === 4) {
+      isValid = await trigger(["preferredDate", "photos"]);
+    }
+
+    if (isValid && currentStep < TOTAL_REQUEST_STEPS) {
+      goToStep(currentStep + 1);
+    }
+  };
+
+  const handleBack = () => {
+    goToStep(currentStep - 1);
+  };
+
+  const onSubmit = (data: NewRequestFormData) => {
+    console.log("Final Request Data:", data);
+    setIsSubmitted(true);
+  };
+
+  const handleReset = () => {
+    form.reset();
+    setIsSubmitted(false);
+    goToStep(1);
+  };
+
+  return (
+    <div className="max-w-2xl mx-auto bg-layout-bg border border-border rounded-sm overflow-hidden">
+      {!isSubmitted && (
+        <div className="p-6 pb-4 border-b border-border-subtle">
+          {/* Header Title Bar */}
+          <div className="flex items-center justify-between mb-2">
+            <h1 className="text-lg md:text-2xl font-medium text-primary-heading tracking-tight">
+              New Request
+            </h1>
+            <button
+              type="button"
+              className="inline-flex items-center gap-1.5 text-[1rem] font-medium text-secondary-subheading hover:text-txt-primary cursor-pointer"
+            >
+              <span>Save</span>
+              <Save className="w-5 h-5" />
+            </button>
+          </div>
+
+          {/* Subtitle & Step Number */}
+          <div className="flex items-center justify-between text-xs md:text-sm text-secondary-subheading mb-3">
+            <span>{REQUEST_STEP_TITLES[currentStep - 1]}</span>
+            <span>
+              Step {currentStep} of {TOTAL_REQUEST_STEPS}
+            </span>
+          </div>
+
+          {/* 4 Segmented Progress Bars */}
+          <div className="grid grid-cols-4 gap-2">
+            {[1, 2, 3, 4].map((step) => (
+              <div
+                key={step}
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  step <= currentStep ? "bg-primary" : "bg-surface"
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Main Form Body */}
+      <form onSubmit={handleSubmit(onSubmit)} className="p-6">
+        {isSubmitted ? (
+          <StepSubmitted onReset={handleReset} />
+        ) : (
+          <>
+            {currentStep === 1 && <Step1PropertyDetails form={form} />}
+            {currentStep === 2 && <Step2SiteAccess form={form} />}
+            {currentStep === 3 && <Step3ServiceDetails form={form} />}
+            {currentStep === 4 && <Step4PreferredDates form={form} />}
+
+            {/* Step Navigation Controls */}
+            <div className="mt-8 pt-4 border-t border-border-subtle flex items-center gap-3">
+              {currentStep > 1 && (
+                <button
+                  type="button"
+                  onClick={handleBack}
+                  className="w-1/2 sm:w-auto flex-1 h-11 border border-primary text-primary font-medium rounded-md hover:bg-page-bg transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                  Back
+                </button>
+              )}
+
+              {currentStep < TOTAL_REQUEST_STEPS ? (
+                <button
+                  type="button"
+                  onClick={handleNext}
+                  className="w-full sm:w-auto flex-1 h-11 bg-primary text-primary-text font-medium rounded-md hover:bg-primary-hover transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                >
+                  Continue
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  className="w-full sm:w-auto flex-1 h-11 bg-primary text-primary-text font-medium rounded-md hover:bg-primary-hover transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                >
+                  Continue
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+          </>
+        )}
+      </form>
+    </div>
+  );
+};

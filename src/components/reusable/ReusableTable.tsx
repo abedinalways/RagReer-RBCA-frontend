@@ -41,20 +41,20 @@ export function ReusableTable<T>({
   return (
     <div className="w-full">
       <div className="w-full overflow-x-auto">
-        <table className="w-full text-left border-collapse">
+        <table className="w-full text-left border-collapse text-sm lg:text-base">
           <thead>
             <tr className="bg-page-bg border-b border-border">
               {columns.map((col, idx) => (
                 <th
                   key={idx}
-                  className="py-3 px-4 text-[0.875rem] font-medium text-secondary-subheading uppercase tracking-wider"
+                  className="py-3 px-4  font-medium text-secondary-subheading capitalize tracking-wider"
                 >
                   {col.header}
                 </th>
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-border-subtle bg-card-bg">
+          <tbody className="divide-y divide-border-subtle bg-card-bg text-sm lg:text-base">
             {visibleData.length > 0 ? (
               visibleData.map((row, rowIdx) => (
                 <tr
@@ -62,7 +62,10 @@ export function ReusableTable<T>({
                   className="hover:bg-blue-50/80"
                 >
                   {columns.map((col, colIdx) => (
-                    <td key={colIdx} className="py-3.5 px-4 text-txt-primary">
+                    <td
+                      key={colIdx}
+                      className="py-3.5 px-4 text-txt-primary text-sm lg:text-base"
+                    >
                       {col.cell
                         ? col.cell(row)
                         : col.accessorKey
@@ -76,7 +79,7 @@ export function ReusableTable<T>({
               <tr>
                 <td
                   colSpan={columns.length}
-                  className="py-8 text-center text-secondary-subheading"
+                  className="py-8 text-center text-secondary-subheading text-sm lg:text-base"
                 >
                   {emptyMessage}
                 </td>

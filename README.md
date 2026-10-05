@@ -6,7 +6,7 @@ Role-based construction & home-services platform with **three workspaces**
 > Scaffolded with `npx create-next-app@latest`. Workspaces, features and the
 > permission system are wired so the app runs out of the box.
 
-## Run it
+# Run it
 
 ```bash
 npm install
@@ -104,3 +104,4 @@ Action Access (LeadActions etc.)
 - `src/features/leads/` — reference module showing the full feature anatomy
 - `src/workspaces/worker/` — mobile-first PWA shell reusing `features/jobs`
 - `src/store/slices/auth-slice.ts` — mock session; swap for a real auth provider# raggreer-half-stache
+# raggreer_frontend

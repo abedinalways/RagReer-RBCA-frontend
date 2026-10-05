@@ -19,7 +19,6 @@ export interface TodayWorkJobCardProps {
   className?: string;
 }
 
-
 export function TodayWorkJobCard({
   imageSrc,
   imageAlt = "Job property photo",

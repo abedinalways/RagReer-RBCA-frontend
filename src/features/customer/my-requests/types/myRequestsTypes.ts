@@ -4,6 +4,7 @@ export type RequestStatus =
   | "Under Review"
   | "Site Visit Required"
   | "Site Visit Pending"
+  | "Site Visit Confirmed"
   | "Site Visit Scheduled"
   | "Site Visit in Progress"
   | "Site Visit Completed"
