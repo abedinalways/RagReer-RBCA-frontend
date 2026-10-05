@@ -107,10 +107,10 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
           disabled={disabled}
           onClick={() => !disabled && setIsOpen((prev) => !prev)}
           className={cn(
-            "w-full text-left bg-card-bg border transition-colors flex items-center justify-between select-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/20",
+            "w-full text-left bg-card-bg border transition-colors flex items-center justify-between select-none cursor-pointer focus:outline-none",
             sizeClasses[size],
             error ? "border-trend-down" : "border-border hover:border-slate-300",
-            isOpen && "ring-2 ring-primary/20 border-primary",
+            isOpen && "ring-1 ring-primary/20 border-primary",
             disabled && "opacity-60 cursor-not-allowed bg-slate-50",
             triggerClassName,
           )}
