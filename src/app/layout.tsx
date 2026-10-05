@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Barlow_Condensed } from "next/font/google";
 
 import { AppProviders } from "@/providers/AppProviders";
@@ -11,6 +11,12 @@ const barlowCondensed = Barlow_Condensed({
   display: "swap",
   variable: "--font-barlow-condensed",
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
 
 export const metadata: Metadata = {
   title: {

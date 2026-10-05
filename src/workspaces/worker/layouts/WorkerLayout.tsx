@@ -20,7 +20,7 @@ export function WorkerLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="mx-auto flex min-h-screen w-full max-w-md flex-col bg-app-bg shadow-sm">
       {!isProfile && <WorkerHeader />}
-      <main className="flex-1 p-4 pb-24">{children}</main>
+      <main className="flex-1 p-4 pb-[calc(5.5rem+max(0.75rem,env(safe-area-inset-bottom,0px)))]">{children}</main>
       <WorkerBottomNav />
     </div>
   );
