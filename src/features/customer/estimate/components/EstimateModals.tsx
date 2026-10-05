@@ -147,52 +147,59 @@ export const DeclineModal: React.FC<DeclineModalProps> = ({
   onClose,
   onConfirm,
 }) => {
-  const [reason, setReason] = useState("Budget constraints");
+  const [reason, setReason] = useState("");
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-in fade-in duration-150">
-      <div className="bg-card-bg w-full max-w-md rounded-xl shadow-xl border border-border overflow-hidden">
-        <div className="p-5 flex items-center justify-between border-b border-border">
-          <div className="flex items-center gap-2">
-            <AlertTriangle className="w-5 h-5 text-rose-500" />
-            <h3 className="text-[1.0625rem] font-semibold text-primary-heading">
-              Decline Estimate
-            </h3>
-          </div>
-          <button
-            onClick={onClose}
-            className="p-1 rounded-md text-secondary-subheading hover:text-primary-heading hover:bg-slate-100 cursor-pointer"
-          >
-            <X className="w-4 h-4" />
-          </button>
-        </div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs animate-in fade-in duration-150">
+      <div className="bg-card-bg w-full max-w-[460px] rounded-lg shadow-xl border border-border p-6 relative">
+        {/* Close Button */}
+        <button
+          type="button"
+          onClick={onClose}
+          className="absolute top-4 right-4 text-secondary-subheading hover:text-primary-heading cursor-pointer p-1 rounded-md transition-colors"
+        >
+          <X className="w-4 h-4" />
+        </button>
 
-        <div className="p-5 space-y-3">
-          <p className="text-[0.875rem] text-secondary-subheading leading-relaxed">
-            Please let us know the reason for declining this estimate:
+        {/* Title & Description */}
+        <div className="pt-2 text-center">
+          <h3 className="text-base md:text-lg font-bold text-primary-heading leading-snug">
+            Are you sure you want to decline the estimate?
+          </h3>
+          <p className="text-xs md:text-sm text-secondary-subheading mt-2 max-w-sm mx-auto leading-relaxed">
+            By doing this the estimate will be cancelled and the request wil mark as closed.
           </p>
-          <select
-            value={reason}
-            onChange={(e) => setReason(e.target.value)}
-            className="w-full border border-border-input rounded-md p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 text-primary-heading bg-card-bg"
-          >
-            <option value="Budget constraints">Budget constraints</option>
-            <option value="Timeline does not match">Timeline does not match</option>
-            <option value="Found alternative provider">Found alternative provider</option>
-            <option value="Project cancelled">Project cancelled</option>
-            <option value="Other">Other</option>
-          </select>
         </div>
 
-        <div className="p-4 bg-slate-50 flex items-center justify-end gap-3 border-t border-border">
+        {/* Reason Textarea */}
+        <div className="mt-5 space-y-1.5 text-left">
+          <label className="block text-xs md:text-sm font-semibold text-primary-heading">
+            Describe the reason:
+          </label>
+          <div className="relative border border-border-input rounded-md focus-within:ring-1 focus-within:ring-primary/40 focus-within:border-primary/50 bg-card-bg">
+            <textarea
+              value={reason}
+              onChange={(e) => setReason(e.target.value.slice(0, 200))}
+              rows={4}
+              placeholder="Please describe the reason"
+              className="w-full p-3 pb-6 text-xs md:text-sm focus:outline-none text-primary-heading placeholder:text-secondary-subheading/60 resize-none bg-transparent"
+            />
+            <div className="absolute bottom-2 right-2.5 text-[11px] text-secondary-subheading select-none">
+              {reason.length}/200
+            </div>
+          </div>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="mt-6 flex items-center gap-3 w-full">
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 text-sm font-medium text-secondary-subheading hover:text-primary-heading cursor-pointer rounded-md border border-border bg-card-bg"
+            className="flex-1 h-9 md:h-10 rounded-md border border-primary text-primary hover:bg-primary/5 font-medium text-xs md:text-sm transition-colors cursor-pointer bg-card-bg flex items-center justify-center"
           >
-            Cancel
+            No! Back to estimate
           </button>
           <button
             type="button"
@@ -200,9 +207,9 @@ export const DeclineModal: React.FC<DeclineModalProps> = ({
               onConfirm(reason);
               onClose();
             }}
-            className="px-4 py-2 text-sm font-medium text-white bg-rose-600 hover:bg-rose-700 cursor-pointer rounded-md shadow-2xs"
+            className="flex-1 h-9 md:h-10 rounded-md border border-decline-border text-decline hover:bg-decline-secondary font-medium text-xs md:text-sm transition-colors cursor-pointer bg-card-bg flex items-center justify-center"
           >
-            Confirm Decline
+            Yes, Decline
           </button>
         </div>
       </div>

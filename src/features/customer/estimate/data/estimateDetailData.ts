@@ -260,7 +260,7 @@ export const mockEstimateDetails: Record<string, EstimateDetailData> = {
     },
   },
 
-  // 6. Declined
+  // 6. Declined - Without Site Visit (Screenshot 2)
   "est-6": {
     id: "est-6",
     estimateId: "#EST-1024",
@@ -272,17 +272,52 @@ export const mockEstimateDetails: Record<string, EstimateDetailData> = {
     scopeOfWork: sharedScopeOfWork,
     serviceDetails: sharedServiceDetails,
     estimateDuration: "4-5 hours",
+    siteAssessmentNote:
+      "During the site visit, we found that the existing sod and debris need to be removed and the soil needs to be leveled before the requested landscaping work can be completed. These required services have been included in the estimate below.",
+    lineItems: sharedBaseLineItems,
+    siteAssessmentLineItems: sharedSiteAssessmentLineItems,
+    financials: {
+      subtotal: "$3,995.00",
+      discount: "-$50.00",
+      tax: "$45.00",
+      total: "$3,995.00",
+    },
+    termsAndConditions: sharedTermsAndConditions,
+    requestSummary: sharedRequestSummary,
+    declineInfo: {
+      declinedOn: "Aug 16, 2026, 02:00 PM",
+      reason: "Price is higher than expected.",
+    },
+  },
+
+  // 7. Declined - With Site Visit (Screenshot 3)
+  "est-7": {
+    id: "est-7",
+    estimateId: "#EST-1024",
+    version: "Version 1",
+    issueDate: "Aug 16, 2026",
+    status: "Declined",
+    hasSiteVisit: true,
+    property: sharedProperty,
+    scopeOfWork: sharedScopeOfWork,
+    serviceDetails: sharedServiceDetails,
+    estimateDuration: "4-5 hours",
+    siteAssessmentNote:
+      "The site visit confirmed that no additional requirements or adjustments are needed. The estimate is based on the original requested scope.",
     lineItems: sharedBaseLineItems,
     financials: {
       subtotal: "$3,995.00",
       discount: "-$50.00",
       tax: "$45.00",
       total: "$3,995.00",
-      priorPayment: "$0.00",
-      remainingBalance: "$3,995.00",
     },
     termsAndConditions: sharedTermsAndConditions,
     requestSummary: sharedRequestSummary,
+    siteVisit: sharedSiteVisit,
+    declineInfo: {
+      declinedOn: "Aug 16, 2026, 02:00 PM",
+      reason: "Price is higher than expected.",
+    },
   },
 };
 
@@ -317,7 +352,9 @@ export function getEstimateDetailData(id?: string): EstimateDetailData {
     }
     if (foundInList.status === "Declined") {
       return {
-        ...mockEstimateDetails["est-6"],
+        ...(foundInList.hasSiteVisit
+          ? mockEstimateDetails["est-7"]
+          : mockEstimateDetails["est-6"]),
         id: foundInList.id,
         estimateId: foundInList.estimateId,
         status: "Declined",

@@ -79,6 +79,11 @@ export interface EstimateApprovalInfo {
   completedOn: string;
 }
 
+export interface EstimateDeclineInfo {
+  declinedOn: string;
+  reason: string;
+}
+
 export interface EstimateDetailData {
   id: string;
   estimateId: string;
@@ -100,5 +105,6 @@ export interface EstimateDetailData {
   validTill?: string;
   siteVisit?: EstimateSiteVisitInfo;
   approvalInfo?: EstimateApprovalInfo;
+  declineInfo?: EstimateDeclineInfo;
 }
 
