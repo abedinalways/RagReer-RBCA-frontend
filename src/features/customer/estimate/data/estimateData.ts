@@ -71,6 +71,17 @@ export const estimateData: EstimateItem[] = [
     amount: "$3,995.00",
     hasSiteVisit: false,
   },
+  {
+    id: "est-7",
+    estimateId: "#EST-1030",
+    requestId: "#RQS-1030",
+    propertyAddress: "100 Whispering Pines Blvd",
+    serviceType: "Landscape & Property Maintenance",
+    issueDate: "Aug 12, 2026",
+    status: "Declined",
+    amount: "$3,995.00",
+    hasSiteVisit: true,
+  },
 ];
 
 export const estimateStatusStyles: Record<EstimateStatus, EstimateStatusStyle> =

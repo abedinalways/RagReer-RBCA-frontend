@@ -58,6 +58,10 @@ export const EstimateDetail: React.FC<EstimateDetailProps> = ({
     setData((prev) => ({
       ...prev,
       status: "Declined",
+      declineInfo: {
+        declinedOn: "Aug 16, 2026, 02:00 PM",
+        reason: reason.trim() || "Price is higher than expected.",
+      },
     }));
     showToast("Estimate has been declined.");
   };
@@ -71,19 +75,32 @@ export const EstimateDetail: React.FC<EstimateDetailProps> = ({
 
   // Status Badge Renderer
   const renderStatusBadge = (status: EstimateStatus) => {
-    const style = estimateStatusStyles[status];
-    if (style) {
+    if (status === "Declined") {
       return (
-        <span
-          className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-xs sm:text-sm font-medium ${style.badgeBg} ${style.badgeText} border ${style.badgeBorder}`}
-        >
-          <span className={`w-1.5 h-1.5 rounded-full ${style.dotBg}`} />
-          {style.label}
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-xs text-xs md:text-sm font-medium bg-[#FEF3F2] text-decline border border-[#FECDCA]">
+          <span className="w-1.5 h-1.5 rounded-full bg-decline" />
+          Declined
+        </span>
+      );
+    }
+    if (status === "Approved") {
+      return (
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-xs text-xs md:text-sm font-medium bg-[#ECFDF3] text-[#027A48] border border-[#ABEFC6]">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#12B76A]" />
+          Approved
+        </span>
+      );
+    }
+    if (status === "Pending Approval") {
+      return (
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-xs text-xs md:text-sm font-medium bg-[#FEF6EE] text-[#B54708] border border-[#FECDCA]/50">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#F79009]" />
+          Pending Approval
         </span>
       );
     }
     return (
-      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-xs sm:text-sm font-medium bg-[#E9E9EA]/50 text-secondary-subheading border border-[#E4E7EC]">
+      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-xs text-xs md:text-sm font-medium bg-[#E9E9EA]/50 text-secondary-subheading border border-[#E4E7EC]">
         <span className="w-1.5 h-1.5 rounded-full bg-secondary-subheading" />
         {status}
       </span>
@@ -141,8 +158,8 @@ export const EstimateDetail: React.FC<EstimateDetailProps> = ({
           </div>
         </div>
 
-        {/* HALF STACHE NOTE (When With Site Visit) */}
-        {data.hasSiteVisit && data.halfStacheNote && (
+        {/* HALF STACHE NOTE (When With Site Visit & Not Declined) */}
+        {data.status !== "Declined" && data.hasSiteVisit && data.halfStacheNote && (
           <div className="bg-note-green-bg border border-note-green-border rounded-lg p-3.5 sm:p-4 space-y-1 shadow-2xs">
             <h3 className="text-base md:text-lg font-bold text-primary-heading tracking-wider uppercase">
               HALF STACHE NOTE

@@ -89,36 +89,40 @@ export const EstimateActionCard: React.FC<EstimateActionCardProps> = ({
       <div className="bg-card-bg rounded-lg border border-border p-5 space-y-4 shadow-2xs">
         {/* Header */}
         <div className="flex items-center justify-between">
-          <h3 className="text-[1rem] font-semibold text-primary-heading">
+          <h3 className="text-base md:text-lg font-semibold text-primary-heading">
             Estimate Status
           </h3>
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[0.75rem] font-medium bg-[#FEF3F2] text-[#B42318] border border-[#FECDCA]">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#F04438]" />
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-xs text-xs md:text-sm font-medium bg-[#FEF3F2] text-decline border border-[#FECDCA]">
+            <span className="w-1.5 h-1.5 rounded-full bg-decline" />
             Declined
           </span>
         </div>
 
         {/* Big Blue Total Card */}
-        <div className="rounded-lg bg-[#CBD5E1] p-4 text-center text-slate-800 space-y-0.5 shadow-2xs">
-          <p className="text-[0.8125rem] text-slate-700 font-medium tracking-wide">
+        <div className="rounded-lg bg-[#A3BFDB] p-4 text-center text-white space-y-0.5 shadow-2xs">
+          <p className="text-sm md:text-base text-slate-800 font-medium tracking-wide">
             Total
           </p>
-          <p className="text-[1.625rem] sm:text-[1.75rem] font-bold">
+          <p className="text-xl md:text-2xl font-bold drop-shadow-2xs">
             {financials.total}
           </p>
         </div>
 
-        <p className="text-[0.8125rem] text-secondary-subheading leading-relaxed text-center">
-          This estimate was declined. If your scope or timeline has changed, you can submit a new service request.
-        </p>
+        {/* Details list */}
+        <div className="space-y-2 pt-1 text-xs md:text-sm">
+          <div className="flex items-center justify-between">
+            <span className="text-secondary-subheading">Declined On</span>
+            <span className="text-primary font-normal">
+              {data.declineInfo?.declinedOn || "Aug 16, 2026, 02:00 PM"}
+            </span>
+          </div>
 
-        <div className="pt-1">
-          <Link
-            href="/customer/requests/new"
-            className="w-full h-10 flex items-center justify-center rounded-md bg-primary hover:bg-primary-hover text-white font-medium text-[0.875rem] transition-colors cursor-pointer shadow-2xs text-center"
-          >
-            Submit New Request
-          </Link>
+          <div className="flex items-start justify-between gap-3">
+            <span className="text-secondary-subheading shrink-0">Reason</span>
+            <span className="text-primary font-normal text-right">
+              {data.declineInfo?.reason || "Price is higher than expected."}
+            </span>
+          </div>
         </div>
       </div>
     );
