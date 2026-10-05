@@ -8,7 +8,10 @@ import EmptyStateCard from "@/components/reusable/EmptyStateCard";
 import { DocumentIcon } from "@/components/icons/DocumentIcon";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 
+import { useRouter } from "next/navigation";
+
 export const Estimate: React.FC = () => {
+  const router = useRouter();
   const [estimates] = useState<EstimateItem[]>(estimateData);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("All Status");
@@ -31,12 +34,15 @@ export const Estimate: React.FC = () => {
   }, [estimates, searchQuery, selectedStatus]);
 
   const columns = useMemo(
-    () => createEstimateColumns((est) => console.log("Action on:", est)),
-    [],
+    () =>
+      createEstimateColumns((est) => {
+        router.push(`/customer/estimations/${est.id}`);
+      }),
+    [router],
   );
 
   const handleRequestClick = () => {
-    console.log("Redirecting to requests...");
+    router.push("/customer/requests");
   };
 
   return (

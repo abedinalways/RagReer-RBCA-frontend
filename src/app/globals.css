@@ -42,6 +42,12 @@
     --color-tag-rescheduling-text: #B47804;
     --color-trend-up: #16A34A;
     --color-trend-down: #E11D48;
+    --color-decline: #D92D20;
+    --color-decline-border: #FDA29B;
+    --color-decline-secondary: #FEF3F2;
+    --color-note-green-bg: rgba(4, 145, 62, 0.09);
+    --color-note-green-border: #04913E;
+    --color-secondary-heading: #5C5F60;
 }
 
 @layer base {
@@ -57,9 +63,15 @@
         --Surface: #E9E9EA;
 
         --primary-heading: #1D1F20;
+        --secondary-heading: #5C5F60;
         --secondary-subheading: #5C5F60;
         --color-primary: #5980A6;
         --color-info: #0777F6;
+        --color-decline: #D92D20;
+        --color-decline-border: #FDA29B;
+        --color-decline-secondary: #FEF3F2;
+        --color-note-green-bg: rgba(4, 145, 62, 0.09);
+        --color-note-green-border: #04913E;
         --color-blue-50: #E7F1FB;
         --color-blue-100: #CADFF4;
         --color-nav-bg: #EAF2F9;
