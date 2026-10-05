@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import {
   ArrowLeft,
@@ -30,6 +31,20 @@ import PoolIcon from "@/components/icons/customer/PoolIcon";
 import GardenIcon from "@/components/icons/customer/GardenIcon";
 import { useModal } from "@/hooks/useModal";
 import { PropertyGalleryModal } from "./PropertyGalleryModal";
+
+const PropertyLocationMap = dynamic(
+  () =>
+    import("./PropertyLocationMap").then((mod) => mod.PropertyLocationMap),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-full min-h-[192px] rounded-lg overflow-hidden border border-border bg-slate-50 flex flex-col items-center justify-center text-secondary-subheading gap-2 text-xs">
+        <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+        <span>Loading property map...</span>
+      </div>
+    ),
+  }
+);
 
 interface MyPropertiesDetailsProps {
   propertyId?: string;
@@ -247,12 +262,14 @@ export const MyPropertiesDetails: React.FC<MyPropertiesDetailsProps> = ({
             </h3>
 
             <div className="relative w-full h-48 rounded-lg overflow-hidden border border-border">
-              <Image
-                src={property.location.mapImageUrl}
-                alt="Map preview"
-                fill
-                className="object-cover"
-                unoptimized
+              <PropertyLocationMap
+                lat={property.location.lat}
+                lng={property.location.lng}
+                zoom={property.location.zoom}
+                title={property.title}
+                address={property.location.address}
+                cityRegion={property.location.cityRegion}
+                className="w-full h-full"
               />
             </div>
 

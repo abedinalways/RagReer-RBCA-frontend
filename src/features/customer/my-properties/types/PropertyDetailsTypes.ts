@@ -14,7 +14,10 @@ export interface PropertyDetailsMaintainer {
 export interface PropertyDetailsLocation {
   address: string;
   cityRegion: string;
-  mapImageUrl: string;
+  mapImageUrl?: string;
+  lat?: number;
+  lng?: number;
+  zoom?: number;
 }
 
 export interface PropertyDetailsData {
