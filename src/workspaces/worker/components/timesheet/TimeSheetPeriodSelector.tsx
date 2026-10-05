@@ -1,3 +1,5 @@
+"use client";
+
 import { CustomSelect } from "@/components/ui/CustomSelect";
 import { PeriodOption } from "../../hooks/useWorkerTimeSheet";
 
