@@ -36,7 +36,7 @@ export function WorkerHeader() {
         >
           <NotificationBellIcon className="h-6 w-6 text-primary" />
         </button>
-        <LogoutButton />
+        {/* <LogoutButton /> */}
       </div>
     </header>
   );
