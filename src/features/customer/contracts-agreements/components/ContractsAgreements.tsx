@@ -10,44 +10,48 @@ import { CustomSelect } from "@/components/ui/CustomSelect";
 
 export const ContractsAgreements: React.FC = () => {
   const [contracts] = useState<ContractItem[]>(contractsAgreementsData);
-  const [searchQuery, setSearchQuery] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("All Status");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(25);
 
   const filteredContracts = useMemo(() => {
     return contracts.filter((cn) => {
-      const matchesSearch =
-        cn.contractId.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        cn.propertyAddress.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        cn.serviceType.toLowerCase().includes(searchQuery.toLowerCase());
-
       const matchesStatus =
         selectedStatus === "All Status" ? true : cn.status === selectedStatus;
-
-      return matchesSearch && matchesStatus;
+      return matchesStatus;
     });
-  }, [contracts, searchQuery, selectedStatus]);
+  }, [contracts, selectedStatus]);
 
   const columns = useMemo(
-    () => createContractsColumns((cn) => console.log("Action on:", cn)),
+    () =>
+      createContractsColumns((cn) => {
+        console.log("View contract:", cn);
+      }),
     [],
   );
 
-  const handleRequestClick = () => {
-    console.log("Redirecting to requests...");
-  };
-
   return (
-    <div>
+    <div className="space-y-4">
       {filteredContracts.length === 0 ? (
-        <EmptyStateCard
-          icon={<DocumentIcon className="w-7 h-7 text-primary" />}
-          title="No Contracts & Agreements Found"
-          description="You don't have any contracts or agreements yet."
-          actionLabel="Go to My Requests"
-          onAction={handleRequestClick}
-        />
+        <div className="pt-8 sm:pt-14 pb-12 flex flex-col items-center justify-center p-4">
+          <EmptyStateCard
+            icon={<DocumentIcon className="w-7 h-7 text-primary" />}
+            title="No Contract on Record"
+            description="After a proposal is approved, a formal master service agreement will be issued for digital execution."
+            actionLabel="Go to My Requests"
+            actionHref="/customer/requests"
+            className="max-w-xl"
+          />
+          {selectedStatus !== "All Status" && (
+            <button
+              type="button"
+              onClick={() => setSelectedStatus("All Status")}
+              className="mt-4 text-xs text-primary hover:underline cursor-pointer font-medium"
+            >
+              Reset Status Filter
+            </button>
+          )}
+        </div>
       ) : (
         <div className="bg-card-bg rounded-sm border border-border">
           {/* Header Section */}
@@ -55,29 +59,14 @@ export const ContractsAgreements: React.FC = () => {
             <h2 className="text-[1.25rem] font-medium text-primary-heading">
               All Contracts & Agreements
             </h2>
-            <div className="flex flex-col sm:flex-row items-center gap-3">
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Type to search"
-                className="w-full sm:w-48 h-9 border border-border bg-input-bg rounded-md px-3 text-sm text-txt-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+            <div className="w-full sm:w-36">
+              <CustomSelect
+                value={selectedStatus}
+                onChange={(val) => setSelectedStatus(val)}
+                options={["All Status", "Pending Approval", "Active"]}
+                size="sm"
+                align="right"
               />
-              <div className="w-full sm:w-44">
-                <CustomSelect
-                  value={selectedStatus}
-                  onChange={(val) => setSelectedStatus(val)}
-                  options={[
-                    "All Status",
-                    "Pending Approval",
-                    "Active",
-                    "Expired",
-                    "Declined",
-                  ]}
-                  size="sm"
-                  align="right"
-                />
-              </div>
             </div>
           </div>
 

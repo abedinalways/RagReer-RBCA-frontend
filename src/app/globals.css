@@ -47,6 +47,19 @@
     --color-decline-secondary: #FEF3F2;
     --color-note-green-bg: rgba(4, 145, 62, 0.09);
     --color-note-green-border: #04913E;
+    --color-terms-bg: #FEFBF0;
+    --color-terms-border: #FEDF89;
+    --color-badge-pending-bg: #FEF6EE;
+    --color-badge-pending-text: #B54708;
+    --color-badge-pending-border: #FECDCA;
+    --color-badge-pending-dot: #F79009;
+    --color-badge-active-bg: #ECFDF3;
+    --color-badge-active-text: #027A48;
+    --color-badge-active-border: #ABEFC6;
+    --color-badge-active-dot: #12B76A;
+    --color-banner-blue: #A3BFDB;
+    --color-table-total-bg: #EAF2F9;
+    --color-note-green-text: #027A48;
     --color-secondary-heading: #5C5F60;
 }
 
@@ -72,6 +85,19 @@
         --color-decline-secondary: #FEF3F2;
         --color-note-green-bg: rgba(4, 145, 62, 0.09);
         --color-note-green-border: #04913E;
+        --color-note-green-text: #027A48;
+        --color-terms-bg: #FEFBF0;
+        --color-terms-border: #FEDF89;
+        --color-badge-pending-bg: #FEF6EE;
+        --color-badge-pending-text: #B54708;
+        --color-badge-pending-border: #FECDCA;
+        --color-badge-pending-dot: #F79009;
+        --color-badge-active-bg: #ECFDF3;
+        --color-badge-active-text: #027A48;
+        --color-badge-active-border: #ABEFC6;
+        --color-badge-active-dot: #12B76A;
+        --color-banner-blue: #A3BFDB;
+        --color-table-total-bg: #EAF2F9;
         --color-blue-50: #E7F1FB;
         --color-blue-100: #CADFF4;
         --color-nav-bg: #EAF2F9;

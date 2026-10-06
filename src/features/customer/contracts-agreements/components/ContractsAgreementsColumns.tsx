@@ -1,4 +1,4 @@
-import React from "react";
+import Link from "next/link";
 import {
   ColumnDef,
   ContractItem,
@@ -21,18 +21,19 @@ export const StatusBadge: React.FC<{ status: ContractStatus }> = ({
 };
 
 export const createContractsColumns = (
-  onActionClick: (contract: ContractItem) => void,
+  onActionClick?: (contract: ContractItem) => void,
 ): ColumnDef<ContractItem>[] => [
   {
     header: "Contract ID",
     accessorKey: "contractId",
     cell: (row) => (
-      <button
-        onClick={() => onActionClick(row)}
+      <Link
+        href={`/customer/contracts/${row.id}`}
+        onClick={() => onActionClick?.(row)}
         className="text-primary hover:underline cursor-pointer font-medium"
       >
         {row.contractId}
-      </button>
+      </Link>
     ),
   },
   {
@@ -79,12 +80,13 @@ export const createContractsColumns = (
   {
     header: "Action",
     cell: (row) => (
-      <button
-        onClick={() => onActionClick(row)}
-        className="bg-card-bg border border-border text-txt-primary hover:bg-blue-50 font-medium px-3 py-1.5 rounded-md shadow-2xs cursor-pointer text-xs lg:text-sm"
+      <Link
+        href={`/customer/contracts/${row.id}`}
+        onClick={() => onActionClick?.(row)}
+        className="bg-card-bg border border-border hover:bg-primary-hover hover:text-primary-text hover:border-none text-txt-primary font-medium px-3 py-1.5 rounded-sm shadow-2xs cursor-pointer text-xs lg:text-sm inline-block text-center"
       >
-        View Details
-      </button>
+        View
+      </Link>
     ),
   },
 ];

@@ -22,6 +22,96 @@ export interface ContractStatusStyle {
   dotBg: string;
 }
 
+export interface ContractIncludedService {
+  title: string;
+  workIncluded: string[];
+}
+
+export interface ContractLineItem {
+  description: string;
+  quantity: string;
+  rate: string;
+  amount: string;
+}
+
+export interface ContractTermItem {
+  id: number;
+  title: string;
+  content: string;
+}
+
+export interface ContractPropertyInfo {
+  title: string;
+  address: string;
+  image: string;
+  propertyId?: string;
+}
+
+export interface ContractSchedulingInfo {
+  frequency: string;
+  startDate: string;
+  endDate: string;
+  preferredTime: string;
+  estimateDuration: string;
+  estimateVisit: string;
+}
+
+export interface ContractPaymentInfo {
+  monthlyRate: string;
+  nextPaymentDate: string;
+  paymentType: string;
+  billingFrequency: string;
+  paymentDuration: string;
+}
+
+export interface ContractSignatureData {
+  organizationName: string;
+  authorizedPersonName: string;
+  authority: string;
+  dateOfSignature: string;
+  method: "file" | "draw";
+  signatureDataUrl?: string;
+  fileName?: string;
+  signedAt?: string;
+}
+
+export interface ContractDetailData {
+  id: string;
+  contractId: string;
+  status: ContractStatus;
+  issueDate: string;
+  version: string;
+  agreementTitle: string;
+  provider: {
+    name: string;
+    email: string;
+    phone: string;
+  };
+  customer: {
+    name: string;
+    email: string;
+    phone: string;
+  };
+  requestedService: string;
+  serviceAgreementType: string;
+  contractDuration: string;
+  contractValue: string;
+  serviceDetails: {
+    scopeOfWork: string;
+    includedServices: ContractIncludedService[];
+  };
+  pricing: {
+    lineItems: ContractLineItem[];
+    totalEstimates: string;
+  };
+  termsAndConditions: ContractTermItem[];
+  property: ContractPropertyInfo;
+  schedulingDetails: ContractSchedulingInfo;
+  paymentTerms: ContractPaymentInfo;
+  accessNote: string;
+  signatureInfo?: ContractSignatureData;
+}
+
 export interface ColumnDef<T> {
   header: string;
   accessorKey?: keyof T;
