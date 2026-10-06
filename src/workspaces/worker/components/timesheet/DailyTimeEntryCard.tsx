@@ -7,7 +7,7 @@ interface DailyTimeEntryCardProps {
 
 export function DailyTimeEntryCard({ entry }: DailyTimeEntryCardProps) {
   return (
-    <div className="flex items-center gap-3.5 rounded-xl border border-border bg-card-bg p-3 shadow-2xs transition-all hover:border-primary/40 hover:shadow-xs">
+    <div className="flex items-center gap-3.5 rounded-md border border-border bg-card-bg p-3 shadow-2xs transition-all hover:border-primary/40 hover:shadow-xs">
       {/* Date Box */}
       <div className="flex flex-col items-center justify-center rounded-lg bg-blue-50/70 border border-blue-100/50 px-3 py-2 min-w-[70px] shrink-0 text-center">
         <span className="text-xs font-medium text-txt-primary leading-tight">
@@ -23,10 +23,10 @@ export function DailyTimeEntryCard({ entry }: DailyTimeEntryCardProps) {
 
       {/* Work Details */}
       <div className="flex-1 min-w-0 space-y-1">
-        <div className="text-base font-bold text-primary leading-tight">
+        <div className="text-base font-semibold text-primary leading-tight">
           {entry.duration}
         </div>
-        <div className="text-sm font-semibold text-primary-heading truncate leading-snug">
+        <div className="text-sm font-semibold text-secondary-subheading truncate leading-snug">
           {entry.title}
         </div>
         <div className="flex items-center gap-1.5 text-xs text-secondary-subheading">

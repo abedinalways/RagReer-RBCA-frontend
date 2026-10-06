@@ -14,7 +14,7 @@ export function TotalHoursCard({
   overtimePercentage,
 }: TotalHoursCardProps) {
   return (
-    <div className="rounded-xl border border-border bg-card-bg p-4 shadow-2xs space-y-3.5">
+    <div className="rounded-md border border-border bg-card-bg p-4 shadow-2xs space-y-3.5">
       <div className="flex items-center gap-2.5">
         <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary text-white shadow-2xs">
           <Clock className="h-4 w-4" />
@@ -25,7 +25,7 @@ export function TotalHoursCard({
       </div>
 
       <div className="flex items-baseline">
-        <span className="text-3xl font-bold tracking-tight text-primary-heading font-barlow">
+        <span className="text-xl font-medium tracking-tight text-primary-heading">
           {totalHours}
         </span>
         <span className="ml-1.5 text-sm font-normal text-secondary-subheading">

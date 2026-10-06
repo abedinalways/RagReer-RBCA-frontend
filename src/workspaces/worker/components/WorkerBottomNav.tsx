@@ -25,7 +25,7 @@ export function WorkerBottomNav() {
       <div className="mx-auto w-full max-w-md px-3 pb-[max(0.75rem,env(safe-area-inset-bottom,0px))] pl-[max(0.75rem,env(safe-area-inset-left,0px))] pr-[max(0.75rem,env(safe-area-inset-right,0px))]">
         <nav
           aria-label="Worker navigation"
-          className="pointer-events-auto rounded-2xl border border-[#D5E3F0] bg-blue-50/95 p-1 sm:p-1.5 shadow-lg shadow-slate-900/10 backdrop-blur-md"
+          className="pointer-events-auto rounded-md border border-[#D5E3F0] bg-blue-50/95 p-1 sm:p-1.5 shadow-lg shadow-slate-900/10 backdrop-blur-md"
         >
           <div
             className="grid gap-1 items-center"
@@ -43,7 +43,7 @@ export function WorkerBottomNav() {
                   href={item.href}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "group flex min-w-0 flex-col items-center justify-center gap-1 rounded-xl py-2 px-1 sm:py-2.5 sm:px-2 transition-all duration-200 select-none touch-manipulation",
+                    "group flex min-w-0 flex-col items-center justify-center gap-1 rounded-md py-2 px-1 sm:py-2.5 sm:px-2 transition-all duration-200 select-none touch-manipulation",
                     active
                       ? "bg-primary text-white shadow-xs"
                       : "bg-transparent text-primary hover:bg-white/60 active:scale-95",
