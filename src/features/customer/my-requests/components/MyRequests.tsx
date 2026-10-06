@@ -101,7 +101,7 @@ export const MyRequests: React.FC = () => {
             <button
               type="button"
               onClick={() => setIsRescheduleModalOpen(true)}
-              className="px-4 py-2 text-xs sm:text-sm font-medium bg-[#5980A6] hover:bg-primary-hover text-white rounded transition-colors cursor-pointer shrink-0"
+              className="px-4 py-2 text-xs sm:text-sm font-medium bg-primary hover:bg-primary-hover text-white rounded transition-colors cursor-pointer shrink-0"
             >
               Review & Approve
             </button>
@@ -220,7 +220,7 @@ export const MyRequests: React.FC = () => {
                       Service Rescheduled
                     </span>
                     <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium bg-[#EAF3FA] text-[#5980A6] border border-[#5980A6]/30">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#5980A6]" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-primary" />
                       Rescheduled
                     </span>
                   </div>

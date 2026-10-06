@@ -74,7 +74,7 @@ export const EstimateActionCard: React.FC<EstimateActionCardProps> = ({
         {/* Action Button */}
         <div className="pt-1">
           <Link
-            href="/customer/contracts-agreements"
+            href="/customer/contracts"
             className="w-full h-10 flex items-center justify-center rounded-md bg-primary hover:bg-primary-hover text-white font-medium text-[0.875rem] transition-colors cursor-pointer shadow-2xs text-center"
           >
             View Contracts & Agreements
