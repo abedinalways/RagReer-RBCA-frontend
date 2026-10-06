@@ -90,9 +90,9 @@ export const createEstimateColumns = (
     cell: (row) => (
       <button
         onClick={() => onActionClick(row)}
-        className="bg-card-bg border border-border text-txt-primary hover:bg-blue-50 font-medium px-3 py-1.5 rounded-md shadow-2xs cursor-pointer text-xs lg:text-sm"
+        className="bg-card-bg border  border-border text-txt-primary hover:bg-primary hover:text-white font-medium px-3 py-1.5 rounded-md shadow-2xs cursor-pointer text-xs lg:text-sm"
       >
-        View Details
+        View
       </button>
     ),
   },

@@ -59,6 +59,13 @@ export const contractStatusStyles: Record<ContractStatus, ContractStatusStyle> =
       badgeBorder: "border-emerald-200",
       dotBg: "bg-emerald-500",
     },
+    "Contract Signed": {
+      label: "Contract Signed",
+      badgeBg: "bg-badge-active-bg",
+      badgeText: "text-badge-active-text",
+      badgeBorder: "border-badge-active-border",
+      dotBg: "bg-badge-active-dot",
+    },
     Expired: {
       label: "Expired",
       badgeBg: "bg-gray-100",
