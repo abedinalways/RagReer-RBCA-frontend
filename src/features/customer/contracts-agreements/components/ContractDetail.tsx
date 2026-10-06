@@ -15,7 +15,9 @@ import ContractPropertyCard from "./ContractPropertyCard";
 import ContractSchedulingCard from "./ContractSchedulingCard";
 import ContractPaymentTermsCard from "./ContractPaymentTermsCard";
 import ContractAccessNoteCard from "./ContractAccessNoteCard";
+import ContractVersionHistoryCard from "./ContractVersionHistoryCard";
 import ContractSignatureModal from "./ContractSignatureModal";
+import ContractSignedReviewModal from "./ContractSignedReviewModal";
 
 interface ContractDetailProps {
   contractId?: string;
@@ -29,6 +31,7 @@ export const ContractDetail: React.FC<ContractDetailProps> = ({
     getContractDetailData(contractId),
   );
   const [isSignatureModalOpen, setIsSignatureModalOpen] = useState(false);
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   const showToast = (msg: string) => {
@@ -39,7 +42,7 @@ export const ContractDetail: React.FC<ContractDetailProps> = ({
   const handleSignatureConfirm = (sigData: ContractSignatureData) => {
     setData((prev) => ({
       ...prev,
-      status: "Active",
+      status: "Contract Signed",
       signatureInfo: sigData,
     }));
     showToast("Contract has been digitally signed and acknowledged!");
@@ -51,6 +54,9 @@ export const ContractDetail: React.FC<ContractDetailProps> = ({
       window.print();
     }
   };
+
+  const isContractSigned =
+    data.status === "Contract Signed" || data.status === "Active";
 
   return (
     <div className="min-h-screen bg-page-bg pb-14 space-y-4">
@@ -84,10 +90,10 @@ export const ContractDetail: React.FC<ContractDetailProps> = ({
                 <span className="w-1.5 h-1.5 rounded-full bg-badge-pending-dot" />
                 Pending Approval
               </span>
-            ) : data.status === "Active" ? (
+            ) : isContractSigned ? (
               <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-xs text-xs font-medium bg-badge-active-bg text-badge-active-text border border-badge-active-border">
                 <span className="w-1.5 h-1.5 rounded-full bg-badge-active-dot" />
-                Active
+                Contract Signed
               </span>
             ) : (
               <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-xs text-xs font-medium bg-surface/50 text-secondary-subheading border border-border">
@@ -124,7 +130,8 @@ export const ContractDetail: React.FC<ContractDetailProps> = ({
           <ContractTermsCard
             data={data}
             onReviewAndSign={() => setIsSignatureModalOpen(true)}
-            isSigned={data.status === "Active"}
+            onViewSignedDocument={() => setIsReviewModalOpen(true)}
+            isSigned={isContractSigned}
           />
         </div>
 
@@ -134,16 +141,27 @@ export const ContractDetail: React.FC<ContractDetailProps> = ({
           <ContractSchedulingCard scheduling={data.schedulingDetails} />
           <ContractPaymentTermsCard payment={data.paymentTerms} />
           <ContractAccessNoteCard note={data.accessNote} />
+          <ContractVersionHistoryCard
+            onOpen={() => showToast("Showing version history for #CN-1024-v1")}
+          />
         </div>
       </div>
 
-      {/* Signature Modal */}
+      {/* Signature Creation Modal */}
       <ContractSignatureModal
         isOpen={isSignatureModalOpen}
         onClose={() => setIsSignatureModalOpen(false)}
         onConfirm={handleSignatureConfirm}
         initialOrgName="Coastline Group"
         initialPersonName="Sarah William"
+      />
+
+      {/* Signed Document Review Modal */}
+      <ContractSignedReviewModal
+        isOpen={isReviewModalOpen}
+        onClose={() => setIsReviewModalOpen(false)}
+        signatureInfo={data.signatureInfo}
+        documentVersion={data.documentVersion || "Document version #CN-1024-v1"}
       />
     </div>
   );

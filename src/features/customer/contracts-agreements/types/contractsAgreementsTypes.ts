@@ -1,6 +1,7 @@
 export type ContractStatus =
   | "Pending Approval"
   | "Active"
+  | "Contract Signed"
   | "Expired"
   | "Declined";
 
@@ -72,7 +73,10 @@ export interface ContractSignatureData {
   method: "file" | "draw";
   signatureDataUrl?: string;
   fileName?: string;
+  fileSize?: string;
+  documentVersion?: string;
   signedAt?: string;
+  consentAgreed?: boolean;
 }
 
 export interface ContractDetailData {
@@ -81,6 +85,7 @@ export interface ContractDetailData {
   status: ContractStatus;
   issueDate: string;
   version: string;
+  documentVersion?: string;
   agreementTitle: string;
   provider: {
     name: string;
@@ -93,9 +98,12 @@ export interface ContractDetailData {
     phone: string;
   };
   requestedService: string;
+  requestedServiceType?: string;
   serviceAgreementType: string;
   contractDuration: string;
   contractValue: string;
+  totalEstimateAmount?: string;
+  signedNotificationEmail?: string;
   serviceDetails: {
     scopeOfWork: string;
     includedServices: ContractIncludedService[];

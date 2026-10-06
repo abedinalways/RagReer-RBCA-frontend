@@ -18,9 +18,13 @@ export const defaultContractDetailData: ContractDetailData = {
     phone: "999-(1234)-555",
   },
   requestedService: "Landscape & Property Maintenance",
+  requestedServiceType: "Type: Commercial",
   serviceAgreementType: "12 month agreement (recurring)",
   contractDuration: "Jan 01, 2026 to Dec 31, 2026",
   contractValue: "$2,518.00",
+  totalEstimateAmount: "$2,518.00",
+  documentVersion: "Document version #CN-1024-v1",
+  signedNotificationEmail: "jan.m*****@email.com",
   serviceDetails: {
     scopeOfWork:
       "Complete spring lawn cleanup and landscape refresh for the front and back yard, including removal of leaves and debris, bed edging, trimming of ornamental grasses, and a fresh layer of mulch.",

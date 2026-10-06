@@ -54,6 +54,11 @@ export const ContractOverviewCard: React.FC<ContractOverviewCardProps> = ({
             <p className="text-base md:text-lg font-medium text-primary-heading">
               {data.requestedService}
             </p>
+            {data.requestedServiceType && (
+              <p className="text-base md:text-lg text-txt-primary">
+                {data.requestedServiceType}
+              </p>
+            )}
           </div>
         </div>
 
@@ -79,10 +84,10 @@ export const ContractOverviewCard: React.FC<ContractOverviewCardProps> = ({
 
           <div className="space-y-0.5">
             <span className="text-xs md:text-sm text-secondary-subheading font-medium">
-              Contract Value
+              {data.totalEstimateAmount ? "Total Estimate Amount" : "Contract Value"}
             </span>
-            <p className="text-base md:text-lg font-medium  text-primary-heading">
-              {data.contractValue}
+            <p className="text-base md:text-lg font-medium text-primary-heading">
+              {data.totalEstimateAmount || data.contractValue}
             </p>
           </div>
         </div>
