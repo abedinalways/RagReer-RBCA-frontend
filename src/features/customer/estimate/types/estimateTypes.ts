@@ -84,6 +84,15 @@ export interface EstimateDeclineInfo {
   reason: string;
 }
 
+export interface EstimateRevisionInfo {
+  submittedOn: string;
+  validUntil: string;
+  reasons: string[];
+  description: string;
+  attachments?: string[];
+  note?: string;
+}
+
 export interface EstimateDetailData {
   id: string;
   estimateId: string;
@@ -106,5 +115,6 @@ export interface EstimateDetailData {
   siteVisit?: EstimateSiteVisitInfo;
   approvalInfo?: EstimateApprovalInfo;
   declineInfo?: EstimateDeclineInfo;
+  revisionInfo?: EstimateRevisionInfo;
 }
 
