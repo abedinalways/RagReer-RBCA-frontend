@@ -13,7 +13,7 @@ export function DailyEntriesSection({
   return (
     <section className="space-y-3 pt-1">
       <div className="flex items-center justify-between">
-        <h2 className="font-barlow text-xl font-bold text-primary-heading tracking-tight">
+        <h2 className="text-xl font-medium text-txt-primary tracking-tight">
           Daily entries
         </h2>
         <span className="text-xs font-semibold text-primary">
