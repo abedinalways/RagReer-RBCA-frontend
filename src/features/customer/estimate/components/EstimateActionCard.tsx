@@ -128,6 +128,60 @@ export const EstimateActionCard: React.FC<EstimateActionCardProps> = ({
     );
   }
 
+  if (data.revisionInfo) {
+    return (
+      <div className="bg-card-bg rounded-lg border border-border p-5 space-y-4 shadow-2xs">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <h3 className="text-base md:text-lg font-semibold text-primary-heading">
+            Estimate Status
+          </h3>
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-xs text-xs md:text-sm font-medium bg-[#FEF6EE] text-[#B54708] border border-[#FECDCA]/50">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#F79009]" />
+            Waiting for Review
+          </span>
+        </div>
+
+        {/* Big Blue Total Card */}
+        <div className="rounded-lg bg-[#A3BFDB] p-4 text-center text-white space-y-0.5 shadow-2xs">
+          <p className="text-sm md:text-base text-slate-800 font-medium tracking-wide">
+            Total
+          </p>
+          <p className="text-xl md:text-2xl font-bold drop-shadow-2xs">
+            {financials.total}
+          </p>
+        </div>
+
+        {/* Details list */}
+        <div className="space-y-2 pt-1 text-xs md:text-sm">
+          <div className="flex items-center justify-between">
+            <span className="text-secondary-subheading">
+              Change Request Submitted On
+            </span>
+            <span className="text-primary font-normal">
+              {data.revisionInfo.submittedOn}
+            </span>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <span className="text-secondary-subheading">Valid Until</span>
+            <span className="text-primary font-normal">
+              {data.revisionInfo.validUntil}
+            </span>
+          </div>
+        </div>
+
+        {/* Note banner */}
+        <div className="border-l-2 border-[#F79009] bg-[#FEFBF0]/70 p-2.5 rounded-r-md">
+          <p className="text-xs text-secondary-subheading leading-relaxed">
+            {data.revisionInfo.note ||
+              "Your change request has been submitted. We'll review your request and provide an updated estimate."}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   // Pending Approval State (Validity Period Card)
   return (
     <div className="bg-card-bg rounded-lg border border-border p-5 space-y-4 shadow-2xs">

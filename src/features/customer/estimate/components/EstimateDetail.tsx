@@ -50,8 +50,31 @@ export const EstimateDetail: React.FC<EstimateDetailProps> = ({
     showToast("Estimate approved successfully! Contracts & agreements will be prepared.");
   };
 
-  const handleRevisionSubmit = (notes: string) => {
-    showToast("Revision request submitted. Half Stache will review your notes.");
+  const handleRevisionSubmit = (formData: {
+    reasons: string[];
+    description: string;
+    attachment?: File | null;
+  }) => {
+    setData((prev) => ({
+      ...prev,
+      revisionInfo: {
+        submittedOn: "Aug 16, 2026, 02:00 PM",
+        validUntil: "Aug 16, 2026, 02:00 PM",
+        reasons: formData.reasons,
+        description: formData.description,
+        note: "Your change request has been submitted. We'll review your request and provide an updated estimate.",
+      },
+    }));
+    showToast("Revision request submitted. We'll review your request and provide an updated estimate.");
+  };
+
+  const handleRescheduleAppointment = () => {
+    setIsRevisionOpen(false);
+    const reqSlug = data.requestSummary.requestId
+      .toLowerCase()
+      .replace("#", "")
+      .trim();
+    router.push(`/customer/requests/${reqSlug || "req-1048"}`);
   };
 
   const handleDecline = (reason: string) => {
@@ -214,6 +237,7 @@ export const EstimateDetail: React.FC<EstimateDetailProps> = ({
         isOpen={isRevisionOpen}
         onClose={() => setIsRevisionOpen(false)}
         onSubmit={handleRevisionSubmit}
+        onRescheduleAppointment={handleRescheduleAppointment}
       />
 
       <DeclineModal
