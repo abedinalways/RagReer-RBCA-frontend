@@ -4,6 +4,7 @@ export type PaymentType = "Monthly" | "One - Time";
 
 export interface Invoice {
   id: string;
+  rawId: string;
   propertyAddress: string;
   serviceType: string;
   paymentType: PaymentType;
@@ -14,6 +15,49 @@ export interface Invoice {
   customerEmail?: string;
   dueDate?: string;
   notes?: string;
+}
+
+export interface InvoiceLineItem {
+  id: string;
+  description: string;
+  quantity: string;
+  rate: string;
+  amount: string;
+}
+
+export interface InvoicePartyInfo {
+  name: string;
+  email: string;
+  address: string;
+  avatarUrl?: string;
+}
+
+export interface InvoiceDetailData {
+  id: string;
+  rawId: string;
+  propertyName: string;
+  propertyAddress: string;
+  issueDate: string;
+  status: InvoiceStatus;
+  serviceAgreementType: string;
+  billingType: string;
+  paymentType: PaymentType;
+  payableMonth: string;
+  paymentTerms: string;
+  remainingMonths?: string;
+  totalAmount: string;
+  amountPayable: string;
+  amountPaid?: string;
+  remainingAmount?: string;
+  dueDate: string;
+  billedBy: InvoicePartyInfo;
+  billedTo: InvoicePartyInfo;
+  lineItems: InvoiceLineItem[];
+  notes: string[];
+  subtotal: string;
+  discount: string;
+  tax: string;
+  total: string;
 }
 
 export type SortField =
