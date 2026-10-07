@@ -1,28 +1,36 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { ChevronLeft, Check, CreditCard, ShieldCheck } from "lucide-react";
+import { ChevronLeft, Check, Loader2 } from "lucide-react";
 import { getInvoiceDetailData } from "../data/invoicesData";
-import { InvoiceDetailData } from "../types/invoicesTypes";
+import { InvoiceDetailData, BillingHistoryItem } from "../types/invoicesTypes";
 import { StatusBadge } from "./InvoicesColumns";
 import PropertyIcon from "@/components/icons/customer/PropertyIcon";
-import { Modal } from "@/components/reusable/Modal";
+import BillingHistory from "./BillingHistory";
+import PaymentReceiptModal from "./PaymentReceiptModal";
+import PaymentFailedModal from "./PaymentFailedModal";
+import { initiateCloverCheckout } from "../services/cloverPaymentService";
 
 interface InvoiceDetailProps {
   invoiceId?: string;
+  initialPaymentStatus?: string;
+  initialTxId?: string;
 }
 
 export const InvoiceDetail: React.FC<InvoiceDetailProps> = ({
   invoiceId = "inv-1024",
+  initialPaymentStatus,
+  initialTxId,
 }) => {
   const router = useRouter();
   const [data, setData] = useState<InvoiceDetailData>(() =>
     getInvoiceDetailData(invoiceId),
   );
-  const [isPayModalOpen, setIsPayModalOpen] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<"card" | "bank">("card");
+  const [isReceiptModalOpen, setIsReceiptModalOpen] = useState(false);
+  const [isFailedModalOpen, setIsFailedModalOpen] = useState(false);
+  const [isRedirectingToClover, setIsRedirectingToClover] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   const showToast = (msg: string) => {
@@ -30,15 +38,58 @@ export const InvoiceDetail: React.FC<InvoiceDetailProps> = ({
     setTimeout(() => setToastMessage(null), 4000);
   };
 
-  const handlePayConfirm = () => {
-    setData((prev) => ({
-      ...prev,
-      status: "Paid",
-      amountPaid: prev.total,
-      remainingAmount: "$0.00",
-    }));
-    setIsPayModalOpen(false);
-    showToast("Payment of " + data.amountPayable + " completed successfully!");
+  // Handle Clover return callback (e.g. redirected back from Clover)
+  useEffect(() => {
+    if (initialPaymentStatus === "success") {
+      setData((prev) => ({
+        ...prev,
+        status: "Paid",
+        amountPaid: prev.total,
+        remainingAmount: "$0.00",
+      }));
+      setIsReceiptModalOpen(true);
+      showToast("Payment completed successfully via Clover!");
+      if (typeof window !== "undefined") {
+        window.history.replaceState(null, "", window.location.pathname);
+      }
+    } else if (initialPaymentStatus === "failed") {
+      setIsFailedModalOpen(true);
+      if (typeof window !== "undefined") {
+        window.history.replaceState(null, "", window.location.pathname);
+      }
+    }
+  }, [initialPaymentStatus]);
+
+  const isPaid = data.status === "Paid";
+
+  /**
+   * Direct redirect to Clover Hosted Checkout system.
+   * Future backend integration only requires updating cloverPaymentService.ts.
+   */
+  const handlePayWithClover = async (simulateFailure = false) => {
+    try {
+      setIsRedirectingToClover(true);
+      const currentUrl =
+        typeof window !== "undefined"
+          ? window.location.origin + window.location.pathname
+          : `/customer/invoices/${data.rawId}`;
+
+      await initiateCloverCheckout(
+        {
+          invoiceId: data.id,
+          amount: data.amountPayable,
+          customerName: data.billedTo.name,
+          customerEmail: data.billedTo.email,
+          successUrl: currentUrl,
+          cancelUrl: currentUrl,
+        },
+        { simulateFailure }
+      );
+    } catch (err) {
+      setIsRedirectingToClover(false);
+      showToast("Unable to connect to Clover checkout. Please try again.");
+      console.error("Clover redirect error:", err);
+    }
   };
 
   const handleDownloadReceipt = () => {
@@ -48,8 +99,25 @@ export const InvoiceDetail: React.FC<InvoiceDetailProps> = ({
     }
   };
 
+  const billingHistoryItems: BillingHistoryItem[] = [
+    {
+      id: "tx-detail-1",
+      transactionId: initialTxId || "#TX 12458",
+      billedTo: data.billedTo.name,
+      paymentCompletionDate: "Sep 05, 2026",
+      amount: data.total,
+      paymentMethod: "Clover Hosted Checkout",
+      companyName: data.billedBy.name,
+      companyCategory: "Lawn Care",
+      invoiceId: data.id,
+      completedService: "Landscape & Property Maintenance",
+      totalVisit: "03",
+      serviceCompletionDate: "Aug 27, 2026",
+    },
+  ];
+
   return (
-    <div className="min-h-screen bg-page-bg pb-14 space-y-4">
+    <div className="min-h-screen bg-page-bg pb-14 space-y-6">
       {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed top-5 right-5 z-50 bg-primary-dark text-white px-4 py-2.5 rounded-md shadow-lg flex items-center gap-2 text-xs sm:text-sm animate-in fade-in slide-in-from-top-2">
@@ -58,7 +126,7 @@ export const InvoiceDetail: React.FC<InvoiceDetailProps> = ({
         </div>
       )}
 
-      {/* Top Header: Back + Invoice Title & Badge (Figma Screenshot 3 & 4) */}
+      {/* Top Header: Back + Invoice Title & Badge */}
       <div className="space-y-1.5">
         <button
           type="button"
@@ -77,11 +145,23 @@ export const InvoiceDetail: React.FC<InvoiceDetailProps> = ({
         </div>
       </div>
 
-      {/* Main 2-Column Responsive Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6 items-start">
-        {/* Left Column (2/3 width on desktop) */}
-        <div className="lg:col-span-2 space-y-4 sm:space-y-5">
-          {/* Main Invoice Card */}
+      {/* Main Layout: 2-columns if not paid, full width if paid (Figma Screenshot 4) */}
+      <div
+        className={
+          isPaid
+            ? "space-y-6"
+            : "grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6 items-start"
+        }
+      >
+        {/* Left / Main Section */}
+        <div
+          className={
+            isPaid
+              ? "space-y-5"
+              : "lg:col-span-2 space-y-4 sm:space-y-5"
+          }
+        >
+          {/* Main Invoice Header & Details Card */}
           <div className="bg-card-bg rounded-sm border border-border p-5 sm:p-6 space-y-5">
             {/* Property Header */}
             <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
@@ -98,7 +178,9 @@ export const InvoiceDetail: React.FC<InvoiceDetailProps> = ({
               </div>
 
               <div className="text-left sm:text-right pl-7 sm:pl-0">
-                <p className="text-xs md:text-sm text-secondary-subheading">Date Issued</p>
+                <p className="text-xs md:text-sm text-secondary-subheading">
+                  Date Issued
+                </p>
                 <p className="text-sm md:text-base font-medium text-primary-heading">
                   {data.issueDate}
                 </p>
@@ -108,7 +190,7 @@ export const InvoiceDetail: React.FC<InvoiceDetailProps> = ({
             {/* Divider */}
             <hr className="border-border" />
 
-            {/* Meta Info Grid (Figma Screenshot 3 & 4) */}
+            {/* Meta Info Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-base md:text-lg">
               <div>
                 <p className="text-secondary-subheading text-xs md:text-sm">
@@ -160,7 +242,26 @@ export const InvoiceDetail: React.FC<InvoiceDetailProps> = ({
                 </p>
               </div>
 
-              {data.remainingAmount ? (
+              {isPaid ? (
+                <>
+                  <div>
+                    <p className="text-secondary-subheading text-xs md:text-sm">
+                      Paid
+                    </p>
+                    <p className="font-normal text-primary-heading mt-0.5">
+                      $0.00
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-secondary-subheading text-xs md:text-sm">
+                      Amount Due
+                    </p>
+                    <p className="font-normal text-primary-heading mt-0.5">
+                      {data.totalAmount}
+                    </p>
+                  </div>
+                </>
+              ) : data.remainingAmount ? (
                 <>
                   <div>
                     <p className="text-secondary-subheading text-xs md:text-sm">
@@ -265,7 +366,7 @@ export const InvoiceDetail: React.FC<InvoiceDetailProps> = ({
             </div>
           </div>
 
-          {/* Invoice Details Table Section (Figma Screenshot 3 & 4) */}
+          {/* Invoice Details Table Section (Figma Exact) */}
           <div className="bg-card-bg rounded-sm border border-border p-5 sm:p-6 space-y-4">
             <h3 className="text-base md:text-lg font-medium text-primary-heading">
               Invoice Details
@@ -350,133 +451,105 @@ export const InvoiceDetail: React.FC<InvoiceDetailProps> = ({
               </div>
             </div>
           </div>
+
+          {/* Billing History Section on Paid Details Page (Figma Screenshot 4) */}
+          {isPaid && (
+            <BillingHistory
+              items={billingHistoryItems}
+              onViewReceipt={() => setIsReceiptModalOpen(true)}
+              onDownloadReceipt={handleDownloadReceipt}
+              className="mt-6"
+            />
+          )}
         </div>
 
-        {/* Right Column (1/3 width on desktop): Payment & Billing Card */}
-        <div className="lg:col-span-1">
-          <div className="bg-card-bg rounded-sm border border-border p-5 sm:p-6 sticky top-6 space-y-4">
-            <h3 className="text-lg md:text-xl font-medium text-primary-heading">
-              Payment & Billing
-            </h3>
+        {/* Right Column: Payment & Billing Card (Only shown if NOT paid) */}
+        {!isPaid && (
+          <div className="lg:col-span-1">
+            <div className="bg-card-bg rounded-sm border border-border p-5 sm:p-6 sticky top-6 space-y-4">
+              <h3 className="text-lg md:text-xl font-medium text-primary-heading">
+                Payment & Billing
+              </h3>
 
-            <hr className="border-border" />
+              <hr className="border-border" />
 
-            <div>
-              <p className="text-base md:text-lg text-secondary-subheading">
-                {data.status === "Paid" ? "Amount Paid" : "Amount Due"}
-              </p>
-              <p className="text-xl md:text-2xl  font-medium text-primary mt-1">
-                {data.status === "Paid" ? data.total : data.amountPayable}
-              </p>
-            </div>
+              <div>
+                <p className="text-base md:text-lg text-secondary-subheading">
+                  Amount Due
+                </p>
+                <p className="text-xl md:text-2xl font-medium text-primary mt-1">
+                  {data.amountPayable}
+                </p>
+              </div>
 
-            {data.status === "Paid" ? (
-              <div className="space-y-3 pt-2">
-                <div className="p-3 bg-badge-active-bg border border-badge-active-border rounded-xs text-xs text-badge-active-text flex items-center gap-2">
-                  <Check className="w-4 h-4 text-badge-active-dot shrink-0" />
-                  <span>This invoice has been paid in full.</span>
-                </div>
+              {/* Pay Online with Clover Hosted Checkout */}
+              <button
+                type="button"
+                disabled={isRedirectingToClover}
+                onClick={() => handlePayWithClover(false)}
+                className="mt-3 w-full py-2.5 sm:py-3 bg-primary hover:bg-primary-hover disabled:opacity-75 text-white font-medium text-sm md:text-base rounded-xs transition-colors cursor-pointer shadow-2xs flex items-center justify-center gap-2"
+              >
+                {isRedirectingToClover ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin shrink-0" />
+                    <span>Redirecting to Clover...</span>
+                  </>
+                ) : (
+                  <span>Pay Online Now</span>
+                )}
+              </button>
+
+              {/* Development helper to test Failed state if needed */}
+              <div className="pt-1 flex items-center justify-between text-[11px] text-secondary-subheading">
+                <span>Secure payment via Clover</span>
                 <button
                   type="button"
-                  onClick={handleDownloadReceipt}
-                  className="w-full py-2.5 bg-card-bg hover:bg-page-bg border border-border text-primary font-medium text-xs sm:text-sm rounded-xs transition-colors cursor-pointer shadow-2xs"
+                  onClick={() => handlePayWithClover(true)}
+                  className="hover:underline text-secondary-subheading hover:text-decline cursor-pointer"
                 >
-                  Download Receipt
+                  Test failure
                 </button>
               </div>
-            ) : (
-              <button
-                type="button"
-                onClick={() => setIsPayModalOpen(true)}
-                className="mt-3 w-full py-2.5 sm:py-3 bg-primary hover:bg-primary-hover text-white font-medium text-sm md:text-base rounded-xs transition-colors cursor-pointer shadow-2xs flex items-center justify-center gap-2"
-              >
-                Pay Online Now
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Pay Online Modal */}
-      <Modal
-        isOpen={isPayModalOpen}
-        onClose={() => setIsPayModalOpen(false)}
-        title={
-          <span className="text-lg sm:text-xl font-semibold text-primary-heading">
-            Pay Invoice {data.id}
-          </span>
-        }
-        maxWidth="md"
-        contentClassName="p-5 sm:p-6 space-y-4 text-left"
-        footer={
-          <div className="grid grid-cols-2 gap-3 w-full">
-            <button
-              type="button"
-              onClick={() => setIsPayModalOpen(false)}
-              className="w-full py-2.5 rounded-xs border border-border hover:bg-slate-50 text-secondary-subheading font-medium text-xs sm:text-sm transition-colors cursor-pointer bg-card-bg"
-            >
-              Cancel
-            </button>
-            <button
-              type="button"
-              onClick={handlePayConfirm}
-              className="w-full py-2.5 rounded-xs bg-primary hover:bg-primary-hover text-white font-medium text-xs sm:text-sm transition-colors cursor-pointer shadow-2xs"
-            >
-              Confirm Pay {data.amountPayable}
-            </button>
-          </div>
-        }
-      >
-        <div className="space-y-4">
-          <div className="p-3 bg-blue-50/50 border border-blue-100 rounded-md">
-            <p className="text-xs text-secondary-subheading">Total Due</p>
-            <p className="text-xl font-bold text-primary mt-0.5">
-              {data.amountPayable}
-            </p>
-          </div>
-
-          <div className="space-y-2">
-            <label className="block text-xs sm:text-sm font-semibold text-primary-heading">
-              Select Payment Method
-            </label>
-            <div className="grid grid-cols-2 gap-3">
-              <button
-                type="button"
-                onClick={() => setPaymentMethod("card")}
-                className={`p-3 rounded-md border text-left flex items-center gap-2.5 cursor-pointer transition-colors ${
-                  paymentMethod === "card"
-                    ? "border-primary bg-primary/5 text-primary"
-                    : "border-border text-txt-primary hover:bg-page-bg"
-                }`}
-              >
-                <CreditCard className="w-4 h-4 shrink-0" />
-                <span className="text-xs sm:text-sm font-medium">
-                  Credit / Debit
-                </span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setPaymentMethod("bank")}
-                className={`p-3 rounded-md border text-left flex items-center gap-2.5 cursor-pointer transition-colors ${
-                  paymentMethod === "bank"
-                    ? "border-primary bg-primary/5 text-primary"
-                    : "border-border text-txt-primary hover:bg-page-bg"
-                }`}
-              >
-                <ShieldCheck className="w-4 h-4 shrink-0" />
-                <span className="text-xs sm:text-sm font-medium">
-                  Bank / ACH
-                </span>
-              </button>
             </div>
           </div>
+        )}
+      </div>
 
-          <p className="text-[11px] text-secondary-subheading leading-relaxed">
-            Transactions are encrypted and processed securely. You will receive an instant receipt upon confirmation.
-          </p>
-        </div>
-      </Modal>
+      {/* Payment Receipt Modal (Figma Screenshot 1) */}
+      <PaymentReceiptModal
+        isOpen={isReceiptModalOpen}
+        onClose={() => setIsReceiptModalOpen(false)}
+        onBackToHome={() => router.push("/customer/invoices")}
+        onDownloadReceipt={handleDownloadReceipt}
+        receiptData={{
+          companyName: data.billedBy.name,
+          companyCategory: "Lawn Care",
+          invoiceId: data.id,
+          transactionId: initialTxId || "#TX 12458",
+          customerName: data.billedTo.name,
+          propertyAddress: data.propertyAddress,
+          completedService: "Landscape & Property Maintenance",
+          totalVisit: "03",
+          serviceCompletionDate: "Aug 27, 2026",
+          paymentDate: "Sep 05, 2026",
+          paymentMethod: "Online",
+          totalPaid: data.total,
+        }}
+      />
+
+      {/* Payment Failed Modal (Figma Screenshot 2) */}
+      <PaymentFailedModal
+        isOpen={isFailedModalOpen}
+        onClose={() => setIsFailedModalOpen(false)}
+        onTryAgain={() => {
+          setIsFailedModalOpen(false);
+          handlePayWithClover(false);
+        }}
+        onContactUs={() => {
+          setIsFailedModalOpen(false);
+          showToast("Redirecting to HALF STACHE team support...");
+        }}
+      />
     </div>
   );
 };

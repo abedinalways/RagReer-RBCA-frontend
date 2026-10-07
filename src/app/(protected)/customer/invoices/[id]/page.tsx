@@ -4,6 +4,7 @@ import { InvoiceDetail } from "@/features/customer/invoices/components/InvoiceDe
 
 interface CustomerInvoiceDetailPageProps {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ payment?: string; tx?: string }>;
 }
 
 export const metadata: Metadata = {
@@ -12,7 +13,16 @@ export const metadata: Metadata = {
 
 export default async function CustomerInvoiceDetailPage({
   params,
+  searchParams,
 }: CustomerInvoiceDetailPageProps) {
   const { id } = await params;
-  return <InvoiceDetail invoiceId={id} />;
+  const { payment, tx } = (await searchParams) || {};
+
+  return (
+    <InvoiceDetail
+      invoiceId={id}
+      initialPaymentStatus={payment}
+      initialTxId={tx}
+    />
+  );
 }

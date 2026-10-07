@@ -3,19 +3,42 @@
 import React, { useState, useMemo } from "react";
 import { Search } from "lucide-react";
 import { createInvoicesColumns } from "./InvoicesColumns";
-import { INITIAL_INVOICES_DATA } from "../data/invoicesData";
-import { Invoice } from "../types/invoicesTypes";
+import {
+  INITIAL_INVOICES_DATA,
+  BILLING_HISTORY_DATA,
+} from "../data/invoicesData";
+import { Invoice, BillingHistoryItem } from "../types/invoicesTypes";
 import { ReusableTable } from "@/components/reusable/ReusableTable";
 import EmptyStateCard from "@/components/reusable/EmptyStateCard";
 import InvoicesIcon from "@/components/icons/customer/InvoicesIcon";
 import { CustomSelect } from "@/components/ui/CustomSelect";
+import BillingHistory from "./BillingHistory";
+import PaymentReceiptModal from "./PaymentReceiptModal";
 
 export const Invoices: React.FC = () => {
   const [invoices] = useState<Invoice[]>(INITIAL_INVOICES_DATA);
+  const [billingHistory] = useState<BillingHistoryItem[]>(BILLING_HISTORY_DATA);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("All Status");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(25);
+
+  // Receipt Modal State
+  const [selectedReceipt, setSelectedReceipt] =
+    useState<BillingHistoryItem | null>(null);
+  const [isReceiptModalOpen, setIsReceiptModalOpen] = useState(false);
+
+  const handleViewReceipt = (item: BillingHistoryItem) => {
+    setSelectedReceipt(item);
+    setIsReceiptModalOpen(true);
+  };
+
+  const handleDownloadReceipt = (item: BillingHistoryItem) => {
+    console.log("Download receipt for:", item);
+    if (typeof window !== "undefined") {
+      window.print();
+    }
+  };
 
   const filteredInvoices = useMemo(() => {
     return invoices.filter((inv) => {
@@ -38,7 +61,7 @@ export const Invoices: React.FC = () => {
   );
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6 sm:space-y-7">
       {invoices.length === 0 ? (
         /* Empty State matching Figma Screenshot 1 */
         <div className="pt-8 sm:pt-14 pb-12 flex flex-col items-center justify-center p-4">
@@ -52,7 +75,7 @@ export const Invoices: React.FC = () => {
           />
         </div>
       ) : (
-        /* Invoices Table Section matching Figma Screenshot 2 */
+        /* Invoices Table Section matching Figma Screenshot 2 & 3 */
         <div className="bg-card-bg rounded-sm border border-border">
           {/* Header Section */}
           <div className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
@@ -88,8 +111,8 @@ export const Invoices: React.FC = () => {
                     "All Status",
                     "Pending",
                     "Paid",
-                    "Due",
-                    "Overdue",
+                    "Payment Due",
+                    "Active",
                   ]}
                   size="sm"
                   align="right"
@@ -127,6 +150,36 @@ export const Invoices: React.FC = () => {
           )}
         </div>
       )}
+
+      {/* Billing History Section (Figma Screenshot 3) */}
+      {billingHistory.length > 0 && (
+        <BillingHistory
+          items={billingHistory}
+          onViewReceipt={handleViewReceipt}
+          onDownloadReceipt={handleDownloadReceipt}
+        />
+      )}
+
+      {/* Payment Receipt Modal (Figma Screenshot 1) */}
+      <PaymentReceiptModal
+        isOpen={isReceiptModalOpen}
+        onClose={() => setIsReceiptModalOpen(false)}
+        receiptData={
+          selectedReceipt
+            ? {
+                transactionId: selectedReceipt.transactionId,
+                customerName: selectedReceipt.billedTo,
+                paymentDate: selectedReceipt.paymentCompletionDate,
+                totalPaid: selectedReceipt.amount,
+                paymentMethod: selectedReceipt.paymentMethod,
+                invoiceId: selectedReceipt.invoiceId,
+                completedService: selectedReceipt.completedService,
+                totalVisit: selectedReceipt.totalVisit,
+                serviceCompletionDate: selectedReceipt.serviceCompletionDate,
+              }
+            : undefined
+        }
+      />
     </div>
   );
 };

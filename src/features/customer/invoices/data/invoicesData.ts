@@ -1,4 +1,8 @@
-import { Invoice, InvoiceDetailData } from "../types/invoicesTypes";
+import {
+  Invoice,
+  InvoiceDetailData,
+  BillingHistoryItem,
+} from "../types/invoicesTypes";
 
 export const INITIAL_INVOICES_DATA: Invoice[] = [
   {
@@ -18,7 +22,7 @@ export const INITIAL_INVOICES_DATA: Invoice[] = [
     id: "#INV-1024",
     rawId: "inv-1025",
     propertyAddress: "124 Oak Street",
-    serviceType: "Commercial Services",
+    serviceType: "Residential Lawn Care",
     paymentType: "One - Time",
     issueDate: "Aug 12, 2026",
     status: "Paid",
@@ -31,10 +35,10 @@ export const INITIAL_INVOICES_DATA: Invoice[] = [
     id: "#INV-1024",
     rawId: "inv-1026",
     propertyAddress: "124 Oak Street",
-    serviceType: "Residential Lawn Care",
-    paymentType: "One - Time",
+    serviceType: "Landscape & Propert...",
+    paymentType: "Monthly",
     issueDate: "Aug 12, 2026",
-    status: "Paid",
+    status: "Payment Due",
     amount: "$2,45",
     customerName: "Sarah Sidd",
     customerEmail: "sarahsidd@gmail.com",
@@ -44,34 +48,65 @@ export const INITIAL_INVOICES_DATA: Invoice[] = [
     id: "#INV-1024",
     rawId: "inv-1027",
     propertyAddress: "124 Oak Street",
-    serviceType: "Landscape & Property...",
-    paymentType: "Monthly",
+    serviceType: "Commercial Services",
+    paymentType: "One - Time",
     issueDate: "Aug 12, 2026",
-    status: "Due",
+    status: "Active",
     amount: "$2,45",
     customerName: "Sarah Sidd",
     customerEmail: "sarahsidd@gmail.com",
     dueDate: "Aug 25, 2026",
   },
+];
+
+export const BILLING_HISTORY_DATA: BillingHistoryItem[] = [
   {
-    id: "#INV-1024",
-    rawId: "inv-1028",
-    propertyAddress: "124 Oak Street",
-    serviceType: "Landscape & Property...",
-    paymentType: "Monthly",
-    issueDate: "Aug 12, 2026",
-    status: "Overdue",
-    amount: "$2,45",
-    customerName: "Sarah Sidd",
-    customerEmail: "sarahsidd@gmail.com",
-    dueDate: "Aug 01, 2026",
+    id: "tx-1",
+    transactionId: "#TX 12458",
+    billedTo: "Sarah Sidd",
+    paymentCompletionDate: "Sep 05, 2026",
+    amount: "$3,995.00",
+    paymentMethod: "Online Payment",
+    companyName: "HALF STACHE",
+    companyCategory: "Lawn Care",
+    invoiceId: "#INV-1024",
+    completedService: "Landscape & Property Maintenance",
+    totalVisit: "03",
+    serviceCompletionDate: "Aug 27, 2026",
+  },
+  {
+    id: "tx-2",
+    transactionId: "#TX 12458",
+    billedTo: "Sarah Sidd",
+    paymentCompletionDate: "Sep 05, 2026",
+    amount: "$3,995.00",
+    paymentMethod: "Cash Payment",
+    companyName: "HALF STACHE",
+    companyCategory: "Lawn Care",
+    invoiceId: "#INV-1024",
+    completedService: "Landscape & Property Maintenance",
+    totalVisit: "03",
+    serviceCompletionDate: "Aug 27, 2026",
+  },
+  {
+    id: "tx-3",
+    transactionId: "#TX 12458",
+    billedTo: "Sarah Sidd",
+    paymentCompletionDate: "Sep 05, 2026",
+    amount: "$3,995.00",
+    paymentMethod: "Clover POS",
+    companyName: "HALF STACHE",
+    companyCategory: "Lawn Care",
+    invoiceId: "#INV-1024",
+    completedService: "Landscape & Property Maintenance",
+    totalVisit: "03",
+    serviceCompletionDate: "Aug 27, 2026",
   },
 ];
 
 export const getInvoiceDetailData = (
   rawId: string = "inv-1024",
 ): InvoiceDetailData => {
-  // Find matching invoice for status/date or fallback
   const matched = INITIAL_INVOICES_DATA.find(
     (inv) =>
       inv.rawId.toLowerCase() === rawId.toLowerCase() ||
@@ -95,8 +130,8 @@ export const getInvoiceDetailData = (
     remainingMonths: "11 months",
     totalAmount: "$3,995.00",
     amountPayable: "$3,995.00",
-    amountPaid: status === "Paid" ? "$3,995.00" : "$1,500.00",
-    remainingAmount: status === "Paid" ? "$0.00" : "$2,495.00",
+    amountPaid: status === "Paid" ? "$3,995.00" : "$0.00",
+    remainingAmount: status === "Paid" ? "$0.00" : "$3,995.00",
     dueDate: "Sep 27, 2026",
     billedBy: {
       name: "HALF STACHE",

@@ -1,5 +1,12 @@
 // Types and Interfaces for Invoices Application
-export type InvoiceStatus = "Pending" | "Paid" | "Due" | "Overdue";
+export type InvoiceStatus =
+  | "Pending"
+  | "Paid"
+  | "Due"
+  | "Payment Due"
+  | "Active"
+  | "Overdue";
+
 export type PaymentType = "Monthly" | "One - Time";
 
 export interface Invoice {
@@ -58,6 +65,21 @@ export interface InvoiceDetailData {
   discount: string;
   tax: string;
   total: string;
+}
+
+export interface BillingHistoryItem {
+  id: string;
+  transactionId: string;
+  billedTo: string;
+  paymentCompletionDate: string;
+  amount: string;
+  paymentMethod: string;
+  companyName?: string;
+  companyCategory?: string;
+  invoiceId?: string;
+  completedService?: string;
+  totalVisit?: string;
+  serviceCompletionDate?: string;
 }
 
 export type SortField =
