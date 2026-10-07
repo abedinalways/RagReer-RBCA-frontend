@@ -37,7 +37,7 @@ export const ContractPropertyCard: React.FC<ContractPropertyCardProps> = ({
 
       {/* Action Button */}
       <Link
-        href="/customer/properties"
+        href="/customer/property"
         className="w-full h-9 border border-border hover:bg-slate-50 text-primary rounded-md font-medium text-xs sm:text-sm flex items-center justify-center transition-colors shadow-2xs cursor-pointer block text-center"
       >
         View Property Details

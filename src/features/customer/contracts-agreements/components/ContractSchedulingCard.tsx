@@ -3,11 +3,17 @@ import { ContractSchedulingInfo } from "../types/contractsAgreementsTypes";
 
 interface ContractSchedulingCardProps {
   scheduling: ContractSchedulingInfo;
+  showAppointmentsButton?: boolean;
+  onViewAppointments?: () => void;
 }
 
 export const ContractSchedulingCard: React.FC<
   ContractSchedulingCardProps
-> = ({ scheduling }) => {
+> = ({
+  scheduling,
+  showAppointmentsButton = true,
+  onViewAppointments,
+}) => {
   return (
     <div className="bg-card-bg rounded-lg border border-border p-4 sm:p-5 space-y-3.5 shadow-2xs">
       <h3 className="text-base md:text-lg font-medium text-primary-heading">
@@ -51,6 +57,16 @@ export const ContractSchedulingCard: React.FC<
           </span>
         </div>
       </div>
+
+      {showAppointmentsButton && (
+        <button
+          type="button"
+          onClick={onViewAppointments}
+          className="w-full h-10 bg-primary hover:bg-primary-hover text-white rounded font-medium text-xs sm:text-sm transition-colors cursor-pointer flex items-center justify-center mt-3 shadow-2xs"
+        >
+          View Appointments
+        </button>
+      )}
     </div>
   );
 };
