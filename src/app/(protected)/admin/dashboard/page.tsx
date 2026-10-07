@@ -1,13 +1,10 @@
 import type { Metadata } from "next";
-import { PlaceholderPage } from "@/components/shared/PlaceholderPage";
+import { AdminDashboardView } from "@/workspaces/admin/components/AdminDashboardView";
 
-export const metadata: Metadata = { title: "Dashboard" };
+export const metadata: Metadata = {
+  title: "Dashboard & Field Operations — Admin",
+};
 
 export default function AdminDashboardPage() {
-  return (
-    <PlaceholderPage
-      title="Dashboard"
-      description="Role & permission-aware overview for admin staff. Widgets will render from features/dashboard."
-    />
-  );
+  return <AdminDashboardView />;
 }
