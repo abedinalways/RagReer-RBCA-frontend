@@ -21,10 +21,18 @@ export const StatusBadge: React.FC<{ status: InvoiceStatus }> = ({
         </span>
       );
     case "Due":
+    case "Payment Due":
       return (
-        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-xs font-medium bg-rose-50 text-rose-700 border border-rose-200">
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-xs font-medium bg-rose-50 text-rose-600 border border-rose-200">
           <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0" />
-          Due
+          {status}
+        </span>
+      );
+    case "Active":
+      return (
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-xs font-medium bg-badge-active-bg text-badge-active-text border border-badge-active-border">
+          <span className="w-1.5 h-1.5 rounded-full bg-badge-active-dot shrink-0" />
+          Active
         </span>
       );
     case "Overdue":
@@ -107,18 +115,14 @@ export const createInvoicesColumns = (
   },
   {
     header: "Action",
-    cell: (row) => {
-      const buttonText =
-        row.status === "Paid" ? "View Receipt" : "View Details";
-      return (
-        <Link
-          href={`/customer/invoices/${row.rawId || "inv-1024"}`}
-          onClick={() => onActionClick?.(row)}
-          className="bg-card-bg border border-border hover:bg-primary hover:text-white text-txt-primary font-medium px-3 py-1.5 rounded-sm shadow-2xs cursor-pointer text-xs lg:text-sm inline-block text-center whitespace-nowrap"
-        >
-          {buttonText}
-        </Link>
-      );
-    },
+    cell: (row) => (
+      <Link
+        href={`/customer/invoices/${row.rawId || "inv-1024"}`}
+        onClick={() => onActionClick?.(row)}
+        className="bg-card-bg border border-border hover:bg-primary hover:text-white text-txt-primary font-medium px-3.5 py-1.5 rounded-sm shadow-2xs cursor-pointer text-xs lg:text-sm inline-block text-center whitespace-nowrap"
+      >
+        View
+      </Link>
+    ),
   },
 ];

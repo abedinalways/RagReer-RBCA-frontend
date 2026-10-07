@@ -1,12 +1,16 @@
 import * as React from "react";
 
-const DownloadIcon: React.FC<React.SVGProps<SVGElement>> = (props) => (
+const DownloadIcon: React.FC<React.SVGProps<SVGSVGElement>> = ({
+  stroke = "#A5A7A8",
+  ...props
+}) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="20"
     height="20"
     fill="none"
     viewBox="0 0 20 20"
+    {...props}
   >
     <path
       stroke="#A5A7A8"
