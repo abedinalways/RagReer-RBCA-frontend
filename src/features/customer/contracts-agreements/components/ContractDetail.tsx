@@ -56,7 +56,9 @@ export const ContractDetail: React.FC<ContractDetailProps> = ({
   };
 
   const isContractSigned =
-    data.status === "Contract Signed" || data.status === "Active";
+    data.status === "Contract Signed" ||
+    data.status === "Amendment Signed" ||
+    data.status === "Active";
 
   return (
     <div className="min-h-screen bg-page-bg pb-14 space-y-4">
@@ -86,9 +88,14 @@ export const ContractDetail: React.FC<ContractDetailProps> = ({
             </h1>
 
             {data.status === "Pending Approval" ? (
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-xs text-xs font-medium bg-badge-pending-bg text-badge-pending-text border border-badge-pending-border/50">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-xs text-xs font-medium bg-badge-pending-bg text-badge-pending-text border border-badge-pending-border">
                 <span className="w-1.5 h-1.5 rounded-full bg-badge-pending-dot" />
                 Pending Approval
+              </span>
+            ) : data.status === "Amendment Signed" ? (
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-xs text-xs font-medium bg-badge-active-bg text-badge-active-text border border-badge-active-border">
+                <span className="w-1.5 h-1.5 rounded-full bg-badge-active-dot" />
+                Amendment Signed
               </span>
             ) : isContractSigned ? (
               <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-xs text-xs font-medium bg-badge-active-bg text-badge-active-text border border-badge-active-border">
@@ -130,19 +137,70 @@ export const ContractDetail: React.FC<ContractDetailProps> = ({
           <ContractTermsCard
             data={data}
             onReviewAndSign={() => setIsSignatureModalOpen(true)}
-            onViewSignedDocument={() => setIsReviewModalOpen(true)}
             isSigned={isContractSigned}
           />
+
+          {/* Standalone Green Execution Banner & View Signed Document Button (Shown when Signed) */}
+          {isContractSigned && (
+            <div className="space-y-4">
+              <div className="bg-badge-active-bg border border-badge-active-border rounded-lg p-3.5 sm:p-4 space-y-1 shadow-2xs">
+                <div className="flex items-center gap-2">
+                  <span className="text-badge-active-text font-bold text-sm sm:text-base leading-none">
+                    ✓
+                  </span>
+                  <h4 className="text-sm sm:text-base font-semibold text-badge-active-text">
+                    Contracts & Agreements Signed
+                  </h4>
+                </div>
+                <p className="text-xs sm:text-sm text-secondary-subheading pl-4 sm:pl-5 leading-relaxed">
+                  This agreement is fully executed. A copy has been sent to{" "}
+                  <span className="text-txt-primary font-medium">
+                    {data.signedNotificationEmail || "jan.m*****@email.com"}
+                  </span>
+                </p>
+              </div>
+
+              <div className="flex justify-end pt-1">
+                <button
+                  type="button"
+                  onClick={() => setIsReviewModalOpen(true)}
+                  className="px-5 py-2.5 bg-primary hover:bg-primary-hover text-white text-xs md:text-sm font-medium rounded-md shadow-2xs transition-colors cursor-pointer"
+                >
+                  View Signed Document
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Right Column (1/3 width on desktop) */}
         <div className="space-y-4 sm:space-y-5">
           <ContractPropertyCard property={data.property} />
-          <ContractSchedulingCard scheduling={data.schedulingDetails} />
+          <ContractSchedulingCard
+            scheduling={data.schedulingDetails}
+            showAppointmentsButton={isContractSigned}
+            onViewAppointments={() => router.push("/customer/appointments")}
+          />
           <ContractPaymentTermsCard payment={data.paymentTerms} />
           <ContractAccessNoteCard note={data.accessNote} />
           <ContractVersionHistoryCard
-            onOpen={() => showToast("Showing version history for #CN-1024-v1")}
+            versions={data.versionHistory}
+            currentVersionNumber={data.version === "Version 2" ? 2 : 1}
+            onSelectVersion={(ver) => {
+              if (ver.versionNumber === 2) {
+                setData(getContractDetailData("cn-2"));
+                showToast("Viewing Version 2 - Amendment");
+              } else {
+                setData(getContractDetailData("cn-1"));
+                showToast("Viewing Version 1 - Original");
+              }
+            }}
+            onDownloadVersion={(ver) => {
+              showToast(`Downloading ${ver.versionLabel} document...`);
+              if (typeof window !== "undefined") {
+                window.print();
+              }
+            }}
           />
         </div>
       </div>
