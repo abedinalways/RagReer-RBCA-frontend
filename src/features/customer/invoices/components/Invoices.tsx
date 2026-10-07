@@ -1,11 +1,13 @@
 "use client";
+
 import React, { useState, useMemo } from "react";
+import { Search } from "lucide-react";
 import { createInvoicesColumns } from "./InvoicesColumns";
 import { INITIAL_INVOICES_DATA } from "../data/invoicesData";
 import { Invoice } from "../types/invoicesTypes";
 import { ReusableTable } from "@/components/reusable/ReusableTable";
 import EmptyStateCard from "@/components/reusable/EmptyStateCard";
-import { DocumentIcon } from "@/components/icons/DocumentIcon";
+import InvoicesIcon from "@/components/icons/customer/InvoicesIcon";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 
 export const Invoices: React.FC = () => {
@@ -18,6 +20,7 @@ export const Invoices: React.FC = () => {
   const filteredInvoices = useMemo(() => {
     return invoices.filter((inv) => {
       const matchesSearch =
+        searchQuery.trim() === "" ||
         inv.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
         inv.propertyAddress.toLowerCase().includes(searchQuery.toLowerCase()) ||
         inv.serviceType.toLowerCase().includes(searchQuery.toLowerCase());
@@ -34,38 +37,53 @@ export const Invoices: React.FC = () => {
     [],
   );
 
-  const handleRequestClick = () => {
-    console.log("Redirecting to requests...");
-  };
   return (
-    <div>
-      {filteredInvoices.length === 0 ? (
-        <EmptyStateCard
-          icon={<DocumentIcon className="w-7 h-7 text-primary" />}
-          title="No Invoices Found"
-          description="You don't have any invoices yet."
-          actionLabel="Go to My Requests"
-          onAction={handleRequestClick}
-        />
+    <div className="space-y-4">
+      {invoices.length === 0 ? (
+        /* Empty State matching Figma Screenshot 1 */
+        <div className="pt-8 sm:pt-14 pb-12 flex flex-col items-center justify-center p-4">
+          <EmptyStateCard
+            icon={<InvoicesIcon className="w-8 h-8 text-primary" />}
+            title="No Invoices Yet"
+            description="Invoices are generated upon completion and quality review of scheduled property maintenance services"
+            actionLabel="Go to My Requests"
+            actionHref="/customer/requests"
+            className="max-w-xl"
+          />
+        </div>
       ) : (
+        /* Invoices Table Section matching Figma Screenshot 2 */
         <div className="bg-card-bg rounded-sm border border-border">
           {/* Header Section */}
           <div className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-            <h2 className="text-[1.25rem] font-medium text-primary-heading">
+            <h2 className="text-lg md:text-xl font-medium text-primary-heading">
               All Invoices
             </h2>
-            <div className="flex flex-col sm:flex-row items-center gap-3">
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Type to search"
-                className="w-full sm:w-48 h-9 border border-border bg-input-bg rounded-md px-3 text-sm text-txt-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
-              />
-              <div className="w-full sm:w-44">
+
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+              {/* Search with input icon */}
+              <div className="relative w-full sm:w-56">
+                <Search className="w-4 h-4 text-secondary-subheading absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    setCurrentPage(1);
+                  }}
+                  placeholder="Type to search"
+                  className="w-full h-9 pl-9 pr-3 border border-border bg-input-bg rounded-md text-xs sm:text-sm text-txt-primary placeholder:text-secondary-subheading/70 focus:outline-none focus:ring-1 focus:ring-primary/40 focus:border-primary/50"
+                />
+              </div>
+
+              {/* Status Select */}
+              <div className="w-full sm:w-36">
                 <CustomSelect
                   value={selectedStatus}
-                  onChange={(val) => setSelectedStatus(val)}
+                  onChange={(val) => {
+                    setSelectedStatus(val);
+                    setCurrentPage(1);
+                  }}
                   options={[
                     "All Status",
                     "Pending",
@@ -80,19 +98,37 @@ export const Invoices: React.FC = () => {
             </div>
           </div>
 
-          <ReusableTable
-            data={filteredInvoices}
-            columns={columns}
-            keyExtractor={(item, idx) => idx}
-            pagination={{
-              currentPage,
-              itemsPerPage,
-              onPageChange: setCurrentPage,
-              onItemsPerPageChange: setItemsPerPage,
-            }}
-          />
+          {filteredInvoices.length === 0 ? (
+            <div className="p-8 text-center text-sm text-secondary-subheading">
+              No invoices match your filter or search criteria.
+              <button
+                type="button"
+                onClick={() => {
+                  setSearchQuery("");
+                  setSelectedStatus("All Status");
+                }}
+                className="block mx-auto mt-2 text-xs text-primary hover:underline font-medium cursor-pointer"
+              >
+                Reset filters
+              </button>
+            </div>
+          ) : (
+            <ReusableTable
+              data={filteredInvoices}
+              columns={columns}
+              keyExtractor={(item, idx) => idx}
+              pagination={{
+                currentPage,
+                itemsPerPage,
+                onPageChange: setCurrentPage,
+                onItemsPerPageChange: setItemsPerPage,
+              }}
+            />
+          )}
         </div>
       )}
     </div>
   );
 };
+
+export default Invoices;
