@@ -3,7 +3,7 @@ import { ContractDetailData } from "../types/contractsAgreementsTypes";
 export const defaultContractDetailData: ContractDetailData = {
   id: "cn-1",
   contractId: "#CN-1024",
-  status: "Pending Approval",
+  status: "Contract Signed",
   issueDate: "Aug 16, 2026",
   version: "Version 1",
   agreementTitle: "Commercial Lawn Care Agreement",
@@ -129,11 +129,97 @@ export const defaultContractDetailData: ContractDetailData = {
   },
   accessNote:
     "Gate access required , 2 dogs on property (indoors during service), Tenant currently occupying property (Name,Phone)",
+  versionHistory: [
+    {
+      id: "v-1",
+      versionNumber: 1,
+      versionLabel: "Version 1 - Original",
+      issuedDate: "Aug 16, 2026",
+      signedDate: "Aug 16, 2026",
+      status: "Signed",
+      documentVersion: "Document version #CN-1024-v1",
+    },
+    {
+      id: "v-2",
+      versionNumber: 2,
+      versionLabel: "Version 2 - Amendment",
+      issuedDate: "Aug 16, 2026",
+      signedDate: "Aug 18, 2026",
+      status: "Signed",
+      documentVersion: "Document version #CN-1024-v2",
+    },
+  ],
 };
 
 export const getContractDetailData = (id: string): ContractDetailData => {
+  if (id === "cn-2") {
+    return {
+      ...defaultContractDetailData,
+      id: "cn-2",
+      status: "Amendment Signed",
+      version: "Version 2",
+      documentVersion: "Document version #CN-1024-v2",
+      versionHistory: [
+        {
+          id: "v-1",
+          versionNumber: 1,
+          versionLabel: "Version 1 - Original",
+          issuedDate: "Aug 16, 2026",
+          signedDate: "Aug 16, 2026",
+          status: "Signed",
+          documentVersion: "Document version #CN-1024-v1",
+        },
+        {
+          id: "v-2",
+          versionNumber: 2,
+          versionLabel: "Version 2 - Amendment",
+          issuedDate: "Aug 16, 2026",
+          signedDate: "Aug 18, 2026",
+          status: "Signed",
+          documentVersion: "Document version #CN-1024-v2",
+        },
+      ],
+    };
+  }
+
+  if (id === "cn-3") {
+    return {
+      ...defaultContractDetailData,
+      id: "cn-3",
+      status: "Pending Approval",
+      version: "Version 1",
+      documentVersion: "Document version #CN-1024-v1",
+      versionHistory: [
+        {
+          id: "v-1",
+          versionNumber: 1,
+          versionLabel: "Version 1 - Original",
+          issuedDate: "Aug 16, 2026",
+          signedDate: "Aug 16, 2026",
+          status: "Signed",
+          documentVersion: "Document version #CN-1024-v1",
+        },
+      ],
+    };
+  }
+
+  // cn-1 and default matches Screenshot 1 & 2
   return {
     ...defaultContractDetailData,
     id: id || "cn-1",
+    status: "Contract Signed",
+    version: "Version 1",
+    documentVersion: "Document version #CN-1024-v1",
+    versionHistory: [
+      {
+        id: "v-1",
+        versionNumber: 1,
+        versionLabel: "Version 1 - Original",
+        issuedDate: "Aug 16, 2026",
+        signedDate: "Aug 16, 2026",
+        status: "Signed",
+        documentVersion: "Document version #CN-1024-v1",
+      },
+    ],
   };
 };

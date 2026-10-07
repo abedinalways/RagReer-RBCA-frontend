@@ -61,6 +61,28 @@
     --color-table-total-bg: #EAF2F9;
     --color-note-green-text: #027A48;
     --color-secondary-heading: #5C5F60;
+
+    /* Appointment Figma Exact Colors */
+    --color-apt-pref-bg: #EAEAEA;
+    --color-apt-pref-bar: #5C5F60;
+    --color-apt-pending-bg: #FEF7DA;
+    --color-apt-pending-bar: #EAAA08;
+    --color-apt-confirmed-bg: #DBF0E5;
+    --color-apt-confirmed-bar: #12B76A;
+    --color-apt-crew-bg: #D1FADF;
+    --color-apt-crew-bar: #0E9384;
+    --color-apt-upcoming-bg: #FEF0C7;
+    --color-apt-upcoming-bar: #F59E0B;
+    --color-apt-ongoing-bg: #D4E7F7;
+    --color-apt-ongoing-bar: #0777F6;
+    --color-apt-delayed-bg: #FEE4D1;
+    --color-apt-delayed-bar: #EC7032;
+    --color-apt-completed-bg: #D1FADF;
+    --color-apt-completed-bar: #16A34A;
+    --color-apt-cancelled-bg: #FEE4E2;
+    --color-apt-cancelled-bar: #D92D20;
+    --color-apt-resched-bg: #FBD5DA;
+    --color-apt-resched-bar: #F04438;
 }
 
 @layer base {
@@ -105,6 +127,27 @@
         --color-app-bg: #FAFAFA;
         --color-card-bg: #FFFFFF;
         --color-surface: #E9E9EA;
+
+        --color-apt-pref-bg: #EAEAEA;
+        --color-apt-pref-bar: #5C5F60;
+        --color-apt-pending-bg: #FEF7DA;
+        --color-apt-pending-bar: #EAAA08;
+        --color-apt-confirmed-bg: #DBF0E5;
+        --color-apt-confirmed-bar: #12B76A;
+        --color-apt-crew-bg: #D1FADF;
+        --color-apt-crew-bar: #0E9384;
+        --color-apt-upcoming-bg: #FEF0C7;
+        --color-apt-upcoming-bar: #F59E0B;
+        --color-apt-ongoing-bg: #D4E7F7;
+        --color-apt-ongoing-bar: #0777F6;
+        --color-apt-delayed-bg: #FEE4D1;
+        --color-apt-delayed-bar: #EC7032;
+        --color-apt-completed-bg: #D1FADF;
+        --color-apt-completed-bar: #16A34A;
+        --color-apt-cancelled-bg: #FEE4E2;
+        --color-apt-cancelled-bar: #D92D20;
+        --color-apt-resched-bg: #FBD5DA;
+        --color-apt-resched-bar: #F04438;
     }
 
     body {

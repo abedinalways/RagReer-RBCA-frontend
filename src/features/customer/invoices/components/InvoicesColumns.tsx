@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import { ColumnDef, Invoice, InvoiceStatus } from "../types/invoicesTypes";
 
 export const StatusBadge: React.FC<{ status: InvoiceStatus }> = ({
@@ -7,29 +8,37 @@ export const StatusBadge: React.FC<{ status: InvoiceStatus }> = ({
   switch (status) {
     case "Pending":
       return (
-        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-xs font-semibold bg-tag-rescheduling-bg text-tag-rescheduling-text border border-tag-rescheduling-border">
-          <span className="w-2 h-2 rounded-full bg-tag-rescheduling-text"></span>
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-xs font-medium bg-badge-pending-bg text-badge-pending-text border border-badge-pending-border">
+          <span className="w-1.5 h-1.5 rounded-full bg-badge-pending-dot shrink-0" />
           Pending
         </span>
       );
     case "Paid":
       return (
-        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-xs font-semibold bg-trend-up/10 text-trend-up border border-trend-up/20">
-          <span className="w-2 h-2 rounded-full bg-trend-up"></span>
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-xs font-medium bg-badge-active-bg text-badge-active-text border border-badge-active-border">
+          <span className="w-1.5 h-1.5 rounded-full bg-badge-active-dot shrink-0" />
           Paid
         </span>
       );
     case "Due":
+    case "Payment Due":
       return (
-        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-xs font-semibold bg-trend-down/10 text-trend-down border border-trend-down/20">
-          <span className="w-2 h-2 rounded-full bg-trend-down"></span>
-          Due
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-xs font-medium bg-rose-50 text-rose-600 border border-rose-200">
+          <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0" />
+          {status}
+        </span>
+      );
+    case "Active":
+      return (
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-xs font-medium bg-badge-active-bg text-badge-active-text border border-badge-active-border">
+          <span className="w-1.5 h-1.5 rounded-full bg-badge-active-dot shrink-0" />
+          Active
         </span>
       );
     case "Overdue":
       return (
-        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-xs font-semibold bg-trend-down/10 text-trend-down border border-trend-down/20">
-          <span className="w-2 h-2 rounded-full bg-trend-down"></span>
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-xs font-medium bg-rose-50 text-rose-700 border border-rose-200">
+          <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0" />
           Overdue
         </span>
       );
@@ -39,18 +48,19 @@ export const StatusBadge: React.FC<{ status: InvoiceStatus }> = ({
 };
 
 export const createInvoicesColumns = (
-  onActionClick: (invoice: Invoice) => void,
+  onActionClick?: (invoice: Invoice) => void,
 ): ColumnDef<Invoice>[] => [
   {
     header: "Invoice ID",
     accessorKey: "id",
     cell: (row) => (
-      <button
-        onClick={() => onActionClick(row)}
+      <Link
+        href={`/customer/invoices/${row.rawId || "inv-1024"}`}
+        onClick={() => onActionClick?.(row)}
         className="text-primary hover:underline cursor-pointer font-medium"
       >
         {row.id}
-      </button>
+      </Link>
     ),
   },
   {
@@ -66,7 +76,7 @@ export const createInvoicesColumns = (
     header: "Service Type",
     accessorKey: "serviceType",
     cell: (row) => (
-      <span className="text-txt-primary truncate block">
+      <span className="text-txt-primary truncate block max-w-[200px]">
         {row.serviceType}
       </span>
     ),
@@ -105,17 +115,14 @@ export const createInvoicesColumns = (
   },
   {
     header: "Action",
-    cell: (row) => {
-      const buttonText =
-        row.status === "Paid" ? "View Receipt" : "View Details";
-      return (
-        <button
-          onClick={() => onActionClick(row)}
-          className="bg-card-bg border border-border text-txt-primary hover:bg-blue-50 font-medium px-3 py-1.5 rounded-md shadow-2xs cursor-pointer text-xs lg:text-sm"
-        >
-          {buttonText}
-        </button>
-      );
-    },
+    cell: (row) => (
+      <Link
+        href={`/customer/invoices/${row.rawId || "inv-1024"}`}
+        onClick={() => onActionClick?.(row)}
+        className="bg-card-bg border border-border hover:bg-primary hover:text-white text-txt-primary font-medium px-3.5 py-1.5 rounded-sm shadow-2xs cursor-pointer text-xs lg:text-sm inline-block text-center whitespace-nowrap"
+      >
+        View
+      </Link>
+    ),
   },
 ];

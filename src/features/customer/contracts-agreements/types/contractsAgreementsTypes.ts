@@ -2,6 +2,7 @@ export type ContractStatus =
   | "Pending Approval"
   | "Active"
   | "Contract Signed"
+  | "Amendment Signed"
   | "Expired"
   | "Declined";
 
@@ -79,6 +80,17 @@ export interface ContractSignatureData {
   consentAgreed?: boolean;
 }
 
+export interface ContractVersionHistoryItem {
+  id: string;
+  versionNumber: number;
+  versionLabel: string;
+  issuedDate: string;
+  signedDate: string;
+  status: "Signed" | "Pending" | "Amendment Signed";
+  downloadUrl?: string;
+  documentVersion?: string;
+}
+
 export interface ContractDetailData {
   id: string;
   contractId: string;
@@ -118,6 +130,7 @@ export interface ContractDetailData {
   paymentTerms: ContractPaymentInfo;
   accessNote: string;
   signatureInfo?: ContractSignatureData;
+  versionHistory?: ContractVersionHistoryItem[];
 }
 
 export interface ColumnDef<T> {
