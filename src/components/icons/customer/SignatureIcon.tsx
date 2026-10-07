@@ -1,16 +1,19 @@
 import * as React from "react";
 
-const SignatureIcon: React.FC<React.SVGProps<SVGElement>> = (props) => (
+const SignatureIcon: React.FC<React.SVGProps<SVGSVGElement>> = ({
+  stroke = "currentColor",
+  ...props
+}) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="20"
     height="20"
     fill="none"
     viewBox="0 0 20 20"
-    {...(props as React.SVGProps<SVGSVGElement>)}
+    {...props}
   >
     <path
-      stroke="#fff"
+      stroke={stroke}
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth="1.5"
