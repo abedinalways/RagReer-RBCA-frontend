@@ -1,18 +1,13 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { WorkerTimeSheetView } from "@/workspaces/worker/components/WorkerTimeSheetView";
+import { TimeSheetSkeleton } from "@/workspaces/worker/components/timesheet";
 
 export const metadata: Metadata = { title: "Time — Worker Workspace" };
 
 export default function WorkerTimePage() {
   return (
-    <Suspense
-      fallback={
-        <div className="p-4 text-center text-secondary-subheading text-sm font-medium">
-          Loading time sheet...
-        </div>
-      }
-    >
+    <Suspense fallback={<TimeSheetSkeleton />}>
       <WorkerTimeSheetView />
     </Suspense>
   );

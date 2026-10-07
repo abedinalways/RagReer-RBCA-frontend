@@ -161,3 +161,11 @@ export const MOCK_TIME_SHEET_DATA: Record<string, TimeSheetPeriodData> = {
     ],
   },
 };
+
+export function getDailyTimeEntryById(id: string): DailyTimeEntry | undefined {
+  for (const period of Object.values(MOCK_TIME_SHEET_DATA)) {
+    const found = period.dailyEntries.find((entry) => entry.id === id);
+    if (found) return found;
+  }
+  return undefined;
+}
