@@ -80,6 +80,7 @@ export interface BillingHistoryItem {
   completedService?: string;
   totalVisit?: string;
   serviceCompletionDate?: string;
+  propertyAddress?: string;
 }
 
 export type SortField =
@@ -97,3 +98,79 @@ export interface ColumnDef<T> {
   className?: string;
   headerClassName?: string;
 }
+
+// Portfolio Customer Types
+export type CustomerBillingMode =
+  | "regular"
+  | "portfolio_consolidated"
+  | "portfolio_separate";
+
+export interface PortfolioConsolidatedInvoice {
+  id: string;
+  rawId: string;
+  propertiesCount: string;
+  servicePeriod: string;
+  paymentType: PaymentType;
+  issueDate: string;
+  status: InvoiceStatus;
+  amount: string;
+}
+
+export interface MonthlyStatementItem {
+  id: string;
+  month: string;
+  propertiesCount: string;
+  visitsCount: string;
+  issueDate: string;
+  status: InvoiceStatus;
+  amount: string;
+  downloadUrl?: string;
+}
+
+export interface StatementPropertyItem {
+  id: string;
+  propertyAddress: string;
+  visits: string;
+  status: string;
+  amount: string;
+}
+
+export interface StatementDetailData {
+  id: string;
+  statementTitle: string;
+  companyGroup: string;
+  properties: StatementPropertyItem[];
+  totalBilled: string;
+  totalPaid: string;
+  balance: string;
+}
+
+export interface PortfolioSeparateInvoice {
+  id: string;
+  rawId: string;
+  propertyAddress: string;
+  serviceType: string;
+  paymentType: PaymentType;
+  issueDate: string;
+  status: InvoiceStatus;
+  amount: string;
+}
+
+export interface SeparateStatementPropertyItem {
+  id: string;
+  propertyAddress: string;
+  visitsCount: string;
+  issueDate: string;
+  status: InvoiceStatus;
+  amount: string;
+}
+
+export interface SeparateMonthlyStatementGroup {
+  id: string;
+  month: string;
+  propertiesCount: string;
+  totalAmount: string;
+  items: SeparateStatementPropertyItem[];
+}
+
+
