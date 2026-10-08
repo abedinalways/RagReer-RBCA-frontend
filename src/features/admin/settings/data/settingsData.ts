@@ -5,7 +5,14 @@ import {
   NotificationCategory,
   ActiveSession,
   IpWhitelistItem,
+  SystemSettings,
 } from "../types";
+
+export const INITIAL_SYSTEM_SETTINGS: SystemSettings = {
+  userRegistration: true,
+  crewRegistration: true,
+  maintenanceMode: false,
+};
 
 export const INITIAL_COMPANY_SETTINGS: CompanySettings = {
   name: "HALF STACHE",

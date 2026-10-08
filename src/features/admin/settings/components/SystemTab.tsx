@@ -1,160 +1,97 @@
 "use client";
 
 import React, { useState } from "react";
-import { Database, RefreshCw, ShieldCheck, Download, Trash } from "lucide-react";
+import { SystemSettings } from "../types";
+import { INITIAL_SYSTEM_SETTINGS } from "../data/settingsData";
 import { ServiceStatusToggle } from "@/features/admin/services/components/ServiceStatusToggle";
 
-export function SystemTab() {
-  const [autoBackup, setAutoBackup] = useState(true);
-  const [maintenanceMode, setMaintenanceMode] = useState(false);
-  const [debugLogs, setDebugLogs] = useState(false);
-  const [isClearing, setIsClearing] = useState(false);
+interface SystemTabProps {
+  settings?: SystemSettings;
+  onChange?: (settings: SystemSettings) => void;
+}
 
-  const handleClearCache = () => {
-    setIsClearing(true);
-    setTimeout(() => {
-      setIsClearing(false);
-    }, 800);
+export function SystemTab({
+  settings = INITIAL_SYSTEM_SETTINGS,
+  onChange,
+}: SystemTabProps) {
+  const [data, setData] = useState<SystemSettings>(settings);
+
+  const handleToggle = (key: keyof SystemSettings, value: boolean) => {
+    const updated = { ...data, [key]: value };
+    setData(updated);
+    if (onChange) {
+      onChange(updated);
+    }
   };
 
   return (
-    <div className="space-y-8 divide-y divide-border/60">
-      {/* 1. App Environment & Version */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 pt-0">
+    <div className="pt-0">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 xl:gap-16">
+        {/* Left Column: Title & Description */}
         <div className="lg:col-span-5">
           <h3 className="text-[1.125rem] font-bold text-primary-heading">
-            System & Environment
+            System
           </h3>
           <p className="text-xs sm:text-sm text-secondary-subheading mt-1 leading-relaxed">
-            Platform runtime metadata and application release details.
+            Manage platform-wide operational settings and feature availability.
           </p>
         </div>
 
-        <div className="lg:col-span-7 space-y-3">
-          <div className="p-4 border border-border rounded-md bg-card-bg space-y-2">
-            <div className="flex items-center justify-between text-sm md:text-base">
-              <span className="text-secondary-subheading">Platform Version:</span>
-              <span className="font-semibold text-txt-primary">v2.14.0 (Production)</span>
-            </div>
-            <div className="flex items-center justify-between text-sm md:text-base">
-              <span className="text-secondary-subheading">Build Engine:</span>
-              <span className="font-medium text-txt-primary">Next.js 16 (Turbopack)</span>
-            </div>
-            <div className="flex items-center justify-between text-sm md:text-base">
-              <span className="text-secondary-subheading">RBAC Engine:</span>
-              <span className="text-emerald-600 font-medium flex items-center gap-1">
-                <ShieldCheck className="w-4 h-4" /> Configured (access-control)
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* 2. Automated Backups */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 pt-8">
-        <div className="lg:col-span-5">
-          <h3 className="text-[1.125rem] font-bold text-primary-heading">
-            Data Backup & Export
-          </h3>
-          <p className="text-xs sm:text-sm text-secondary-subheading mt-1 leading-relaxed">
-            Manage database snapshots, export schedules, and archival storage.
-          </p>
-        </div>
-
-        <div className="lg:col-span-7 space-y-3">
-          <div className="flex items-center justify-between p-4 border border-border rounded-md bg-card-bg">
+        {/* Right Column: Toggle Options */}
+        <div className="lg:col-span-7 space-y-6 sm:space-y-7">
+          {/* 1. User Registration */}
+          <div className="flex items-start sm:items-center justify-between gap-4">
             <div>
               <span className="font-semibold text-sm md:text-base text-primary-heading block">
-                Daily Automatic Backup
+                User Registration
               </span>
               <span className="text-xs sm:text-sm text-secondary-subheading mt-0.5 block">
-                Scheduled at 02:00 AM UTC every night.
+                Allow new customers to create accounts.
               </span>
             </div>
-            <ServiceStatusToggle
-              isActive={autoBackup}
-              onChange={setAutoBackup}
-            />
+            <div className="shrink-0 pt-0.5 sm:pt-0">
+              <ServiceStatusToggle
+                isActive={data.userRegistration}
+                onChange={(val) => handleToggle("userRegistration", val)}
+              />
+            </div>
           </div>
 
-          <div className="flex items-center justify-between p-4 border border-border rounded-md bg-card-bg">
+          {/* 2. Crew Registration */}
+          <div className="flex items-start sm:items-center justify-between gap-4">
             <div>
               <span className="font-semibold text-sm md:text-base text-primary-heading block">
-                Download Backup Archive
+                Crew Registration
               </span>
               <span className="text-xs sm:text-sm text-secondary-subheading mt-0.5 block">
-                Export encrypted database dump to local machine.
+                Allow new crew members to create accounts.
               </span>
             </div>
-            <button
-              type="button"
-              className="px-4 py-2 rounded-md border border-[#5980A6]/60 text-[#2D6A9F] hover:bg-page-bg font-medium text-xs sm:text-sm transition-colors cursor-pointer flex items-center gap-1.5"
-            >
-              <Download className="w-3.5 h-3.5" />
-              <span>Download</span>
-            </button>
+            <div className="shrink-0 pt-0.5 sm:pt-0">
+              <ServiceStatusToggle
+                isActive={data.crewRegistration}
+                onChange={(val) => handleToggle("crewRegistration", val)}
+              />
+            </div>
           </div>
-        </div>
-      </div>
 
-      {/* 3. Cache & Performance */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 pt-8">
-        <div className="lg:col-span-5">
-          <h3 className="text-[1.125rem] font-bold text-primary-heading">
-            Cache & Memory
-          </h3>
-          <p className="text-xs sm:text-sm text-secondary-subheading mt-1 leading-relaxed">
-            Clear server side cached queries and rebuild assets.
-          </p>
-        </div>
-
-        <div className="lg:col-span-7">
-          <div className="flex items-center justify-between p-4 border border-border rounded-md bg-card-bg">
+          {/* 3. Maintenance Mode */}
+          <div className="flex items-start sm:items-center justify-between gap-4">
             <div>
               <span className="font-semibold text-sm md:text-base text-primary-heading block">
-                Purge System Cache
+                Maintenance Mode
               </span>
               <span className="text-xs sm:text-sm text-secondary-subheading mt-0.5 block">
-                Forces reload of static assets and client portal caches.
+                Temporarily disable platform access for maintenance.
               </span>
             </div>
-            <button
-              type="button"
-              onClick={handleClearCache}
-              disabled={isClearing}
-              className="px-4 py-2 rounded-md bg-[#5980A6] text-white hover:bg-[#4A6E91] font-medium text-xs sm:text-sm transition-colors cursor-pointer flex items-center gap-1.5 shrink-0"
-            >
-              <RefreshCw className={`w-3.5 h-3.5 ${isClearing ? "animate-spin" : ""}`} />
-              <span>{isClearing ? "Clearing..." : "Purge Cache"}</span>
-            </button>
+            <div className="shrink-0 pt-0.5 sm:pt-0">
+              <ServiceStatusToggle
+                isActive={data.maintenanceMode}
+                onChange={(val) => handleToggle("maintenanceMode", val)}
+              />
+            </div>
           </div>
-        </div>
-      </div>
-
-      {/* 4. Maintenance Mode */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 pt-8">
-        <div className="lg:col-span-5">
-          <h3 className="text-[1.125rem] font-bold text-primary-heading">
-            Maintenance Mode
-          </h3>
-          <p className="text-xs sm:text-sm text-secondary-subheading mt-1 leading-relaxed">
-            Temporarily restrict customer and worker portal access during service windows.
-          </p>
-        </div>
-
-        <div className="lg:col-span-7 flex items-center justify-between p-4 border border-border rounded-md bg-card-bg">
-          <div>
-            <span className="font-semibold text-sm md:text-base text-primary-heading block">
-              Enable Maintenance Window
-            </span>
-            <span className="text-xs sm:text-sm text-secondary-subheading mt-0.5 block">
-              Only admin accounts can log in while enabled.
-            </span>
-          </div>
-          <ServiceStatusToggle
-            isActive={maintenanceMode}
-            onChange={setMaintenanceMode}
-          />
         </div>
       </div>
     </div>
