@@ -5,6 +5,7 @@ import { Pencil } from "lucide-react";
 import { RoleId } from "../types";
 import { ROLES_CONFIG } from "../data/rolesData";
 import { PermissionTag } from "./PermissionTag";
+import { useDragToScroll } from "@/hooks/useDragToScroll";
 
 interface RolesTableProps {
   rolePermissions: Record<RoleId, string[]>;
@@ -19,10 +20,16 @@ export function RolesTable({
   onRemovePermission,
   onEditRole,
 }: RolesTableProps) {
+  const { ref, events, dragClassName } = useDragToScroll<HTMLDivElement>();
+
   return (
     <div className="w-full bg-card-bg border border-border rounded-xl shadow-xs overflow-hidden">
       {/* Desktop / Tablet Table View (hidden on small mobile screens) */}
-      <div className="hidden sm:block overflow-x-auto">
+      <div
+        ref={ref}
+        {...events}
+        className={`hidden sm:block overflow-x-auto ${dragClassName}`}
+      >
         <table className="w-full text-left border-collapse min-w-[640px]">
           <thead>
             <tr className="bg-page-bg/75 border-b border-border text-sm md:text-base font-normal text-secondary-subheading uppercase sm:normal-case tracking-wider sm:tracking-normal">
