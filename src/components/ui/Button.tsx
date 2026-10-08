@@ -55,7 +55,7 @@ export default function Button({
             ) : (
                 <>
                     {icon && <span className="shrink-0" aria-hidden="true">{icon}</span>}
-                    <span>{children}</span>
+                    <span className="inline-flex items-center justify-center gap-2">{children}</span>
                 </>
             )}
         </button>
