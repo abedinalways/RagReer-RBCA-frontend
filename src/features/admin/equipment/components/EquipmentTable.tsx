@@ -8,6 +8,7 @@ import { StatusBadge } from "./StatusBadge";
 import { EquipmentActionMenu } from "./EquipmentActionMenu";
 import { Pagination } from "@/components/reusable/Pagination";
 import { CustomCheckbox } from "../../roles/components/CustomCheckbox";
+import { useDragToScroll } from "@/hooks/useDragToScroll";
 
 interface EquipmentTableProps {
   data: EquipmentItem[];
@@ -26,6 +27,8 @@ export function EquipmentTable({
   onAssign,
   onDelete,
 }: EquipmentTableProps) {
+  const { ref, events, dragClassName } = useDragToScroll<HTMLDivElement>();
+
   // Checkbox selection
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
@@ -66,7 +69,11 @@ export function EquipmentTable({
   return (
     <div className="w-full">
       {/* Desktop / Tablet Table View */}
-      <div className="hidden md:block overflow-x-auto">
+      <div
+        ref={ref}
+        {...events}
+        className={`hidden md:block overflow-x-auto ${dragClassName}`}
+      >
         <table className="w-full text-left border-collapse min-w-[950px]">
           <thead>
             <tr className="bg-page-bg/75 border-b border-border text-sm md:text-base font-medium text-secondary-subheading">
