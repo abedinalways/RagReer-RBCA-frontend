@@ -84,7 +84,8 @@ export const Modal: React.FC<ModalProps> = ({
       <div
         ref={modalRef}
         className={cn(
-          "bg-card-bg w-full rounded-xl shadow-2xl border border-border flex flex-col overflow-hidden my-auto max-h-[92vh] animate-in zoom-in-95 duration-150",
+          "bg-card-bg w-full rounded-xl shadow-2xl border border-border flex flex-col my-auto max-h-[92vh] animate-in zoom-in-95 duration-150",
+          !className?.includes("overflow-") && "overflow-hidden",
           MAX_WIDTH_CLASSES[maxWidth],
           className
         )}
@@ -107,7 +108,13 @@ export const Modal: React.FC<ModalProps> = ({
           </div>
         )}
 
-        <div className={cn("p-4 sm:p-6 overflow-y-auto flex-1", contentClassName)}>
+        <div
+          className={cn(
+            "p-4 sm:p-6 flex-1",
+            !contentClassName?.includes("overflow-") && "overflow-y-auto",
+            contentClassName
+          )}
+        >
           {children}
         </div>
 
