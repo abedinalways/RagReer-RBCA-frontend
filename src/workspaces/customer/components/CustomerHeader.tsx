@@ -42,6 +42,10 @@ const CUSTOMER_ROUTE_HEADERS: Record<string, HeaderMetadata> = {
     title: "Invoices",
     subtitle: "View and pay invoices for completed services",
   },
+  "/customer/settings": {
+    title: "Profile Settings",
+    subtitle: "Manage your settings here",
+  },
 };
 
 const DEFAULT_HEADER: HeaderMetadata = {
