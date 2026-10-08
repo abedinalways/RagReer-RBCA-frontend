@@ -34,7 +34,7 @@ export default function Button({
             disabled={isDisabled}
             aria-disabled={isDisabled}
             aria-busy={loading}
-            className={`inline-flex min-h-12 items-center justify-center gap-2 rounded px-6 py-3.5 text-sm font-medium leading-5 transition-all duration-200 ease-in-out ${fullWidth ? "w-full" : "w-auto"
+            className={`inline-flex min-h-10 sm:min-h-12 items-center justify-center gap-2 rounded px-6 py-3.5 text-sm md:text-base font-medium leading-5 transition-all duration-200 ease-in-out ${fullWidth ? "w-full" : "w-auto"
                 } ${isDisabled
                     ? "cursor-not-allowed opacity-60"
                     : "cursor-pointer hover:brightness-95 active:scale-[0.99]"

@@ -1,12 +1,219 @@
-/**
- * workspaces/admin/navigation/admin-navigation.ts
- *
- * Admin workspace primary navigation. Items are permission-driven — the
- * sidebar/bottom-nav filter by `PERMISSIONS.*` before rendering.
- */
-
-import { PERMISSIONS } from "@/access-control/permissions/permissions";
+import { PERMISSIONS, type Permission } from "@/access-control/permissions/permissions";
 import type { WorkspaceNavigationItem } from "../../workspace.types";
+import {
+  LayoutDashboard,
+  Briefcase,
+  Users,
+  Building2,
+  Receipt,
+  ShieldCheck,
+  Wrench,
+  Cog,
+  Settings,
+  History,
+  Inbox,
+  HardHat,
+  Target,
+  BarChart3,
+  Home,
+  User,
+  MoreHorizontal,
+  type LucideIcon,
+} from "lucide-react";
+
+export interface AdminSubNavItem {
+  id: string;
+  label: string;
+  href: string;
+  icon: LucideIcon;
+  permission?: Permission;
+}
+
+export interface AdminNavGroup {
+  id: string;
+  label: string;
+  href?: string;
+  icon?: LucideIcon;
+  items?: AdminSubNavItem[];
+  permission?: Permission;
+  defaultExpanded?: boolean;
+}
+
+export const adminGroupedNavigation: AdminNavGroup[] = [
+  {
+    id: "dashboard",
+    label: "Dashboard Overview",
+    href: "/admin/dashboard",
+    icon: LayoutDashboard,
+    permission: PERMISSIONS.DASHBOARD.VIEW,
+  },
+  {
+    id: "operations",
+    label: "Operations",
+    href: "/admin/requests",
+    icon: Briefcase,
+    permission: PERMISSIONS.REQUEST.VIEW,
+    items: [
+      {
+        id: "requests",
+        label: "Requests",
+        href: "/admin/requests",
+        icon: Inbox,
+        permission: PERMISSIONS.REQUEST.VIEW,
+      },
+      {
+        id: "jobs",
+        label: "Jobs",
+        href: "/admin/jobs",
+        icon: Briefcase,
+        permission: PERMISSIONS.JOB.VIEW,
+      },
+    ],
+  },
+  {
+    id: "users",
+    label: "Users",
+    href: "/admin/customers",
+    icon: Users,
+    permission: PERMISSIONS.CUSTOMER.VIEW,
+    items: [
+      {
+        id: "customers",
+        label: "Customers",
+        href: "/admin/customers",
+        icon: User,
+        permission: PERMISSIONS.CUSTOMER.VIEW,
+      },
+      {
+        id: "workers",
+        label: "Workers",
+        href: "/admin/workers",
+        icon: HardHat,
+        permission: PERMISSIONS.WORKER.VIEW,
+      },
+      {
+        id: "leads",
+        label: "Leads",
+        href: "/admin/leads",
+        icon: Target,
+        permission: PERMISSIONS.LEAD.VIEW,
+      },
+    ],
+  },
+  {
+    id: "business",
+    label: "Business",
+    href: "/admin/crm",
+    icon: Building2,
+    permission: PERMISSIONS.CRM.VIEW,
+    items: [
+      {
+        id: "crm",
+        label: "CRM",
+        href: "/admin/crm",
+        icon: Building2,
+        permission: PERMISSIONS.CRM.VIEW,
+      },
+    ],
+  },
+  {
+    id: "finance",
+    label: "Finance",
+    href: "/admin/reports",
+    icon: Receipt,
+    permission: PERMISSIONS.REPORT.VIEW,
+    items: [
+      {
+        id: "reports",
+        label: "Reports",
+        href: "/admin/reports",
+        icon: BarChart3,
+        permission: PERMISSIONS.REPORT.VIEW,
+      },
+    ],
+  },
+  {
+    id: "system",
+    label: "System Management",
+    href: "/admin/roles",
+    icon: Settings,
+    permission: PERMISSIONS.SETTING.VIEW,
+    defaultExpanded: true,
+    items: [
+      {
+        id: "roles-permission",
+        label: "Roles & Permission",
+        href: "/admin/roles",
+        icon: ShieldCheck,
+        permission: PERMISSIONS.SETTING.MANAGE,
+      },
+      {
+        id: "equipment",
+        label: "Equipment",
+        href: "/admin/equipment",
+        icon: Wrench,
+        permission: PERMISSIONS.SETTING.VIEW,
+      },
+      {
+        id: "services",
+        label: "Services",
+        href: "/admin/services",
+        icon: Cog,
+        permission: PERMISSIONS.SETTING.VIEW,
+      },
+      {
+        id: "settings",
+        label: "Settings",
+        href: "/admin/settings",
+        icon: Settings,
+        permission: PERMISSIONS.SETTING.VIEW,
+      },
+      {
+        id: "activity-log",
+        label: "Activity Log",
+        href: "/admin/activity",
+        icon: History,
+        permission: PERMISSIONS.SETTING.VIEW,
+      },
+    ],
+  },
+];
+
+export interface AdminMobileNavItem {
+  id: string;
+  label: string;
+  href: string;
+  icon: LucideIcon;
+  isMoreTrigger?: boolean;
+}
+
+export const adminMobileNavigationItems: AdminMobileNavItem[] = [
+  {
+    id: "dashboard",
+    label: "Dashboard",
+    href: "/admin/dashboard",
+    icon: Home,
+  },
+  {
+    id: "operations",
+    label: "Operations",
+    href: "/admin/requests",
+    icon: Briefcase,
+  },
+  {
+    id: "users",
+    label: "Users",
+    href: "/admin/customers",
+    icon: User,
+  },
+  {
+    id: "more",
+    label: "More",
+    href: "/admin/roles",
+    icon: MoreHorizontal,
+    isMoreTrigger: true,
+  },
+];
 
 export const adminNavigation: WorkspaceNavigationItem[] = [
   { label: "Dashboard", href: "/admin/dashboard", icon: "📊", permission: PERMISSIONS.DASHBOARD.VIEW, section: "Overview" },

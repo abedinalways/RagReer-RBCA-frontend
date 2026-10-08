@@ -90,8 +90,8 @@ export const Modal: React.FC<ModalProps> = ({
         )}
       >
         {title && (
-          <div className="flex items-center justify-between px-6 py-4.5 border-b border-border shrink-0">
-            <div className="text-2xl font-semibold text-primary-heading">
+          <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 sm:py-4.5 border-b border-border shrink-0">
+            <div className="text-lg sm:text-2xl font-semibold text-primary-heading">
               {title}
             </div>
             {showCloseButton && (
@@ -99,7 +99,7 @@ export const Modal: React.FC<ModalProps> = ({
                 type="button"
                 onClick={onClose}
                 aria-label="Close modal"
-                className="p-1 rounded-md text-secondary-subheading hover:text-txt-primary hover:bg-page-bg transition-colors cursor-pointer"
+                className="p-1.5 rounded-md text-secondary-subheading hover:text-txt-primary hover:bg-page-bg transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -107,12 +107,12 @@ export const Modal: React.FC<ModalProps> = ({
           </div>
         )}
 
-        <div className={cn("p-6 overflow-y-auto flex-1", contentClassName)}>
+        <div className={cn("p-4 sm:p-6 overflow-y-auto flex-1", contentClassName)}>
           {children}
         </div>
 
         {footer && (
-          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-border bg-card-bg shrink-0">
+          <div className="flex items-center justify-end gap-3 px-4 sm:px-6 py-3.5 sm:py-4 border-t border-border bg-card-bg shrink-0">
             {footer}
           </div>
         )}
