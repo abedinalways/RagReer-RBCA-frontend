@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import { ArrowLeft, ChevronRight, Check, Clock, MapPin, Maximize2 } from "lucide-react";
@@ -21,6 +21,12 @@ const RealRouteMap = dynamic(
   }
 );
 
+const DEFAULT_CREW_START_POINT = {
+  lat: 33.5358,
+  lng: -117.7075,
+  label: "Crew Vehicle (Alicia & Golden Lantern)",
+};
+
 interface TravelTrackingViewProps {
   jobId: string;
 }
@@ -32,6 +38,15 @@ export function TravelTrackingView({ jobId }: TravelTrackingViewProps) {
   const [travelMinutes, setTravelMinutes] = useState(15); // Start at 0.25h for realistic Figma mock
 
   const job = MOCK_WORKER_JOBS.find((j) => j.id === jobId) || MOCK_WORKER_JOBS[1];
+
+  const destinationPoint = useMemo(
+    () => ({
+      lat: 33.531,
+      lng: -117.7038,
+      label: job.address,
+    }),
+    [job.address]
+  );
 
   // Live timer incrementing every minute
   useEffect(() => {
@@ -80,16 +95,8 @@ export function TravelTrackingView({ jobId }: TravelTrackingViewProps) {
         {/* Real Interactive GPS Satellite Route Map Card */}
         <div className="w-full h-72 rounded-sm overflow-hidden border border-[#D9DADC] shadow-sm bg-slate-900">
           <RealRouteMap
-            startPoint={{
-              lat: 33.5358,
-              lng: -117.7075,
-              label: "Crew Vehicle (Alicia & Golden Lantern)",
-            }}
-            destinationPoint={{
-              lat: 33.531,
-              lng: -117.7038,
-              label: job.address,
-            }}
+            startPoint={DEFAULT_CREW_START_POINT}
+            destinationPoint={destinationPoint}
             destinationTitle={job.title}
             destinationAddress={job.address}
             initialFullscreen={isMapFullscreen}

@@ -67,6 +67,9 @@ export function RealRouteMap({
 }: RealRouteMapProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
+  const polylineRef = useRef<L.Polyline | null>(null);
+  const startMarkerRef = useRef<L.Marker | null>(null);
+  const destMarkerRef = useRef<L.Marker | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(initialFullscreen);
   const [mapType, setMapType] = useState<"satellite" | "streets">("satellite");
   const satelliteLayerRef = useRef<L.LayerGroup | null>(null);
@@ -109,20 +112,22 @@ export function RealRouteMap({
     }, 100);
 
     const t2 = setTimeout(() => {
-      mapInstanceRef.current?.invalidateSize();
-      const polyline = L.polyline(routeCoords);
-      mapInstanceRef.current?.fitBounds(polyline.getBounds(), {
-        padding: isFullscreen ? [60, 60] : [40, 40],
-      });
+      if (!mapInstanceRef.current) return;
+      mapInstanceRef.current.invalidateSize();
+      if (polylineRef.current) {
+        mapInstanceRef.current.fitBounds(polylineRef.current.getBounds(), {
+          padding: isFullscreen ? [60, 60] : [40, 40],
+        });
+      }
     }, 300);
 
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
     };
-  }, [isFullscreen, routeCoords]);
+  }, [isFullscreen]);
 
-  // Initialize Map
+  // Initialize Map exactly ONCE on mount
   useEffect(() => {
     if (!mapContainerRef.current || mapInstanceRef.current) return;
 
@@ -142,6 +147,7 @@ export function RealRouteMap({
       "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
       {
         maxZoom: 19,
+        keepBuffer: 6,
       }
     );
 
@@ -150,6 +156,7 @@ export function RealRouteMap({
       "https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}",
       {
         maxZoom: 19,
+        keepBuffer: 6,
       }
     );
 
@@ -163,6 +170,7 @@ export function RealRouteMap({
       "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       {
         maxZoom: 19,
+        keepBuffer: 6,
       }
     );
     streetLayerRef.current = streetTiles;
@@ -175,6 +183,7 @@ export function RealRouteMap({
       lineCap: "round",
       lineJoin: "round",
     }).addTo(map);
+    polylineRef.current = polyline;
 
     // 4. Start Point Marker (Red circular dot with white border)
     const startIcon = L.divIcon({
@@ -192,9 +201,10 @@ export function RealRouteMap({
       iconSize: [16, 16],
       iconAnchor: [8, 8],
     });
-    L.marker([startPoint.lat, startPoint.lng], { icon: startIcon })
+    const startMarker = L.marker([startPoint.lat, startPoint.lng], { icon: startIcon })
       .addTo(map)
       .bindPopup(`<b>Start:</b> ${startPoint.label || "Start location"}`);
+    startMarkerRef.current = startMarker;
 
     // 5. Destination Point Marker (Red target pin with pulsing effect)
     const destIcon = L.divIcon({
@@ -227,9 +237,10 @@ export function RealRouteMap({
       iconSize: [32, 32],
       iconAnchor: [16, 16],
     });
-    L.marker([destinationPoint.lat, destinationPoint.lng], { icon: destIcon })
+    const destMarker = L.marker([destinationPoint.lat, destinationPoint.lng], { icon: destIcon })
       .addTo(map)
       .bindPopup(`<b>Destination:</b> ${destinationPoint.label || "Destination"}`);
+    destMarkerRef.current = destMarker;
 
     // Fit map view to the route bounds with padding
     map.fitBounds(polyline.getBounds(), { padding: [40, 40] });
@@ -239,8 +250,41 @@ export function RealRouteMap({
     return () => {
       map.remove();
       mapInstanceRef.current = null;
+      polylineRef.current = null;
+      startMarkerRef.current = null;
+      destMarkerRef.current = null;
+      satelliteLayerRef.current = null;
+      streetLayerRef.current = null;
     };
-  }, [startPoint, destinationPoint, routeCoords]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Update marker and polyline positions dynamically without tearing down map or re-fetching tiles
+  useEffect(() => {
+    if (!mapInstanceRef.current) return;
+
+    if (startMarkerRef.current) {
+      startMarkerRef.current.setLatLng([startPoint.lat, startPoint.lng]);
+      startMarkerRef.current.setPopupContent(`<b>Start:</b> ${startPoint.label || "Start location"}`);
+    }
+
+    if (destMarkerRef.current) {
+      destMarkerRef.current.setLatLng([destinationPoint.lat, destinationPoint.lng]);
+      destMarkerRef.current.setPopupContent(`<b>Destination:</b> ${destinationPoint.label || "Destination"}`);
+    }
+
+    if (polylineRef.current) {
+      polylineRef.current.setLatLngs(routeCoords);
+    }
+  }, [
+    startPoint.lat,
+    startPoint.lng,
+    startPoint.label,
+    destinationPoint.lat,
+    destinationPoint.lng,
+    destinationPoint.label,
+    routeCoords,
+  ]);
 
   // Toggle Satellite / Street view
   const toggleMapType = () => {

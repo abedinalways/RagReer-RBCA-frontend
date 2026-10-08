@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { ArrowLeft } from "lucide-react";
 
@@ -18,6 +18,12 @@ const RealRouteMap = dynamic(
   }
 );
 
+const DEFAULT_CREW_START_POINT = {
+  lat: 33.5358,
+  lng: -117.7075,
+  label: "Crew Vehicle (Alicia & Golden Lantern)",
+};
+
 interface TimeEntryFullscreenMapProps {
   isOpen: boolean;
   onClose: () => void;
@@ -31,6 +37,15 @@ export function TimeEntryFullscreenMap({
   destinationTitle = "North Entrance Monument & Islands",
   destinationAddress = "100 Whispering Pines Blvd at Hwy 43",
 }: TimeEntryFullscreenMapProps) {
+  const destinationPoint = useMemo(
+    () => ({
+      lat: 33.531,
+      lng: -117.7038,
+      label: destinationAddress,
+    }),
+    [destinationAddress]
+  );
+
   // Handle ESC key to close fullscreen
   useEffect(() => {
     if (!isOpen) return;
@@ -67,16 +82,8 @@ export function TimeEntryFullscreenMap({
       {/* Satellite Route Map filling the entire remainder of screen */}
       <div className="flex-1 w-full relative bg-slate-900">
         <RealRouteMap
-          startPoint={{
-            lat: 33.5358,
-            lng: -117.7075,
-            label: "Crew Vehicle (Alicia & Golden Lantern)",
-          }}
-          destinationPoint={{
-            lat: 33.531,
-            lng: -117.7038,
-            label: destinationAddress,
-          }}
+          startPoint={DEFAULT_CREW_START_POINT}
+          destinationPoint={destinationPoint}
           destinationTitle={destinationTitle}
           destinationAddress={destinationAddress}
           className="w-full h-full"

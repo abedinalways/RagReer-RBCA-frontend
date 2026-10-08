@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo, memo } from "react";
 import dynamic from "next/dynamic";
 import { Maximize2 } from "lucide-react";
 
@@ -18,32 +19,39 @@ const RealRouteMap = dynamic(
   }
 );
 
+const DEFAULT_CREW_START_POINT = {
+  lat: 33.5358,
+  lng: -117.7075,
+  label: "Crew Vehicle (Alicia & Golden Lantern)",
+};
+
 interface TimeEntryRouteMapCardProps {
   onOpenFullscreen: () => void;
   destinationTitle?: string;
   destinationAddress?: string;
 }
 
-export function TimeEntryRouteMapCard({
+export const TimeEntryRouteMapCard = memo(function TimeEntryRouteMapCard({
   onOpenFullscreen,
   destinationTitle = "North Entrance Monument & Islands",
   destinationAddress = "100 Whispering Pines Blvd at Hwy 43",
 }: TimeEntryRouteMapCardProps) {
+  const destinationPoint = useMemo(
+    () => ({
+      lat: 33.531,
+      lng: -117.7038,
+      label: destinationAddress,
+    }),
+    [destinationAddress]
+  );
+
   return (
     <div className="relative w-full rounded-lg overflow-hidden border border-border-input shadow-xs bg-slate-900 group">
       {/* Map Content (220px height matching Image 1) */}
       <div className="w-full h-[230px]">
         <RealRouteMap
-          startPoint={{
-            lat: 33.5358,
-            lng: -117.7075,
-            label: "Crew Vehicle (Alicia & Golden Lantern)",
-          }}
-          destinationPoint={{
-            lat: 33.531,
-            lng: -117.7038,
-            label: destinationAddress,
-          }}
+          startPoint={DEFAULT_CREW_START_POINT}
+          destinationPoint={destinationPoint}
           destinationTitle={destinationTitle}
           destinationAddress={destinationAddress}
           className="w-full h-full pointer-events-auto"
@@ -62,4 +70,4 @@ export function TimeEntryRouteMapCard({
       </button>
     </div>
   );
-}
+});
