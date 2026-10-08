@@ -133,18 +133,18 @@ export function PermissionModal({
       className="max-h-[90vh]"
       contentClassName="p-0 overflow-hidden flex flex-col"
       footer={
-        <div className="flex items-center justify-end gap-3 w-full">
+        <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2.5 sm:gap-3 w-full">
           <button
             type="button"
             onClick={onClose}
-            className="px-6 py-2.5 rounded-md border border-border text-txt-primary hover:bg-page-bg font-medium text-sm md:text-base transition-colors cursor-pointer"
+            className="w-full sm:w-auto px-6 py-2.5 rounded-md border border-border text-txt-primary hover:bg-page-bg font-medium text-sm md:text-base transition-colors cursor-pointer text-center"
           >
             Cancel
           </button>
           <button
             type="button"
             onClick={handleSaveAndSubmit}
-            className="px-6 py-2.5 rounded-md bg-primary text-white hover:bg-primary-hover font-medium text-sm md:text-base transition-colors cursor-pointer shadow-xs"
+            className="w-full sm:w-auto px-6 py-2.5 rounded-md bg-primary text-white hover:bg-primary-hover font-medium text-sm md:text-base transition-colors cursor-pointer shadow-xs text-center"
           >
             Save & Update
           </button>
@@ -153,7 +153,7 @@ export function PermissionModal({
     >
       <div className="flex flex-col flex-1 overflow-hidden">
         {/* Role Tabs Header */}
-        <div className="flex items-center gap-8 px-6 pt-2 border-b border-border bg-layout-bg shrink-0">
+        <div className="flex items-center gap-4 sm:gap-8 px-4 sm:px-6 pt-1 sm:pt-2 border-b border-border bg-layout-bg shrink-0 overflow-x-auto no-scrollbar">
           {TABS.map((tab) => {
             const isActive = activeRole === tab.id;
             return (
@@ -162,7 +162,7 @@ export function PermissionModal({
                 type="button"
                 onClick={() => onRoleChange(tab.id)}
                 className={cn(
-                  "pb-2.5 md:pb-3.5 pt-2 text-sm md:text-base font-medium transition-colors border-b-2 cursor-pointer -mb-0.5 md:-mb-px",
+                  "pb-2.5 md:pb-3.5 pt-2 text-sm md:text-base font-medium transition-colors border-b-2 cursor-pointer whitespace-nowrap shrink-0 -mb-px",
                   isActive
                     ? "border-primary text-primary font-semibold"
                     : "border-transparent text-secondary-subheading hover:text-txt-primary"
@@ -175,8 +175,9 @@ export function PermissionModal({
         </div>
 
         {/* Scrollable Matrix Area */}
-        <div className="flex-1 overflow-y-auto px-6 py-4">
-          <div className="border border-border rounded-lg overflow-hidden bg-layout-bg shadow-2xs">
+        <div className="flex-1 overflow-y-auto p-3.5 sm:p-5 md:p-6 space-y-4">
+          {/* Desktop Table Matrix (>= md) */}
+          <div className="hidden md:block border border-border rounded-lg overflow-hidden bg-layout-bg shadow-2xs">
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-page-bg/80 border-b border-border text-xs sm:text-sm font-semibold text-secondary-subheading">
@@ -193,7 +194,7 @@ export function PermissionModal({
                       {/* Module Checkbox */}
                       <td className="py-4 px-4 align-top">
                         <CustomCheckbox
-                          id={`mod-${mod.id}`}
+                          id={`mod-desktop-${mod.id}`}
                           checked={modChecked}
                           onChange={(checked) => handleToggleModule(mod.id, checked)}
                           label={<span className="font-medium">{mod.name}</span>}
@@ -206,7 +207,7 @@ export function PermissionModal({
                           {mod.permissions.map((perm) => (
                             <CustomCheckbox
                               key={perm}
-                              id={`perm-${mod.id}-${perm}`}
+                              id={`perm-desktop-${mod.id}-${perm}`}
                               checked={isChecked(mod.id, perm)}
                               onChange={() => handleTogglePermission(mod.id, perm)}
                               label={perm}
@@ -221,14 +222,56 @@ export function PermissionModal({
             </table>
           </div>
 
+          {/* Mobile Card-Based Matrix (< md) */}
+          <div className="md:hidden space-y-3">
+            {currentRoleConfig.modules.map((mod) => {
+              const modChecked = isModuleChecked(mod.id);
+              const checkedCount = (currentChecked[mod.id] || []).length;
+
+              return (
+                <div
+                  key={mod.id}
+                  className="border border-border rounded-lg overflow-hidden bg-layout-bg shadow-2xs"
+                >
+                  {/* Module Card Header */}
+                  <div className="bg-page-bg/85 px-3.5 py-2.5 border-b border-border flex items-center justify-between gap-2">
+                    <CustomCheckbox
+                      id={`mod-mobile-${mod.id}`}
+                      checked={modChecked}
+                      onChange={(checked) => handleToggleModule(mod.id, checked)}
+                      label={<span className="font-semibold text-txt-primary text-sm sm:text-base">{mod.name}</span>}
+                    />
+                    <span className="text-xs text-secondary-subheading font-medium bg-card-bg px-2 py-0.5 rounded border border-border shrink-0">
+                      {checkedCount} / {mod.permissions.length}
+                    </span>
+                  </div>
+
+                  {/* Module Checkboxes */}
+                  <div className="p-3 grid grid-cols-1 sm:grid-cols-2 gap-2.5 bg-card-bg">
+                    {mod.permissions.map((perm) => (
+                      <CustomCheckbox
+                        key={perm}
+                        id={`perm-mobile-${mod.id}-${perm}`}
+                        checked={isChecked(mod.id, perm)}
+                        onChange={() => handleTogglePermission(mod.id, perm)}
+                        label={perm}
+                        className="w-full"
+                      />
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
           {/* Assign all permissions checkbox */}
-          <div className="pt-4 pb-2">
+          <div className="pt-2 sm:pt-4 pb-1 px-1">
             <CustomCheckbox
               id="assign-all-permissions"
               checked={isAllRoleChecked()}
               onChange={handleToggleAllForRole}
               label={
-                <span className="text-xs sm:text-sm text-secondary-subheading font-medium">
+                <span className="text-sm md:text-base text-secondary-subheading font-medium">
                   Assign all permission to role
                 </span>
               }
