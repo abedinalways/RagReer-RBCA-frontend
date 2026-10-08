@@ -7,15 +7,37 @@ import {
   INITIAL_INVOICES_DATA,
   BILLING_HISTORY_DATA,
 } from "../data/invoicesData";
-import { Invoice, BillingHistoryItem } from "../types/invoicesTypes";
+import {
+  Invoice,
+  BillingHistoryItem,
+  CustomerBillingMode,
+} from "../types/invoicesTypes";
 import { ReusableTable } from "@/components/reusable/ReusableTable";
 import EmptyStateCard from "@/components/reusable/EmptyStateCard";
 import InvoicesIcon from "@/components/icons/customer/InvoicesIcon";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 import BillingHistory from "./BillingHistory";
 import PaymentReceiptModal from "./PaymentReceiptModal";
+import PortfolioConsolidatedInvoices from "./portfolio/PortfolioConsolidatedInvoices";
+import PortfolioSeparateInvoices from "./portfolio/PortfolioSeparateInvoices";
 
-export const Invoices: React.FC = () => {
+export interface InvoicesProps {
+  /**
+   * Billing mode determined by the customer profile / API.
+   * Can be passed from server/parent component in future API integration.
+   * Defaults to "portfolio_separate" to showcase the new design.
+   */
+  billingMode?: CustomerBillingMode;
+}
+
+export const Invoices: React.FC<InvoicesProps> = ({
+  billingMode: propBillingMode,
+}) => {
+  // Support prop or toggle between regular, portfolio consolidated, and portfolio separate billing modes
+  const [currentMode, setCurrentMode] = useState<CustomerBillingMode>(
+    propBillingMode || "portfolio_separate"
+  );
+
   const [invoices] = useState<Invoice[]>(INITIAL_INVOICES_DATA);
   const [billingHistory] = useState<BillingHistoryItem[]>(BILLING_HISTORY_DATA);
   const [searchQuery, setSearchQuery] = useState("");
@@ -62,6 +84,66 @@ export const Invoices: React.FC = () => {
 
   return (
     <div className="space-y-6 sm:space-y-7">
+      {/* Customer Mode Switcher (Active until backend passes user billingMode prop) */}
+      {!propBillingMode && (
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pb-1 text-xs border-b border-border/60 pb-3">
+          <div className="text-secondary-subheading flex items-center gap-1.5 font-medium">
+            <span>Customer View:</span>
+            <span className="text-primary font-semibold">
+              {currentMode === "portfolio_separate"
+                ? "Portfolio Customer (Separate Billing)"
+                : currentMode === "portfolio_consolidated"
+                ? "Portfolio Customer (Consolidated Billing)"
+                : "Regular Customer"}
+            </span>
+          </div>
+          <div className="flex items-center gap-1 bg-page-bg p-1 rounded-sm border border-border w-fit">
+            <button
+              type="button"
+              onClick={() => setCurrentMode("portfolio_separate")}
+              className={`px-3 py-1 rounded-xs text-xs font-medium transition-colors cursor-pointer ${
+                currentMode === "portfolio_separate"
+                  ? "bg-primary text-white shadow-2xs"
+                  : "text-secondary-subheading hover:text-txt-primary"
+              }`}
+            >
+              Portfolio Separate
+            </button>
+            <button
+              type="button"
+              onClick={() => setCurrentMode("portfolio_consolidated")}
+              className={`px-3 py-1 rounded-xs text-xs font-medium transition-colors cursor-pointer ${
+                currentMode === "portfolio_consolidated"
+                  ? "bg-primary text-white shadow-2xs"
+                  : "text-secondary-subheading hover:text-txt-primary"
+              }`}
+            >
+              Portfolio Consolidated
+            </button>
+            <button
+              type="button"
+              onClick={() => setCurrentMode("regular")}
+              className={`px-3 py-1 rounded-xs text-xs font-medium transition-colors cursor-pointer ${
+                currentMode === "regular"
+                  ? "bg-primary text-white shadow-2xs"
+                  : "text-secondary-subheading hover:text-txt-primary"
+              }`}
+            >
+              Regular Customer
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Render appropriate view based on current mode */}
+      {currentMode === "portfolio_separate" ? (
+        <PortfolioSeparateInvoices />
+      ) : currentMode === "portfolio_consolidated" ? (
+        <PortfolioConsolidatedInvoices />
+      ) : (
+        /* Regular Customer Invoices View */
+        <>
+
       {invoices.length === 0 ? (
         /* Empty State matching Figma Screenshot 1 */
         <div className="pt-8 sm:pt-14 pb-12 flex flex-col items-center justify-center p-4">
@@ -180,6 +262,8 @@ export const Invoices: React.FC = () => {
             : undefined
         }
       />
+        </>
+      )}
     </div>
   );
 };
