@@ -8,6 +8,9 @@ import VerifyEmailModal from "./VerifyEmailModal";
 import EmailSuccessModal from "./EmailSuccessModal";
 import VerifyPhoneModal from "./VerifyPhoneModal";
 import SecuritySettings from "./SecuritySettings";
+import NotificationSettings from "./NotificationSettings";
+import PaymentSettings from "./PaymentSettings";
+import DataPrivacySettings from "./DataPrivacySettings";
 
 const TABS: SettingsTab[] = [
   "Profile",
@@ -376,18 +379,12 @@ export const ProfileSettings: React.FC = () => {
         </div>
       ) : activeTab === "Security" ? (
         <SecuritySettings />
+      ) : activeTab === "Notifications" ? (
+        <NotificationSettings />
+      ) : activeTab === "Payment" ? (
+        <PaymentSettings />
       ) : (
-        /* Placeholder for other tabs (Notifications, Payment, Data & Privacy) */
-        <div className="bg-card-bg rounded-sm border border-border p-5 sm:p-7 md:p-8 shadow-2xs">
-          <div className="py-16 text-center text-secondary-subheading text-sm">
-            <p className="font-medium text-primary-heading text-base">
-              {activeTab} Settings
-            </p>
-            <p className="mt-1 text-xs">
-              This section is coming soon as part of the step-by-step rollout.
-            </p>
-          </div>
-        </div>
+        <DataPrivacySettings />
       )}
 
       {/* Modals */}
