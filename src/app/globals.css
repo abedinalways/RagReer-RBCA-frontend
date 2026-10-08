@@ -64,6 +64,9 @@
     --color-password-medium: #F59E0B;
     --color-password-good: #0777F6;
     --color-password-strong: #16A34A;
+    --color-service-purple: #8B5CF6;
+    --color-attention-bg: #F4F8FC;
+    --color-attention-border: #E5EEF7;
 
     /* Appointment Figma Exact Colors */
     --color-apt-pref-bg: #EAEAEA;
@@ -127,6 +130,9 @@
         --color-password-medium: #F59E0B;
         --color-password-good: #0777F6;
         --color-password-strong: #16A34A;
+        --color-service-purple: #8B5CF6;
+        --color-attention-bg: #F4F8FC;
+        --color-attention-border: #E5EEF7;
         --color-blue-50: #E7F1FB;
         --color-blue-100: #CADFF4;
         --color-nav-bg: #EAF2F9;
