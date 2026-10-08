@@ -8,6 +8,7 @@ import {
   INITIAL_SCHEDULING_SETTINGS,
   INITIAL_BILLING_SETTINGS,
   INITIAL_NOTIFICATION_CATEGORIES,
+  INITIAL_SYSTEM_SETTINGS,
 } from "../data/settingsData";
 import { SettingsNavTabs } from "./SettingsNavTabs";
 import { GeneralTab } from "./GeneralTab";
@@ -40,6 +41,7 @@ export function SettingsView() {
   const [schedulingSettings, setSchedulingSettings] = useState(INITIAL_SCHEDULING_SETTINGS);
   const [billingSettings, setBillingSettings] = useState(INITIAL_BILLING_SETTINGS);
   const [notificationCategories, setNotificationCategories] = useState(INITIAL_NOTIFICATION_CATEGORIES);
+  const [systemSettings, setSystemSettings] = useState(INITIAL_SYSTEM_SETTINGS);
 
   // Save changes toast / feedback
   const [isSaved, setIsSaved] = useState(false);
@@ -120,7 +122,12 @@ export function SettingsView() {
 
           {activeTab === "security" && <SecurityTab />}
 
-          {activeTab === "system" && <SystemTab />}
+          {activeTab === "system" && (
+            <SystemTab
+              settings={systemSettings}
+              onChange={setSystemSettings}
+            />
+          )}
         </main>
       </div>
     </div>
