@@ -47,7 +47,7 @@ export function CustomCheckbox({
               : "bg-white border-secondary-border group-hover:border-primary"
           )}
         >
-          {checked && <Check className="w-3.5 h-3.5 stroke-3" />}
+          {checked && <Check className="w-2.5 h-2.5 md:w-3.5 md:h-3.5 stroke-3" />}
         </div>
       </div>
       {label && (
