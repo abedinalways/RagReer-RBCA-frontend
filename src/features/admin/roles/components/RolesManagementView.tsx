@@ -80,7 +80,11 @@ export function RolesManagementView() {
             Configure role access privileges, view matrix allocations, and adjust team tier permissions.
           </p>
         </div>
-        <Button onClick={handleViewAllPermissions} fullWidth={false}>
+        <Button
+          onClick={handleViewAllPermissions}
+          fullWidth={false}
+          className="w-full sm:w-auto shrink-0"
+        >
           View Permission
         </Button>
       </div>

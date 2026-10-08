@@ -30,7 +30,7 @@ export function CustomCheckbox({
         className
       )}
     >
-      <div className="relative flex items-center justify-center">
+      <div className="relative flex items-center justify-center shrink-0">
         <input
           type="checkbox"
           id={id}
@@ -41,7 +41,7 @@ export function CustomCheckbox({
         />
         <div
           className={cn(
-            "w-3.5 h-3.5 md:w-4 md:h-4 rounded-xs border transition-all flex items-center justify-center",
+            "w-3.5 h-3.5 md:w-4 md:h-4 rounded-xs border transition-all flex items-center justify-center shrink-0",
             checked
               ? "bg-primary border-primary text-white"
               : "bg-white border-secondary-border group-hover:border-primary"
@@ -51,7 +51,7 @@ export function CustomCheckbox({
         </div>
       </div>
       {label && (
-        <span className="text-sm md:text-base text-txt-primary group-hover:text-primary-heading transition-colors">
+        <span className="text-sm md:text-base text-txt-primary group-hover:text-primary-heading transition-colors leading-normal">
           {label}
         </span>
       )}
