@@ -1,5 +1,8 @@
+"use client";
+
 import { ColumnDef } from "@/features/customer/invoices/types/invoicesTypes";
 import { Pagination } from "@/components/reusable/Pagination";
+import { useDragToScroll } from "@/hooks/useDragToScroll";
 import React from "react";
 
 interface ReusableTableProps<T> {
@@ -23,6 +26,8 @@ export function ReusableTable<T>({
   emptyMessage = "No items found.",
   pagination,
 }: ReusableTableProps<T>) {
+  const { ref, events, dragClassName } = useDragToScroll<HTMLDivElement>();
+
   const itemsPerPage = Math.max(1, pagination?.itemsPerPage ?? data.length);
   const totalPages = Math.max(1, Math.ceil(data.length / itemsPerPage));
   const currentPage = pagination
@@ -40,14 +45,18 @@ export function ReusableTable<T>({
 
   return (
     <div className="w-full">
-      <div className="w-full overflow-x-auto">
+      <div
+        ref={ref}
+        {...events}
+        className={`w-full overflow-x-auto ${dragClassName}`}
+      >
         <table className="w-full text-left border-collapse text-sm lg:text-base">
           <thead>
             <tr className="bg-page-bg border-b border-border">
               {columns.map((col, idx) => (
                 <th
                   key={idx}
-                  className="py-3 px-4  font-medium text-secondary-subheading capitalize tracking-wider"
+                  className="py-3 px-4 font-medium text-secondary-subheading capitalize tracking-wider whitespace-nowrap"
                 >
                   {col.header}
                 </th>
@@ -59,7 +68,7 @@ export function ReusableTable<T>({
               visibleData.map((row, rowIdx) => (
                 <tr
                   key={keyExtractor(row, rowIdx)}
-                  className="hover:bg-blue-50/80"
+                  className="hover:bg-blue-50/80 transition-colors"
                 >
                   {columns.map((col, colIdx) => (
                     <td
