@@ -60,7 +60,10 @@
     --color-banner-blue: #A3BFDB;
     --color-table-total-bg: #EAF2F9;
     --color-note-green-text: #027A48;
-    --color-secondary-heading: #5C5F60;
+    --color-password-weak: rgba(235, 61, 77, 0.45);
+    --color-password-medium: #F59E0B;
+    --color-password-good: #0777F6;
+    --color-password-strong: #16A34A;
 
     /* Appointment Figma Exact Colors */
     --color-apt-pref-bg: #EAEAEA;
@@ -120,6 +123,10 @@
         --color-badge-active-dot: #12B76A;
         --color-banner-blue: #A3BFDB;
         --color-table-total-bg: #EAF2F9;
+        --color-password-weak: rgba(235, 61, 77, 0.45);
+        --color-password-medium: #F59E0B;
+        --color-password-good: #0777F6;
+        --color-password-strong: #16A34A;
         --color-blue-50: #E7F1FB;
         --color-blue-100: #CADFF4;
         --color-nav-bg: #EAF2F9;
