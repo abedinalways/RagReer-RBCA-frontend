@@ -80,3 +80,9 @@ export interface IpWhitelistItem {
   date: string;
   status: "Active" | "Disabled";
 }
+
+export interface SystemSettings {
+  userRegistration: boolean;
+  crewRegistration: boolean;
+  maintenanceMode: boolean;
+}
