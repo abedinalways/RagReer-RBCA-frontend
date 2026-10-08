@@ -89,63 +89,34 @@ export function CustomerProfileDropdown({ className }: CustomerProfileDropdownPr
         />
       </button>
 
-      {/* Dropdown Menu */}
+      {/* Dropdown Menu matching Figma Screenshot 1 */}
       {isOpen && (
         <div
           role="menu"
           aria-orientation="vertical"
-          className="absolute right-0 top-full mt-2 w-56 origin-top-right rounded-lg border border-border bg-layout-bg p-1.5 shadow-lg shadow-txt-primary/5 z-50 animate-in fade-in zoom-in-95 duration-100"
+          className="absolute right-0 top-full mt-2 w-36 sm:w-40 origin-top-right rounded-lg border border-border bg-card-bg p-2.5 shadow-lg z-50 flex flex-col gap-2 animate-in fade-in zoom-in-95 duration-100"
         >
-          {/* Header Info */}
-          <div className="px-3 py-2 border-b border-border-subtle">
-            <p className="text-sm font-semibold text-primary-heading truncate">
-              {displayName}
-            </p>
-            <p className="text-xs text-secondary-subheading truncate">
-              {user?.email || "customer@raggreer.com"}
-            </p>
-            <div className="mt-1.5 inline-flex items-center rounded-sm bg-blue-50 px-2 py-0.5 text-[11px] font-medium text-primary">
-              {displayRole}
-            </div>
-          </div>
+          {/* Settings Button (Figma Primary Button) */}
+          <button
+            type="button"
+            onClick={() => {
+              setIsOpen(false);
+              router.push("/customer/settings");
+            }}
+            className="w-full bg-primary hover:bg-primary-hover text-white text-xs sm:text-sm font-medium py-2 px-3 rounded-xs text-center transition-colors cursor-pointer shadow-2xs"
+          >
+            Settings
+          </button>
 
-          {/* Navigation Items */}
-          <div className="py-1">
-            <button
-              type="button"
-              onClick={() => {
-                setIsOpen(false);
-                router.push("/customer/property");
-              }}
-              className="flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-xs font-medium text-txt-primary transition-colors hover:bg-page-bg hover:text-primary cursor-pointer"
-            >
-              <User className="h-4 w-4 text-secondary-subheading" />
-              <span>My Properties</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setIsOpen(false);
-                router.push("/customer/requests");
-              }}
-              className="flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-xs font-medium text-txt-primary transition-colors hover:bg-page-bg hover:text-primary cursor-pointer"
-            >
-              <FileText className="h-4 w-4 text-secondary-subheading" />
-              <span>Service Requests</span>
-            </button>
-          </div>
-
-          <div className="border-t border-border-subtle pt-1">
-            <button
-              type="button"
-              disabled={isLogoutLoading}
-              onClick={() => void handleLogout()}
-              className="flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-xs font-medium text-trend-down transition-colors hover:bg-page-bg cursor-pointer disabled:opacity-50"
-            >
-              <LogOut className="h-4 w-4 text-trend-down" />
-              <span>{isLogoutLoading ? "Logging out..." : "Log out"}</span>
-            </button>
-          </div>
+          {/* Log Out Button (Figma Outline Button) */}
+          <button
+            type="button"
+            disabled={isLogoutLoading}
+            onClick={() => void handleLogout()}
+            className="w-full bg-card-bg hover:bg-page-bg text-txt-primary border border-border text-xs sm:text-sm font-medium py-2 px-3 rounded-xs text-center transition-colors cursor-pointer disabled:opacity-50"
+          >
+            {isLogoutLoading ? "Logging out..." : "Log Out"}
+          </button>
         </div>
       )}
     </div>
