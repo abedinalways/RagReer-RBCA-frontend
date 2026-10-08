@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
-import { PlaceholderPage } from "@/components/shared/PlaceholderPage";
+import { RolesManagementView } from "@/features/admin/roles/components/RolesManagementView";
 
-export const metadata: Metadata = { title: "Roles & Permission" };
+export const metadata: Metadata = {
+  title: "Roles & Permission | Admin",
+  description: "Manage administrative roles, team access tiers, and granular system privileges.",
+};
 
 export default function AdminRolesPage() {
-  return (
-    <PlaceholderPage
-      title="Roles & Permission"
-      description="Manage administrative roles, team access tiers, and granular system privileges."
-    />
-  );
+  return <RolesManagementView />;
 }
