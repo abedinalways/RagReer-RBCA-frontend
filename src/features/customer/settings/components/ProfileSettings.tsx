@@ -7,6 +7,7 @@ import { INITIAL_PROFILE_DATA } from "../data/settingsData";
 import VerifyEmailModal from "./VerifyEmailModal";
 import EmailSuccessModal from "./EmailSuccessModal";
 import VerifyPhoneModal from "./VerifyPhoneModal";
+import SecuritySettings from "./SecuritySettings";
 
 const TABS: SettingsTab[] = [
   "Profile",
@@ -97,11 +98,10 @@ export const ProfileSettings: React.FC = () => {
         ))}
       </div>
 
-      {/* Main Settings Card */}
-      <div className="bg-card-bg rounded-sm border border-border p-5 sm:p-7 md:p-8 shadow-2xs space-y-8">
-        {activeTab === "Profile" ? (
-          <>
-            {/* 1. Profile Picture Section matching Figma Screenshot 2 */}
+      {/* Content based on Active Tab */}
+      {activeTab === "Profile" ? (
+        <div className="bg-card-bg rounded-sm border border-border p-5 sm:p-7 md:p-8 shadow-2xs space-y-8">
+          {/* 1. Profile Picture Section matching Figma Screenshot 2 */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-6">
               {/* Avatar circle */}
               <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden border-2 border-border/80 shadow-xs shrink-0 bg-blue-50">
@@ -373,9 +373,12 @@ export const ProfileSettings: React.FC = () => {
                 Save Changes
               </button>
             </div>
-          </>
-        ) : (
-          /* Placeholder for other tabs (Security, Notifications, etc.) */
+        </div>
+      ) : activeTab === "Security" ? (
+        <SecuritySettings />
+      ) : (
+        /* Placeholder for other tabs (Notifications, Payment, Data & Privacy) */
+        <div className="bg-card-bg rounded-sm border border-border p-5 sm:p-7 md:p-8 shadow-2xs">
           <div className="py-16 text-center text-secondary-subheading text-sm">
             <p className="font-medium text-primary-heading text-base">
               {activeTab} Settings
@@ -384,8 +387,8 @@ export const ProfileSettings: React.FC = () => {
               This section is coming soon as part of the step-by-step rollout.
             </p>
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Modals */}
       <VerifyEmailModal
