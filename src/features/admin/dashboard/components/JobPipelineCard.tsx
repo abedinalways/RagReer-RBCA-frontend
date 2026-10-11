@@ -9,12 +9,12 @@ export const JobPipelineCard: React.FC = () => {
   return (
     <div className="rounded-xl border border-border bg-card-bg p-4 flex flex-col justify-between shadow-2xs">
       <div className="flex items-center justify-between pb-3 border-b border-border-subtle">
-        <h3 className="font-barlow text-lg font-bold text-primary-heading leading-none">
+        <h3 className="font-barlow text-lg md:text-xl font-medium text-primary-heading leading-none">
           Job Pipeline
         </h3>
         <Link
           href="/admin/jobs"
-          className="inline-flex items-center gap-0.5 text-xs font-medium text-primary hover:text-primary-hover transition-colors"
+          className="inline-flex items-center gap-0.5 text-xs md:text-sm font-medium text-primary hover:text-primary-hover transition-colors"
         >
           <span>View All</span>
           <ChevronRight className="h-3 w-3" />
@@ -25,10 +25,10 @@ export const JobPipelineCard: React.FC = () => {
         {JOB_PIPELINE_DATA.map((item) => (
           <div
             key={item.id}
-            className="flex items-center justify-between text-xs sm:text-sm"
+            className="flex items-center justify-between text-sm md:text-base"
           >
             <span className="text-txt-primary font-normal">{item.status}</span>
-            <span className="font-bold font-barlow text-primary-heading">
+            <span className="font-medium font-barlow text-primary-heading">
               {item.count}
             </span>
           </div>

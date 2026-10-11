@@ -13,20 +13,25 @@ import {
 } from "lucide-react";
 import { DASHBOARD_STAT_CARDS } from "../data/dashboardData";
 import { DashboardStatCard } from "../types/dashboardTypes";
+import CalenderIcon from "@/components/icons/admin/CalenderIcon";
+import ServicesIcon from "@/components/icons/admin/ServicesIcon";
+import EquipmentIcon from "@/components/icons/admin/EquipmentIcon";
+import OutstandingIcon from "@/components/icons/admin/OutstandingIcon";
+import RevenueIcon from "@/components/icons/admin/RecenueIcon";
 
 export const AdminStatCards: React.FC = () => {
   const renderIcon = (type: DashboardStatCard["iconType"]) => {
     switch (type) {
       case "calendar":
-        return <CalendarClock className="h-5 w-5 text-primary stroke-[1.8]" />;
+        return <CalenderIcon/>;
       case "service":
-        return <FileEdit className="h-5 w-5 text-primary stroke-[1.8]" />;
+        return <ServicesIcon/>;
       case "equipment":
-        return <Wrench className="h-5 w-5 text-primary stroke-[1.8]" />;
+        return <EquipmentIcon/>;
       case "outstanding":
-        return <Coins className="h-5 w-5 text-primary stroke-[1.8]" />;
+        return <OutstandingIcon/>;
       case "revenue":
-        return <PieChart className="h-5 w-5 text-primary stroke-[1.8]" />;
+        return <RevenueIcon/>;
       default:
         return null;
     }
@@ -75,26 +80,26 @@ export const AdminStatCards: React.FC = () => {
           {/* Top Row: Title + Number on Left, Icon container on Right */}
           <div className="flex items-start justify-between gap-2">
             <div>
-              <p className="text-xs sm:text-sm font-medium text-secondary-subheading leading-none">
+              <p className="text-sm md:text-base font-normal text-secondary-subheading leading-none">
                 {card.title}
               </p>
-              <h3 className="mt-2 text-2xl sm:text-3xl font-bold font-barlow text-primary leading-tight">
+              <h3 className="mt-2 text-xl sm:text-2xl font-semibold font-barlow text-primary leading-tight">
                 {card.value}
               </h3>
             </div>
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50/70 border border-border-card">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-sm bg-blue-50/70 border border-border-card">
               {renderIcon(card.iconType)}
             </div>
           </div>
 
           {/* Bottom Row: Badge on Left, Action Link on Right */}
-          <div className="mt-4 pt-2 flex items-center justify-between border-t border-border-subtle text-xs sm:text-sm">
-            <div>{renderBadge(card)}</div>
+          <div className="mt-4 pt-2 flex items-center justify-between border-t border-border-subtle text-xs md:text-sm">
+            <div className="text-xs md:text-sm font-normal">{renderBadge(card)}</div>
             <Link
               href={card.linkHref}
               className="inline-flex items-center gap-1 font-medium text-primary hover:text-primary-hover transition-colors"
             >
-              <span>{card.linkText}</span>
+              <span className="text-xs md:text-sm font-medium" >{card.linkText}</span>
               <ChevronRight className="h-3.5 w-3.5" />
             </Link>
           </div>

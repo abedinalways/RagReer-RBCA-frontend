@@ -20,7 +20,7 @@ export const RecentActivityCard: React.FC = () => {
   return (
     <div className="rounded-xl border border-border bg-card-bg p-4 sm:p-5 shadow-2xs">
       <div className="pb-3.5 border-b border-border-subtle">
-        <h3 className="font-barlow text-lg font-bold text-primary-heading leading-none">
+        <h3 className="font-barlow text-lg md:text-xl font-medium text-primary-heading leading-none">
           Recent Activity
         </h3>
       </div>
@@ -38,14 +38,14 @@ export const RecentActivityCard: React.FC = () => {
             {/* Content & Timestamp */}
             <div className="flex-1 space-y-0.5">
               <div className="flex items-baseline justify-between gap-2">
-                <h4 className="text-xs sm:text-sm font-semibold text-primary-heading leading-tight">
+                <h4 className="text-sm sm:text-base font-medium text-primary-heading leading-tight">
                   {item.title}
                 </h4>
-                <span className="text-[11px] text-secondary-subheading whitespace-nowrap shrink-0">
+                <span className="text-xs md:text-sm text-secondary-subheading whitespace-nowrap shrink-0">
                   {item.timeAgo}
                 </span>
               </div>
-              <p className="text-xs text-secondary-subheading leading-normal">
+              <p className="text-xs md:text-sm text-secondary-subheading leading-normal">
                 {item.description}
               </p>
             </div>
