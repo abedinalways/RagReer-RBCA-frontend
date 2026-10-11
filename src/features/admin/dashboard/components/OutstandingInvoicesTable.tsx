@@ -56,11 +56,7 @@ export const OutstandingInvoicesTable: React.FC = () => {
     <div className="rounded-xl border border-border bg-card-bg shadow-2xs overflow-hidden">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-4 sm:p-5 border-b border-border-subtle">
-<<<<<<< HEAD
         <h3 className="font-barlow text-lg md:text-xl font-medium text-primary-heading leading-none">
-=======
-        <h3 className="font-barlow text-lg font-bold text-primary-heading leading-none">
->>>>>>> dd61997295b24b3ab2b2b9095f6b0b4f2ddb1f7e
           Outstanding Invoices
         </h3>
 
@@ -73,21 +69,13 @@ export const OutstandingInvoicesTable: React.FC = () => {
               placeholder="Type to search"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-<<<<<<< HEAD
               className="h-fit w-fit md:h-10 md:w-50 py-2 rounded-sm border border-border bg-page-bg/60 pl-8.5 pr-3  text-xs text-txt-primary placeholder:text-secondary-subheading/60 focus:border-primary focus:bg-card-bg focus:outline-hidden transition-all"
-=======
-              className="w-40 sm:w-56 rounded-lg border border-border bg-page-bg/60 pl-8.5 pr-3 py-1.5 text-xs text-txt-primary placeholder:text-secondary-subheading/60 focus:border-primary focus:bg-card-bg focus:outline-hidden transition-all"
->>>>>>> dd61997295b24b3ab2b2b9095f6b0b4f2ddb1f7e
             />
           </div>
 
           <Link
             href="/admin/reports"
-<<<<<<< HEAD
             className="inline-flex items-center gap-0.5 text-xs md:text-sm  rounded-sm border border-border px-4 py-2  font-medium text-primary hover:text-primary-hover transition-colors shrink-0"
-=======
-            className="inline-flex items-center gap-0.5 text-xs font-medium text-primary hover:text-primary-hover transition-colors shrink-0"
->>>>>>> dd61997295b24b3ab2b2b9095f6b0b4f2ddb1f7e
           >
             <span>View All</span>
             <ChevronRight className="h-3 w-3" />
@@ -99,11 +87,7 @@ export const OutstandingInvoicesTable: React.FC = () => {
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse text-xs sm:text-sm">
           <thead>
-<<<<<<< HEAD
             <tr className="border-b border-border bg-page-bg/50 text-xs md:text-sm font-medium text-secondary-subheading">
-=======
-            <tr className="border-b border-border bg-page-bg/50 text-[11px] sm:text-xs font-semibold text-secondary-subheading">
->>>>>>> dd61997295b24b3ab2b2b9095f6b0b4f2ddb1f7e
               <th className="py-3 px-4 sm:px-5">Invoice ID</th>
               <th className="py-3 px-4 sm:px-5">Customer Name</th>
               <th className="py-3 px-4 sm:px-5">Payment Type</th>
@@ -112,11 +96,7 @@ export const OutstandingInvoicesTable: React.FC = () => {
               <th className="py-3 px-4 sm:px-5">Status</th>
             </tr>
           </thead>
-<<<<<<< HEAD
           <tbody className="divide-y divide-border-subtle font-normal">
-=======
-          <tbody className="divide-y divide-border-subtle">
->>>>>>> dd61997295b24b3ab2b2b9095f6b0b4f2ddb1f7e
             {filteredInvoices.map((inv, idx) => (
               <tr
                 key={`${inv.id}-${idx}`}
@@ -157,11 +137,7 @@ export const OutstandingInvoicesTable: React.FC = () => {
                 </td>
 
                 {/* Amount */}
-<<<<<<< HEAD
                 <td className="py-3 px-4 sm:px-5 whitespace-nowrap font-medium font-barlow text-primary-heading">
-=======
-                <td className="py-3 px-4 sm:px-5 whitespace-nowrap font-bold font-barlow text-primary-heading">
->>>>>>> dd61997295b24b3ab2b2b9095f6b0b4f2ddb1f7e
                   {inv.amount}
                 </td>
 
