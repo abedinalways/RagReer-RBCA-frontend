@@ -8,6 +8,8 @@ export interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   title?: React.ReactNode;
+  titleClassName?: string;
+  headerClassName?: string;
   children: React.ReactNode;
   footer?: React.ReactNode;
   maxWidth?: "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl" | "6xl" | "7xl" | "full";
@@ -35,6 +37,8 @@ export const Modal: React.FC<ModalProps> = ({
   isOpen,
   onClose,
   title,
+  titleClassName,
+  headerClassName,
   children,
   footer,
   maxWidth = "lg",
@@ -91,8 +95,18 @@ export const Modal: React.FC<ModalProps> = ({
         )}
       >
         {title && (
-          <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 sm:py-4.5 border-b border-border shrink-0">
-            <div className="text-lg sm:text-2xl font-semibold text-primary-heading">
+          <div
+            className={cn(
+              "flex items-center justify-between px-4 sm:px-6 py-3.5 sm:py-4.5 border-b border-border shrink-0",
+              headerClassName
+            )}
+          >
+            <div
+              className={cn(
+                "text-lg sm:text-xl font-medium text-primary-heading",
+                titleClassName
+              )}
+            >
               {title}
             </div>
             {showCloseButton && (

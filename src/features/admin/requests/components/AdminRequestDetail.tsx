@@ -21,6 +21,7 @@ import {
   DEFAULT_ADMIN_REQUEST_DETAIL,
   AdminRequestDetailData,
 } from "../data/adminRequestDetailData";
+import { SiteVisitRequestModal } from "./SiteVisitRequestModal";
 
 interface AdminRequestDetailProps {
   requestId?: string;
@@ -72,6 +73,13 @@ export const AdminRequestDetail: React.FC<AdminRequestDetailProps> = ({
     }
   }, [requestId]);
 
+  const [isSiteVisitModalOpen, setIsSiteVisitModalOpen] = useState(false);
+
+  const handleSiteVisitSuccess = () => {
+    setCurrentStatus("Site Visit Requested");
+    setData((prev) => ({ ...prev, status: "Site Visit Requested" }));
+  };
+
   const [noteText, setNoteText] = useState("");
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [previewPhoto, setPreviewPhoto] = useState<string | null>(null);
@@ -107,7 +115,7 @@ export const AdminRequestDetail: React.FC<AdminRequestDetailProps> = ({
             </button>
             <button
               type="button"
-              onClick={() => toast("Requesting site visit...", { icon: "📍" })}
+              onClick={() => setIsSiteVisitModalOpen(true)}
               className="border border-primary text-primary hover:bg-page-bg px-4 sm:px-5 py-2 sm:py-2.5 rounded-sm text-xs sm:text-sm font-medium transition-colors cursor-pointer"
             >
               Request Site Visit
@@ -616,6 +624,24 @@ export const AdminRequestDetail: React.FC<AdminRequestDetailProps> = ({
           </div>
         </div>
       )}
+
+      {/* Site Visit Request Modal */}
+      <SiteVisitRequestModal
+        isOpen={isSiteVisitModalOpen}
+        onClose={() => setIsSiteVisitModalOpen(false)}
+        request={{
+          id: data.id,
+          requestId: data.requestId,
+          customer: {
+            name: data.customer.name,
+          },
+          propertyName: data.property.title,
+          propertyAddress: data.property.address,
+          preferredDate: "21 Sep, 2026",
+          alternateDate: "22 Sep, 2026",
+        }}
+        onSuccess={handleSiteVisitSuccess}
+      />
     </div>
   );
 };

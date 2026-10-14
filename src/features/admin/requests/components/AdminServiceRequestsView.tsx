@@ -10,6 +10,7 @@ import { ADMIN_SERVICE_REQUESTS_DATA } from "../data/serviceRequestsData";
 import { AdminServiceRequest, AdminRequestStatus } from "../types/serviceRequestsTypes";
 import { createServiceRequestsColumns } from "./ServiceRequestsColumns";
 import { CustomSelect } from "@/components/ui/CustomSelect";
+import { SiteVisitRequestModal } from "./SiteVisitRequestModal";
 
 const ALL_STATUS_OPTIONS: (string | AdminRequestStatus)[] = [
   "All Status",
@@ -40,7 +41,7 @@ const ALL_SERVICE_TYPES = [
 
 export const AdminServiceRequestsView: React.FC = () => {
   const router = useRouter();
-  const [requests] = useState<AdminServiceRequest[]>(ADMIN_SERVICE_REQUESTS_DATA);
+  const [requests, setRequests] = useState<AdminServiceRequest[]>(ADMIN_SERVICE_REQUESTS_DATA);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("All Status");
   const [selectedServiceType, setSelectedServiceType] = useState("All Services");
@@ -49,6 +50,15 @@ export const AdminServiceRequestsView: React.FC = () => {
 
   // Detail Modal / View State
   const [selectedRequest, setSelectedRequest] = useState<AdminServiceRequest | null>(null);
+  const [siteVisitModalRequest, setSiteVisitModalRequest] = useState<AdminServiceRequest | null>(null);
+
+  const handleSiteVisitSuccess = (requestId: string) => {
+    setRequests((prev) =>
+      prev.map((r) =>
+        r.id === requestId ? { ...r, status: "Site Visit Requested" } : r
+      )
+    );
+  };
 
   const handleActionClick = (actionKey: string, request: AdminServiceRequest) => {
     switch (actionKey) {
@@ -63,8 +73,7 @@ export const AdminServiceRequestsView: React.FC = () => {
         toast(`Estimate action for ${request.requestId}`, { icon: "📄" });
         break;
       case "request_site_visit":
-      case "review_request":
-        toast(`Site visit request for ${request.requestId}`, { icon: "📍" });
+        setSiteVisitModalRequest(request);
         break;
       case "review_assessment":
         toast(`Reviewing assessment for ${request.requestId}`, { icon: "📋" });
@@ -293,6 +302,26 @@ export const AdminServiceRequestsView: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Reusable Site Visit Request Modal */}
+      <SiteVisitRequestModal
+        isOpen={Boolean(siteVisitModalRequest)}
+        onClose={() => setSiteVisitModalRequest(null)}
+        request={
+          siteVisitModalRequest
+            ? {
+                id: siteVisitModalRequest.id,
+                requestId: siteVisitModalRequest.requestId,
+                customer: siteVisitModalRequest.customer,
+                propertyAddress: siteVisitModalRequest.propertyAddress,
+                propertyName: "North Entrance Monument & Islands",
+                preferredDate: "21 Sep, 2026",
+                alternateDate: "22 Sep, 2026",
+              }
+            : null
+        }
+        onSuccess={handleSiteVisitSuccess}
+      />
     </div>
   );
 };
