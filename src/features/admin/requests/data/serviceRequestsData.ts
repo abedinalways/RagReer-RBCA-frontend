@@ -123,6 +123,19 @@ export const ADMIN_SERVICE_REQUESTS_DATA: AdminServiceRequest[] = [
     status: "Estimate Declined",
   },
   {
+    id: "req-9b",
+    requestId: "#REQ-1058",
+    customer: {
+      name: "Daniel White",
+      email: "daniel.white@mail.com",
+      avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face",
+    },
+    propertyAddress: "404 Cedar Bluff",
+    serviceType: "Residential Lawn Care",
+    submittedOn: "Aug 19, 2026",
+    status: "Estimate Expired",
+  },
+  {
     id: "req-10",
     requestId: "#REQ-1048-chg",
     customer: {
@@ -219,31 +232,31 @@ export const requestStatusStyles: Record<AdminRequestStatus, StatusStyleConfig> 
     label: "New",
   },
   "Under Review": {
-    badgeBg: "bg-amber-50",
-    badgeText: "text-[#B54708]",
-    badgeBorder: "border-[#FEDF89]",
-    dotBg: "bg-[#F79009]",
+    badgeBg: "bg-terms-bg",
+    badgeText: "text-badge-pending-text",
+    badgeBorder: "border-terms-border",
+    dotBg: "bg-badge-pending-dot",
     label: "Under Review",
   },
   "Site Visit Requested": {
     badgeBg: "bg-blue-50",
-    badgeText: "text-[#0777F6]",
-    badgeBorder: "border-[#CADFF4]",
-    dotBg: "bg-[#0777F6]",
+    badgeText: "text-info",
+    badgeBorder: "border-blue-100",
+    dotBg: "bg-info",
     label: "Site Visit Requested",
   },
   "Reschedule Requested": {
-    badgeBg: "bg-orange-50",
-    badgeText: "text-[#C4320A]",
-    badgeBorder: "border-[#FECDCA]",
-    dotBg: "bg-[#F97066]",
+    badgeBg: "bg-tag-rescheduling-bg",
+    badgeText: "text-tag-rescheduling-text",
+    badgeBorder: "border-tag-rescheduling-border",
+    dotBg: "bg-tag-rescheduling-text",
     label: "Reschedule Requested",
   },
   "Site Visit Scheduled": {
     badgeBg: "bg-blue-50",
-    badgeText: "text-[#0777F6]",
-    badgeBorder: "border-[#CADFF4]",
-    dotBg: "bg-[#0777F6]",
+    badgeText: "text-info",
+    badgeBorder: "border-blue-100",
+    dotBg: "bg-info",
     label: "Site Visit Scheduled",
   },
   "Site Visit Completed": {
@@ -255,9 +268,9 @@ export const requestStatusStyles: Record<AdminRequestStatus, StatusStyleConfig> 
   },
   "Estimate Sent": {
     badgeBg: "bg-blue-50",
-    badgeText: "text-[#0777F6]",
-    badgeBorder: "border-[#CADFF4]",
-    dotBg: "bg-[#0777F6]",
+    badgeText: "text-info",
+    badgeBorder: "border-blue-100",
+    dotBg: "bg-info",
     label: "Estimate Sent",
   },
   "Estimate Accepted": {
@@ -274,18 +287,25 @@ export const requestStatusStyles: Record<AdminRequestStatus, StatusStyleConfig> 
     dotBg: "bg-decline",
     label: "Estimate Declined",
   },
+  "Estimate Expired": {
+    badgeBg: "bg-decline-secondary",
+    badgeText: "text-decline",
+    badgeBorder: "border-decline-border",
+    dotBg: "bg-decline",
+    label: "Estimate Expired",
+  },
   "Change Requested": {
-    badgeBg: "bg-orange-50",
-    badgeText: "text-[#B54708]",
-    badgeBorder: "border-[#FEDF89]",
-    dotBg: "bg-[#F79009]",
+    badgeBg: "bg-terms-bg",
+    badgeText: "text-badge-pending-text",
+    badgeBorder: "border-terms-border",
+    dotBg: "bg-badge-pending-dot",
     label: "Change Requested",
   },
   "Contract Sent": {
     badgeBg: "bg-blue-50",
-    badgeText: "text-[#0777F6]",
-    badgeBorder: "border-[#CADFF4]",
-    dotBg: "bg-[#0777F6]",
+    badgeText: "text-info",
+    badgeBorder: "border-blue-100",
+    dotBg: "bg-info",
     label: "Contract Sent",
   },
   "Contract Signed": {
@@ -303,10 +323,10 @@ export const requestStatusStyles: Record<AdminRequestStatus, StatusStyleConfig> 
     label: "Completed",
   },
   "On Hold": {
-    badgeBg: "bg-amber-50",
-    badgeText: "text-[#B54708]",
-    badgeBorder: "border-[#FEDF89]",
-    dotBg: "bg-[#F79009]",
+    badgeBg: "bg-terms-bg",
+    badgeText: "text-badge-pending-text",
+    badgeBorder: "border-terms-border",
+    dotBg: "bg-badge-pending-dot",
     label: "On Hold",
   },
   "Payment Complete": {
@@ -319,7 +339,7 @@ export const requestStatusStyles: Record<AdminRequestStatus, StatusStyleConfig> 
 };
 
 /**
- * Returns dynamic action buttons according to the Figma specification (Image 4):
+ * Returns dynamic action buttons according to the Figma specification:
  */
 export function getRequestActionOptions(
   status: AdminRequestStatus
@@ -353,6 +373,7 @@ export function getRequestActionOptions(
       ];
 
     case "Estimate Declined":
+    case "Estimate Expired":
       return [
         { label: "View Details", isPrimary: true, actionKey: "view_details" },
         { label: "View Customer", actionKey: "view_customer" },
@@ -381,17 +402,30 @@ export function getRequestActionOptions(
         { label: "Review Assessment", isPrimary: true, actionKey: "review_assessment" },
       ];
 
-    case "Completed":
-    case "On Hold":
+    case "Contract Sent":
       return [
         { label: "View Details", isPrimary: true, actionKey: "view_details" },
         { label: "View Customer", actionKey: "view_customer" },
+        { label: "View Contract & Agreement", isPrimary: true, actionKey: "view_contract" },
         { label: "View Estimate", actionKey: "view_estimate" },
+      ];
+
+    case "Contract Signed":
+      return [
+        { label: "View Details", isPrimary: true, actionKey: "view_details" },
+        { label: "View Customer", actionKey: "view_customer" },
+        { label: "Schedule Service", isPrimary: true, actionKey: "schedule_service" },
         { label: "View Contract", actionKey: "view_contract" },
       ];
 
-    case "Contract Sent":
-    case "Contract Signed":
+    case "Completed":
+      return [
+        { label: "View Details", isPrimary: true, actionKey: "view_details" },
+        { label: "View Customer", actionKey: "view_customer" },
+        { label: "View Job Details", isPrimary: true, actionKey: "view_job_details" },
+      ];
+
+    case "On Hold":
       return [
         { label: "View Details", isPrimary: true, actionKey: "view_details" },
         { label: "View Customer", actionKey: "view_customer" },

@@ -8,6 +8,7 @@ export type AdminRequestStatus =
   | "Estimate Sent"
   | "Estimate Accepted"
   | "Estimate Declined"
+  | "Estimate Expired"
   | "Change Requested"
   | "Contract Sent"
   | "Contract Signed"

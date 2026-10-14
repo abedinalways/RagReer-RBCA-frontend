@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Search, ChevronDown, Plus } from "lucide-react";
 import toast from "react-hot-toast";
 import { ReusableTable } from "@/components/reusable/ReusableTable";
@@ -21,6 +22,7 @@ const ALL_STATUS_OPTIONS: (string | AdminRequestStatus)[] = [
   "Estimate Sent",
   "Estimate Accepted",
   "Estimate Declined",
+  "Estimate Expired",
   "Change Requested",
   "Contract Sent",
   "Contract Signed",
@@ -37,6 +39,7 @@ const ALL_SERVICE_TYPES = [
 ];
 
 export const AdminServiceRequestsView: React.FC = () => {
+  const router = useRouter();
   const [requests] = useState<AdminServiceRequest[]>(ADMIN_SERVICE_REQUESTS_DATA);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("All Status");
@@ -50,8 +53,7 @@ export const AdminServiceRequestsView: React.FC = () => {
   const handleActionClick = (actionKey: string, request: AdminServiceRequest) => {
     switch (actionKey) {
       case "view_details":
-        setSelectedRequest(request);
-        toast.success(`Opening details for ${request.requestId}`);
+        router.push(`/admin/requests/${request.id}`);
         break;
       case "view_customer":
         toast(`Viewing customer: ${request.customer.name}`, { icon: "👤" });
@@ -76,6 +78,12 @@ export const AdminServiceRequestsView: React.FC = () => {
         break;
       case "view_invoice":
         toast(`Viewing invoice for ${request.requestId}`, { icon: "💳" });
+        break;
+      case "schedule_service":
+        toast.success(`Opening Service Scheduler for ${request.requestId}`);
+        break;
+      case "view_job_details":
+        toast(`Viewing Job Details for ${request.requestId}`, { icon: "🔧" });
         break;
       case "archive":
         toast(`Archived ${request.requestId}`);
@@ -213,7 +221,7 @@ export const AdminServiceRequestsView: React.FC = () => {
           <div className="w-full max-w-lg rounded-xl border border-border bg-card-bg p-5 sm:p-6 shadow-2xl space-y-4">
             <div className="flex items-center justify-between border-b border-border pb-3">
               <div>
-                <h3 className="font-barlow text-xl font-bold text-primary-heading">
+                <h3 className="font-barlow text-xl font-medium text-primary-heading">
                   {selectedRequest.requestId} Details
                 </h3>
                 <p className="text-xs text-secondary-subheading">
@@ -259,7 +267,7 @@ export const AdminServiceRequestsView: React.FC = () => {
 
               <div className="flex items-center justify-between p-2.5 rounded-lg border border-border-subtle bg-card-bg">
                 <span className="text-xs text-secondary-subheading">Current Status</span>
-                <span className="text-xs font-semibold text-primary">{selectedRequest.status}</span>
+                <span className="text-xs font-medium text-primary">{selectedRequest.status}</span>
               </div>
             </div>
 
