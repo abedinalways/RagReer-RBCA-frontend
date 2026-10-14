@@ -36,7 +36,10 @@ export function AdminMobileNavigation({ onMoreClick }: AdminMobileNavigationProp
     pathname.startsWith("/admin/settings") ||
     pathname.startsWith("/admin/activity") ||
     pathname.startsWith("/admin/crm") ||
-    pathname.startsWith("/admin/reports");
+    pathname.startsWith("/admin/reports") ||
+    pathname.startsWith("/admin/payroll") ||
+    pathname.startsWith("/admin/accounts-receivable") ||
+    pathname.startsWith("/admin/financial-summary");
 
   return (
     <nav
