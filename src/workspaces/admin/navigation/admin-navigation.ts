@@ -56,7 +56,7 @@ export const adminGroupedNavigation: AdminNavGroup[] = [
     items: [
       {
         id: "requests",
-        label: "Requests",
+        label: "Service Requests",
         href: "/admin/requests",
         icon: Inbox,
         permission: PERMISSIONS.REQUEST.VIEW,

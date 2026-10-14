@@ -1,13 +1,14 @@
 "use client";
 
-import React from "react";
-import { Search, ChevronDown } from "lucide-react";
+import React, { useMemo } from "react";
+import { Search } from "lucide-react";
 import { EquipmentFilters } from "../types";
 import {
   EQUIPMENT_TYPES,
   EQUIPMENT_CONDITIONS,
   EQUIPMENT_STATUSES,
 } from "../data/equipmentData";
+import { CustomSelect } from "@/components/ui/CustomSelect";
 
 interface EquipmentToolbarProps {
   filters: EquipmentFilters;
@@ -18,6 +19,30 @@ export function EquipmentToolbar({
   filters,
   onFilterChange,
 }: EquipmentToolbarProps) {
+  const typeOptions = useMemo(
+    () => [
+      { value: "", label: "All Equipment Type" },
+      ...EQUIPMENT_TYPES.map((t) => ({ value: t, label: t })),
+    ],
+    []
+  );
+
+  const conditionOptions = useMemo(
+    () => [
+      { value: "", label: "All Condition" },
+      ...EQUIPMENT_CONDITIONS,
+    ],
+    []
+  );
+
+  const statusOptions = useMemo(
+    () => [
+      { value: "", label: "All Status" },
+      ...EQUIPMENT_STATUSES,
+    ],
+    []
+  );
+
   return (
     <div className="p-4 sm:p-5 border-b border-border flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-layout-bg">
       {/* Title */}
@@ -36,68 +61,44 @@ export function EquipmentToolbar({
               onFilterChange({ ...filters, search: e.target.value })
             }
             placeholder="Search equipment"
-            className="w-full pl-9 pr-3.5 py-2 rounded-md border border-border bg-card-bg text-sm text-txt-primary placeholder:text-secondary-subheading/70 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all"
+            className="w-full h-9 pl-9 pr-3.5 rounded-md border border-border bg-card-bg text-xs sm:text-sm text-txt-primary placeholder:text-secondary-subheading/70 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all"
           />
           <Search className="w-4 h-4 text-secondary-subheading absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
         </div>
 
         {/* Dropdowns Row */}
-        <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+        <div className="flex items-center gap-2 sm:gap-3 flex-wrap w-full sm:w-auto">
           {/* Equipment Type Dropdown */}
-          <div className="relative flex-1 sm:flex-none">
-            <select
+          <div className="w-full sm:w-44">
+            <CustomSelect
               value={filters.type}
-              onChange={(e) =>
-                onFilterChange({ ...filters, type: e.target.value })
-              }
-              className="appearance-none w-full sm:w-auto bg-card-bg border border-border rounded-md px-3 py-2 pr-8 text-xs sm:text-sm text-secondary-subheading font-medium hover:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer transition-colors"
-            >
-              <option value="">All Equipment Type</option>
-              {EQUIPMENT_TYPES.map((t) => (
-                <option key={t} value={t}>
-                  {t}
-                </option>
-              ))}
-            </select>
-            <ChevronDown className="w-3.5 h-3.5 text-secondary-subheading absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              onChange={(val) => onFilterChange({ ...filters, type: val })}
+              options={typeOptions}
+              size="sm"
+              align="right"
+            />
           </div>
 
           {/* Condition Dropdown */}
-          <div className="relative flex-1 sm:flex-none">
-            <select
+          <div className="w-full sm:w-36">
+            <CustomSelect
               value={filters.condition}
-              onChange={(e) =>
-                onFilterChange({ ...filters, condition: e.target.value })
-              }
-              className="appearance-none w-full sm:w-auto bg-card-bg border border-border rounded-md px-3 py-2 pr-8 text-xs sm:text-sm text-secondary-subheading font-medium hover:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer transition-colors"
-            >
-              <option value="">All Condition</option>
-              {EQUIPMENT_CONDITIONS.map((c) => (
-                <option key={c.value} value={c.value}>
-                  {c.label}
-                </option>
-              ))}
-            </select>
-            <ChevronDown className="w-3.5 h-3.5 text-secondary-subheading absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              onChange={(val) => onFilterChange({ ...filters, condition: val })}
+              options={conditionOptions}
+              size="sm"
+              align="right"
+            />
           </div>
 
           {/* Status Dropdown */}
-          <div className="relative flex-1 sm:flex-none">
-            <select
+          <div className="w-full sm:w-36">
+            <CustomSelect
               value={filters.status}
-              onChange={(e) =>
-                onFilterChange({ ...filters, status: e.target.value })
-              }
-              className="appearance-none w-full sm:w-auto bg-card-bg border border-border rounded-md px-3 py-2 pr-8 text-xs sm:text-sm text-secondary-subheading font-medium hover:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer transition-colors"
-            >
-              <option value="">All Status</option>
-              {EQUIPMENT_STATUSES.map((s) => (
-                <option key={s.value} value={s.value}>
-                  {s.label}
-                </option>
-              ))}
-            </select>
-            <ChevronDown className="w-3.5 h-3.5 text-secondary-subheading absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              onChange={(val) => onFilterChange({ ...filters, status: val })}
+              options={statusOptions}
+              size="sm"
+              align="right"
+            />
           </div>
         </div>
       </div>
