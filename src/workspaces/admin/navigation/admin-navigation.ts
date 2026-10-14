@@ -18,6 +18,9 @@ import {
   Home,
   User,
   MoreHorizontal,
+  Coins,
+  CircleDollarSign,
+  HandCoins,
   type LucideIcon,
 } from "lucide-react";
 
@@ -119,15 +122,29 @@ export const adminGroupedNavigation: AdminNavGroup[] = [
   {
     id: "finance",
     label: "Finance",
-    href: "/admin/reports",
+    href: "/admin/payroll",
     icon: Receipt,
     permission: PERMISSIONS.REPORT.VIEW,
     items: [
       {
-        id: "reports",
-        label: "Reports",
-        href: "/admin/reports",
-        icon: BarChart3,
+        id: "payroll",
+        label: "Payroll",
+        href: "/admin/payroll",
+        icon: Coins,
+        permission: PERMISSIONS.REPORT.VIEW,
+      },
+      {
+        id: "accounts-receivable",
+        label: "Accounts Receivable",
+        href: "/admin/accounts-receivable",
+        icon: CircleDollarSign,
+        permission: PERMISSIONS.REPORT.VIEW,
+      },
+      {
+        id: "financial-summary",
+        label: "Financial Summary",
+        href: "/admin/financial-summary",
+        icon: HandCoins,
         permission: PERMISSIONS.REPORT.VIEW,
       },
     ],

@@ -92,7 +92,7 @@ export type SortField =
 export type SortOrder = "asc" | "desc";
 
 export interface ColumnDef<T> {
-  header: string;
+  header: React.ReactNode;
   accessorKey?: keyof T;
   cell?: (row: T) => React.ReactNode;
   className?: string;

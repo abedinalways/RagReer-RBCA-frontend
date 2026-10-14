@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
-import { PlaceholderPage } from "@/components/shared/PlaceholderPage";
+import { ActivityLogView } from "@/features/admin/activity/components/ActivityLogView";
 
-export const metadata: Metadata = { title: "Activity Log" };
+export const metadata: Metadata = {
+  title: "Activity Log | Admin",
+  description: "View real-time system activity, staff audit trails, and security event histories.",
+};
 
 export default function AdminActivityPage() {
-  return (
-    <PlaceholderPage
-      title="Activity Log"
-      description="View real-time system activity, staff audit trails, and security event histories."
-    />
-  );
+  return <ActivityLogView />;
 }

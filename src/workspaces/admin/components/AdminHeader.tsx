@@ -50,6 +50,18 @@ const ADMIN_ROUTE_HEADERS: Record<string, HeaderMetadata> = {
     title: "Financial & Work Reports",
     subtitle: "Business analytics, payroll, and revenue forecasting",
   },
+  "/admin/payroll": {
+    title: "Payroll Management",
+    subtitle: "Manage staff compensation, pay stubs, and disbursements",
+  },
+  "/admin/accounts-receivable": {
+    title: "Accounts Receivable",
+    subtitle: "Track unpaid customer invoices and incoming payments",
+  },
+  "/admin/financial-summary": {
+    title: "Financial Summary",
+    subtitle: "Overview of platform revenue, expenses, and cash flow",
+  },
   "/admin/roles": {
     title: "Roles & Permission",
     subtitle: "Configure staff permissions and access controls",
