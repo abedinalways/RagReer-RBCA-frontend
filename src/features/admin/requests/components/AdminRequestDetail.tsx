@@ -22,6 +22,7 @@ import {
   AdminRequestDetailData,
 } from "../data/adminRequestDetailData";
 import { SiteVisitRequestModal } from "./SiteVisitRequestModal";
+import { SiteVisitDetailsModal } from "./SiteVisitDetailsModal";
 
 interface AdminRequestDetailProps {
   requestId?: string;
@@ -74,6 +75,7 @@ export const AdminRequestDetail: React.FC<AdminRequestDetailProps> = ({
   }, [requestId]);
 
   const [isSiteVisitModalOpen, setIsSiteVisitModalOpen] = useState(false);
+  const [isReviewAssessmentModalOpen, setIsReviewAssessmentModalOpen] = useState(false);
 
   const handleSiteVisitSuccess = () => {
     setCurrentStatus("Site Visit Requested");
@@ -119,6 +121,26 @@ export const AdminRequestDetail: React.FC<AdminRequestDetailProps> = ({
               className="border border-primary text-primary hover:bg-page-bg px-4 sm:px-5 py-2 sm:py-2.5 rounded-sm text-xs sm:text-sm font-medium transition-colors cursor-pointer"
             >
               Request Site Visit
+            </button>
+          </div>
+        );
+
+      case "Site Visit Completed":
+        return (
+          <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap">
+            <button
+              type="button"
+              onClick={() => setIsReviewAssessmentModalOpen(true)}
+              className="bg-primary hover:bg-primary-hover text-white px-4 sm:px-5 py-2 sm:py-2.5 rounded-sm text-xs sm:text-sm font-medium transition-colors cursor-pointer shadow-2xs"
+            >
+              Review Assessment
+            </button>
+            <button
+              type="button"
+              onClick={() => toast.success("Opening Estimate Creator...")}
+              className="border border-primary text-primary hover:bg-page-bg px-4 sm:px-5 py-2 sm:py-2.5 rounded-sm text-xs sm:text-sm font-medium transition-colors cursor-pointer"
+            >
+              Create Estimate
             </button>
           </div>
         );
@@ -641,6 +663,21 @@ export const AdminRequestDetail: React.FC<AdminRequestDetailProps> = ({
           alternateDate: "22 Sep, 2026",
         }}
         onSuccess={handleSiteVisitSuccess}
+      />
+
+      {/* Review Assessment Modal */}
+      <SiteVisitDetailsModal
+        isOpen={isReviewAssessmentModalOpen}
+        onClose={() => setIsReviewAssessmentModalOpen(false)}
+        request={{
+          id: data.id,
+          requestId: data.requestId,
+          customer: {
+            name: data.customer.name,
+          },
+          propertyName: data.property.title,
+          propertyAddress: data.property.address,
+        }}
       />
     </div>
   );

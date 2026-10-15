@@ -11,6 +11,7 @@ import { AdminServiceRequest, AdminRequestStatus } from "../types/serviceRequest
 import { createServiceRequestsColumns } from "./ServiceRequestsColumns";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 import { SiteVisitRequestModal } from "./SiteVisitRequestModal";
+import { SiteVisitDetailsModal } from "./SiteVisitDetailsModal";
 
 const ALL_STATUS_OPTIONS: (string | AdminRequestStatus)[] = [
   "All Status",
@@ -51,6 +52,7 @@ export const AdminServiceRequestsView: React.FC = () => {
   // Detail Modal / View State
   const [selectedRequest, setSelectedRequest] = useState<AdminServiceRequest | null>(null);
   const [siteVisitModalRequest, setSiteVisitModalRequest] = useState<AdminServiceRequest | null>(null);
+  const [reviewAssessmentRequest, setReviewAssessmentRequest] = useState<AdminServiceRequest | null>(null);
 
   const handleSiteVisitSuccess = (requestId: string) => {
     setRequests((prev) =>
@@ -76,7 +78,7 @@ export const AdminServiceRequestsView: React.FC = () => {
         setSiteVisitModalRequest(request);
         break;
       case "review_assessment":
-        toast(`Reviewing assessment for ${request.requestId}`, { icon: "📋" });
+        setReviewAssessmentRequest(request);
         break;
       case "send_reminder":
         toast.success(`Reminder sent to ${request.customer.email}`);
@@ -321,6 +323,13 @@ export const AdminServiceRequestsView: React.FC = () => {
             : null
         }
         onSuccess={handleSiteVisitSuccess}
+      />
+
+      {/* Reusable Site Visit Details / Review Assessment Modal */}
+      <SiteVisitDetailsModal
+        isOpen={Boolean(reviewAssessmentRequest)}
+        onClose={() => setReviewAssessmentRequest(null)}
+        request={reviewAssessmentRequest}
       />
     </div>
   );
