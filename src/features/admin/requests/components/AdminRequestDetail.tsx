@@ -21,8 +21,10 @@ import {
   DEFAULT_ADMIN_REQUEST_DETAIL,
   AdminRequestDetailData,
 } from "../data/adminRequestDetailData";
-import { SiteVisitRequestModal } from "./SiteVisitRequestModal";
-import { SiteVisitDetailsModal } from "./SiteVisitDetailsModal";
+import {
+  SiteVisitRequestModal,
+  SiteVisitDetailsModal,
+} from "./SiteVisitRequestModal";
 
 interface AdminRequestDetailProps {
   requestId?: string;

@@ -10,8 +10,10 @@ import { ADMIN_SERVICE_REQUESTS_DATA } from "../data/serviceRequestsData";
 import { AdminServiceRequest, AdminRequestStatus } from "../types/serviceRequestsTypes";
 import { createServiceRequestsColumns } from "./ServiceRequestsColumns";
 import { CustomSelect } from "@/components/ui/CustomSelect";
-import { SiteVisitRequestModal } from "./SiteVisitRequestModal";
-import { SiteVisitDetailsModal } from "./SiteVisitDetailsModal";
+import {
+  SiteVisitRequestModal,
+  SiteVisitDetailsModal,
+} from "./SiteVisitRequestModal";
 
 const ALL_STATUS_OPTIONS: (string | AdminRequestStatus)[] = [
   "All Status",
