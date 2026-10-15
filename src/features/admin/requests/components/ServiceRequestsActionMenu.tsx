@@ -139,7 +139,7 @@ export const ServiceRequestsActionMenu: React.FC<ServiceRequestsActionMenuProps>
               right: `${menuPosition.right}px`,
               zIndex: 9999,
             }}
-            className="w-48 sm:w-52 rounded-xl border border-border bg-card-bg p-2 shadow-2xl animate-in fade-in zoom-in-95 duration-150"
+            className="w-48 sm:w-52 rounded-sm border border-border bg-card-bg p-2 shadow-2xl animate-in fade-in zoom-in-95 duration-150"
           >
             <div className="flex flex-col gap-1">
               {actions.map((act) => (
@@ -147,11 +147,7 @@ export const ServiceRequestsActionMenu: React.FC<ServiceRequestsActionMenuProps>
                   key={act.actionKey}
                   type="button"
                   onClick={() => handleSelect(act.actionKey)}
-                  className={`w-full py-2 px-3 rounded-md text-xs sm:text-sm text-center transition-all cursor-pointer ${
-                    act.isPrimary
-                      ? "bg-primary text-white font-medium hover:bg-primary-hover shadow-2xs"
-                      : "text-txt-primary hover:bg-page-bg font-normal"
-                  }`}
+                  className="w-full py-2 px-3 rounded-xs text-xs md:text-sm text-center font-medium transition-colors duration-150 cursor-pointer text-txt-primary hover:bg-primary hover:text-white focus:bg-primary focus:text-white focus:outline-hidden"
                 >
                   {act.label}
                 </button>

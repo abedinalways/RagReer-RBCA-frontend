@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Search, ChevronDown, Plus } from "lucide-react";
 import toast from "react-hot-toast";
 import { ReusableTable } from "@/components/reusable/ReusableTable";
@@ -9,6 +10,8 @@ import { ADMIN_SERVICE_REQUESTS_DATA } from "../data/serviceRequestsData";
 import { AdminServiceRequest, AdminRequestStatus } from "../types/serviceRequestsTypes";
 import { createServiceRequestsColumns } from "./ServiceRequestsColumns";
 import { CustomSelect } from "@/components/ui/CustomSelect";
+import { SiteVisitRequestModal } from "./SiteVisitRequestModal";
+import { SiteVisitDetailsModal } from "./SiteVisitDetailsModal";
 
 const ALL_STATUS_OPTIONS: (string | AdminRequestStatus)[] = [
   "All Status",
@@ -21,6 +24,7 @@ const ALL_STATUS_OPTIONS: (string | AdminRequestStatus)[] = [
   "Estimate Sent",
   "Estimate Accepted",
   "Estimate Declined",
+  "Estimate Expired",
   "Change Requested",
   "Contract Sent",
   "Contract Signed",
@@ -37,7 +41,8 @@ const ALL_SERVICE_TYPES = [
 ];
 
 export const AdminServiceRequestsView: React.FC = () => {
-  const [requests] = useState<AdminServiceRequest[]>(ADMIN_SERVICE_REQUESTS_DATA);
+  const router = useRouter();
+  const [requests, setRequests] = useState<AdminServiceRequest[]>(ADMIN_SERVICE_REQUESTS_DATA);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("All Status");
   const [selectedServiceType, setSelectedServiceType] = useState("All Services");
@@ -46,12 +51,21 @@ export const AdminServiceRequestsView: React.FC = () => {
 
   // Detail Modal / View State
   const [selectedRequest, setSelectedRequest] = useState<AdminServiceRequest | null>(null);
+  const [siteVisitModalRequest, setSiteVisitModalRequest] = useState<AdminServiceRequest | null>(null);
+  const [reviewAssessmentRequest, setReviewAssessmentRequest] = useState<AdminServiceRequest | null>(null);
+
+  const handleSiteVisitSuccess = (requestId: string) => {
+    setRequests((prev) =>
+      prev.map((r) =>
+        r.id === requestId ? { ...r, status: "Site Visit Requested" } : r
+      )
+    );
+  };
 
   const handleActionClick = (actionKey: string, request: AdminServiceRequest) => {
     switch (actionKey) {
       case "view_details":
-        setSelectedRequest(request);
-        toast.success(`Opening details for ${request.requestId}`);
+        router.push(`/admin/requests/${request.id}`);
         break;
       case "view_customer":
         toast(`Viewing customer: ${request.customer.name}`, { icon: "👤" });
@@ -61,11 +75,10 @@ export const AdminServiceRequestsView: React.FC = () => {
         toast(`Estimate action for ${request.requestId}`, { icon: "📄" });
         break;
       case "request_site_visit":
-      case "review_request":
-        toast(`Site visit request for ${request.requestId}`, { icon: "📍" });
+        setSiteVisitModalRequest(request);
         break;
       case "review_assessment":
-        toast(`Reviewing assessment for ${request.requestId}`, { icon: "📋" });
+        setReviewAssessmentRequest(request);
         break;
       case "send_reminder":
         toast.success(`Reminder sent to ${request.customer.email}`);
@@ -76,6 +89,12 @@ export const AdminServiceRequestsView: React.FC = () => {
         break;
       case "view_invoice":
         toast(`Viewing invoice for ${request.requestId}`, { icon: "💳" });
+        break;
+      case "schedule_service":
+        toast.success(`Opening Service Scheduler for ${request.requestId}`);
+        break;
+      case "view_job_details":
+        toast(`Viewing Job Details for ${request.requestId}`, { icon: "🔧" });
         break;
       case "archive":
         toast(`Archived ${request.requestId}`);
@@ -213,7 +232,7 @@ export const AdminServiceRequestsView: React.FC = () => {
           <div className="w-full max-w-lg rounded-xl border border-border bg-card-bg p-5 sm:p-6 shadow-2xl space-y-4">
             <div className="flex items-center justify-between border-b border-border pb-3">
               <div>
-                <h3 className="font-barlow text-xl font-bold text-primary-heading">
+                <h3 className="font-barlow text-xl font-medium text-primary-heading">
                   {selectedRequest.requestId} Details
                 </h3>
                 <p className="text-xs text-secondary-subheading">
@@ -259,7 +278,7 @@ export const AdminServiceRequestsView: React.FC = () => {
 
               <div className="flex items-center justify-between p-2.5 rounded-lg border border-border-subtle bg-card-bg">
                 <span className="text-xs text-secondary-subheading">Current Status</span>
-                <span className="text-xs font-semibold text-primary">{selectedRequest.status}</span>
+                <span className="text-xs font-medium text-primary">{selectedRequest.status}</span>
               </div>
             </div>
 
@@ -285,6 +304,33 @@ export const AdminServiceRequestsView: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Reusable Site Visit Request Modal */}
+      <SiteVisitRequestModal
+        isOpen={Boolean(siteVisitModalRequest)}
+        onClose={() => setSiteVisitModalRequest(null)}
+        request={
+          siteVisitModalRequest
+            ? {
+                id: siteVisitModalRequest.id,
+                requestId: siteVisitModalRequest.requestId,
+                customer: siteVisitModalRequest.customer,
+                propertyAddress: siteVisitModalRequest.propertyAddress,
+                propertyName: "North Entrance Monument & Islands",
+                preferredDate: "21 Sep, 2026",
+                alternateDate: "22 Sep, 2026",
+              }
+            : null
+        }
+        onSuccess={handleSiteVisitSuccess}
+      />
+
+      {/* Reusable Site Visit Details / Review Assessment Modal */}
+      <SiteVisitDetailsModal
+        isOpen={Boolean(reviewAssessmentRequest)}
+        onClose={() => setReviewAssessmentRequest(null)}
+        request={reviewAssessmentRequest}
+      />
     </div>
   );
 };
