@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
+import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
 import toast from "react-hot-toast";
 import { ReusableTable } from "@/components/reusable/ReusableTable";
@@ -19,6 +20,7 @@ import { createJobPipelineColumns } from "./JobPipelineColumns";
 import { JobPipelineEmptyState } from "./JobPipelineEmptyState";
 
 export const AdminJobPipelineView: React.FC = () => {
+  const router = useRouter();
   const [jobs, setJobs] = useState<JobPipelineItem[]>(INITIAL_JOB_PIPELINE_DATA);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedService, setSelectedService] = useState("All Service");
@@ -31,7 +33,7 @@ export const AdminJobPipelineView: React.FC = () => {
   const handleActionClick = (actionKey: string, job: JobPipelineItem) => {
     switch (actionKey) {
       case "view_details":
-        toast(`Viewing details for ${job.jobId}`, { icon: "📋" });
+        router.push(`/admin/job-pipeline/${job.id}/overview`);
         break;
       case "edit_crew_equipment":
         toast(`Opening Crew & Equipment for ${job.jobId}`, { icon: "🛠️" });
