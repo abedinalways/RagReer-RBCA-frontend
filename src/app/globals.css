@@ -89,6 +89,13 @@
     --color-apt-cancelled-bar: #D92D20;
     --color-apt-resched-bg: #FBD5DA;
     --color-apt-resched-bar: #F04438;
+
+    /* Job Pipeline KPI Card Left Border Colors */
+    --color-pipeline-today: #EC7032;
+    --color-pipeline-progress: #0777F6;
+    --color-pipeline-review: #EAAA08;
+    --color-pipeline-issue: #F04438;
+    --color-pipeline-hours: #12B76A;
 }
 
 @layer base {
@@ -161,6 +168,13 @@
         --color-apt-cancelled-bar: #D92D20;
         --color-apt-resched-bg: #FBD5DA;
         --color-apt-resched-bar: #F04438;
+
+        /* Job Pipeline KPI Card Colors */
+        --color-pipeline-today: #EC7032;
+        --color-pipeline-progress: #0777F6;
+        --color-pipeline-review: #EAAA08;
+        --color-pipeline-issue: #F04438;
+        --color-pipeline-hours: #12B76A;
     }
 
     body {

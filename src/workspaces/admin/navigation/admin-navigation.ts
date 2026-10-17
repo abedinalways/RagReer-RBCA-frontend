@@ -23,12 +23,19 @@ import {
   HandCoins,
   type LucideIcon,
 } from "lucide-react";
+import type { ComponentType } from "react";
+import ServiceIcon from "@/components/icons/admin/ServiceIcon";
+import JobsIcon from "@/components/icons/admin/JobsIcon";
+import ScheduleIcon from "../../../components/icons/admin/ScheduleIcon";
+import PropertiesIcon from "../../../components/icons/admin/PropertiesIcon";
+
+export type NavIcon = LucideIcon | ComponentType<{ className?: string }>;
 
 export interface AdminSubNavItem {
   id: string;
   label: string;
   href: string;
-  icon: LucideIcon;
+  icon: NavIcon;
   permission?: Permission;
 }
 
@@ -36,7 +43,7 @@ export interface AdminNavGroup {
   id: string;
   label: string;
   href?: string;
-  icon?: LucideIcon;
+  icon?: NavIcon;
   items?: AdminSubNavItem[];
   permission?: Permission;
   defaultExpanded?: boolean;
@@ -61,14 +68,28 @@ export const adminGroupedNavigation: AdminNavGroup[] = [
         id: "requests",
         label: "Service Requests",
         href: "/admin/requests",
-        icon: Inbox,
+        icon: ServiceIcon,
         permission: PERMISSIONS.REQUEST.VIEW,
       },
       {
-        id: "jobs",
-        label: "Jobs",
-        href: "/admin/jobs",
-        icon: Briefcase,
+        id: "job-pipeline",
+        label: "Job Pipeline",
+        href: "/admin/job-pipeline",
+        icon: JobsIcon,
+        permission: PERMISSIONS.JOB.VIEW,
+      },
+      {
+        id: "schedule",
+        label: "Job Schedule",
+        href: "/admin/schedule",
+        icon: ScheduleIcon,
+        permission: PERMISSIONS.JOB.VIEW,
+      },
+      {
+        id: "properties",
+        label: "Properties",
+        href: "/admin/properties",
+        icon: PropertiesIcon,
         permission: PERMISSIONS.JOB.VIEW,
       },
     ],
@@ -200,7 +221,7 @@ export interface AdminMobileNavItem {
   id: string;
   label: string;
   href: string;
-  icon: LucideIcon;
+  icon: NavIcon;
   isMoreTrigger?: boolean;
 }
 
