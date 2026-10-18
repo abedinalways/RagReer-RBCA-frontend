@@ -65,6 +65,22 @@ export const DEFAULT_JOB_DETAIL_DATA: JobDetailData = {
         "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face",
       strikeCount: 0,
     },
+    {
+      id: "crew-3",
+      name: "Marcus Bell",
+      role: "Crew Member",
+      avatar:
+        "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=face",
+      strikeCount: 0,
+    },
+    {
+      id: "crew-4",
+      name: "Emma Thompson",
+      role: "Crew Member",
+      avatar:
+        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face",
+      strikeCount: 1,
+    },
   ],
   additionalCrewCount: 2,
   timeTracking: [
