@@ -29,7 +29,10 @@ export function PayrollToolbar({
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (statusRef.current && !statusRef.current.contains(event.target as Node)) {
+      if (
+        statusRef.current &&
+        !statusRef.current.contains(event.target as Node)
+      ) {
         setIsStatusOpen(false);
       }
     }
@@ -40,7 +43,7 @@ export function PayrollToolbar({
   return (
     <div className="p-4 sm:p-5 border-b border-border flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 bg-card-bg">
       {/* Title */}
-      <h2 className="text-base sm:text-lg font-bold text-primary-heading">
+      <h2 className="text-lg md:text-xl  font-normal text-primary-heading">
         All Payroll List
       </h2>
 
@@ -85,14 +88,16 @@ export function PayrollToolbar({
                       onStatusChange(opt.value);
                       setIsStatusOpen(false);
                     }}
-                    className={`w-full text-left px-3.5 py-2 text-xs flex items-center justify-between transition-colors cursor-pointer ${
+                    className={`w-full text-left px-3.5 py-2 text-xs md:text-sm flex items-center justify-between transition-colors cursor-pointer ${
                       isSelected
                         ? "text-primary font-medium bg-blue-50/60"
                         : "text-txt-primary hover:bg-page-bg"
                     }`}
                   >
                     <span>{opt.label}</span>
-                    {isSelected && <Check className="w-3.5 h-3.5 text-primary" />}
+                    {isSelected && (
+                      <Check className="w-3.5 h-3.5 text-primary" />
+                    )}
                   </button>
                 );
               })}

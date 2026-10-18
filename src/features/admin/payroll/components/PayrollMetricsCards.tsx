@@ -39,13 +39,13 @@ export function PayrollMetricsCards({ metrics }: PayrollMetricsCardsProps) {
         return (
           <div
             key={idx}
-            className="p-3.5 sm:p-4 rounded-xl border border-border bg-card-bg shadow-2xs flex items-center justify-between transition-all hover:shadow-xs"
+            className="flex items-start justify-between gap-4 p-3 rounded border border-surface bg-pure-white-bg shadow-[2px_2px_22px_0px_rgba(55,36,31,0.01)] transition-all hover:shadow-xs"
           >
-            <div className="min-w-0 pr-2">
-              <span className="block text-[11px] sm:text-xs text-secondary-subheading font-medium truncate">
+            <div className="min-w-0 flex-1">
+              <span className="block  text-sm md:text-base font-normal text-primary-heading">
                 {card.label}
               </span>
-              <span className="block text-lg sm:text-xl md:text-2xl font-bold text-primary mt-0.5 sm:mt-1 tracking-tight truncate">
+              <span className="block text-xl md:text-2xl font-bold text-primary mt-0.5 sm:mt-1 tracking-tight truncate">
                 {card.value}
               </span>
             </div>
