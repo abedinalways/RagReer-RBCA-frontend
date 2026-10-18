@@ -12,6 +12,9 @@ export interface ModalProps {
   headerClassName?: string;
   children: React.ReactNode;
   footer?: React.ReactNode;
+  footerClassName?: string;
+  hideHeaderBorder?: boolean;
+  hideFooterBorder?: boolean;
   maxWidth?: "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl" | "6xl" | "7xl" | "full";
   className?: string;
   contentClassName?: string;
@@ -41,6 +44,9 @@ export const Modal: React.FC<ModalProps> = ({
   headerClassName,
   children,
   footer,
+  footerClassName,
+  hideHeaderBorder = false,
+  hideFooterBorder = false,
   maxWidth = "lg",
   className,
   contentClassName,
@@ -97,7 +103,8 @@ export const Modal: React.FC<ModalProps> = ({
         {title && (
           <div
             className={cn(
-              "flex items-center justify-between px-4 sm:px-6 py-3.5 sm:py-4.5 border-b border-border shrink-0",
+              "flex items-center justify-between px-4 sm:px-6 py-3.5 sm:py-4.5 shrink-0",
+              !hideHeaderBorder && "border-b border-border",
               headerClassName
             )}
           >
@@ -133,7 +140,13 @@ export const Modal: React.FC<ModalProps> = ({
         </div>
 
         {footer && (
-          <div className="flex items-center justify-end gap-3 px-4 sm:px-6 py-3.5 sm:py-4 border-t border-border bg-card-bg shrink-0">
+          <div
+            className={cn(
+              "flex items-center justify-end gap-3 px-4 sm:px-6 py-3.5 sm:py-4 bg-card-bg shrink-0",
+              !hideFooterBorder && "border-t border-border",
+              footerClassName
+            )}
+          >
             {footer}
           </div>
         )}
