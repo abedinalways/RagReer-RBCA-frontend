@@ -49,6 +49,8 @@
     --color-note-green-border: #04913E;
     --color-terms-bg: #FEFBF0;
     --color-terms-border: #FEDF89;
+    --color-flagged-amber: #f5b517;
+    --color-status-hold: #f5b517;
     --color-badge-pending-bg: #FEF6EE;
     --color-badge-pending-text: #B54708;
     --color-badge-pending-border: #FECDCA;
@@ -123,6 +125,8 @@
         --color-note-green-text: #027A48;
         --color-terms-bg: #FEFBF0;
         --color-terms-border: #FEDF89;
+        --color-flagged-amber: #f5b517;
+        --color-status-hold: #f5b517;
         --color-badge-pending-bg: #FEF6EE;
         --color-badge-pending-text: #B54708;
         --color-badge-pending-border: #FECDCA;
