@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
-import { PlaceholderPage } from "@/components/shared/PlaceholderPage";
+import { FinancialSummaryView } from "@/features/admin/financial-summary/components/FinancialSummaryView";
 
-export const metadata: Metadata = { title: "Financial Summary" };
+export const metadata: Metadata = {
+  title: "Financial Summary",
+  description: "Comprehensive financial performance overview, revenue streams, and expense breakdown.",
+};
 
 export default function AdminFinancialSummaryPage() {
-  return (
-    <PlaceholderPage
-      title="Financial Summary"
-      description="Comprehensive financial performance overview, revenue streams, and expense breakdown."
-    />
-  );
+  return <FinancialSummaryView />;
 }
