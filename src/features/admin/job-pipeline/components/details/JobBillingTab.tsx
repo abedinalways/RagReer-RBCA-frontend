@@ -13,11 +13,11 @@ export const JobBillingTab: React.FC = () => {
       </div>
 
       <div className="p-8 sm:p-16 flex flex-col items-center justify-center text-center">
-        <div className="p-4 rounded-full bg-table-total-bg/40">
-          <BillingIcon />
+        <div className="w-12 h-12 rounded-full bg-highlight-blue-bg border border-highlight-blue-border flex items-center justify-center mb-3">
+          <BillingIcon className="w-6 h-6 text-primary" />
         </div>
 
-        <h4 className="font-barlow text-xl sm:text-2xl font-medium text-primary-heading mb-1.5">
+        <h4 className="font-barlow text-base sm:text-lg font-medium text-primary-heading mb-1">
           No Billing Found
         </h4>
 

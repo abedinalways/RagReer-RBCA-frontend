@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import { TopTab, type TopTabItem } from "@/components/reusable/TopTab";
-import { getJobDetailById } from "../../data/jobDetailsData";
+import { getJobDetailById, COMPLETED_JOB_DETAIL_DATA } from "../../data/jobDetailsData";
 import { JOB_STATUS_STYLES } from "../../data/jobPipelineData";
 import { JobDetailData } from "../../types/jobDetailsTypes";
 import { JobOverviewTab } from "./JobOverviewTab";
@@ -15,6 +15,7 @@ import { JobActivityTab } from "./JobActivityTab";
 import { EditCrewEquipmentModal } from "./EditCrewEquipmentModal";
 import { ChangeCrewLeaderModal } from "./ChangeCrewLeaderModal";
 import { ReviewFlaggedWorkModal } from "./ReviewFlaggedWorkModal";
+import { QualityIssueDecisionModal } from "./QualityIssueDecisionModal";
 
 export type DetailTabKey =
   | "overview"
@@ -63,6 +64,7 @@ export const AdminJobDetail: React.FC<AdminJobDetailProps> = ({
   const [isEditCrewModalOpen, setIsEditCrewModalOpen] = useState(false);
   const [isChangeLeaderModalOpen, setIsChangeLeaderModalOpen] = useState(false);
   const [isReviewFlaggedModalOpen, setIsReviewFlaggedModalOpen] = useState(false);
+  const [isQualityIssueModalOpen, setIsQualityIssueModalOpen] = useState(false);
 
   const statusStyle = JOB_STATUS_STYLES[data.status] || {
     badgeBg: "bg-blue-50",
@@ -119,25 +121,73 @@ export const AdminJobDetail: React.FC<AdminJobDetailProps> = ({
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
-          <button
-            type="button"
-            onClick={() => setIsEditCrewModalOpen(true)}
-            className="px-4 py-2 rounded-md bg-primary text-white hover:bg-primary-hover text-xs sm:text-sm font-medium transition-colors cursor-pointer shadow-2xs"
-          >
-            Edit Crew/Equipment
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              setData((prev) => ({ ...prev, status: "Completed" }));
-              toast.success("Job marked as completed!");
-            }}
-            className="px-4 py-2 rounded-md bg-blue-100 text-primary-dark hover:bg-blue-200/80 text-xs sm:text-sm font-medium transition-colors cursor-pointer"
-          >
-            Mark as Completed
-          </button>
-        </div>
+        {data.status === "Completed" ? (
+          <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
+            <button
+              type="button"
+              onClick={() => {
+                toast.success(`Invoice generated successfully for ${data.jobId}!`);
+              }}
+              className="px-5 py-2.5 rounded-md bg-primary text-white hover:bg-primary-hover text-xs sm:text-sm font-medium transition-colors cursor-pointer shadow-2xs"
+            >
+              Generate Invoice
+            </button>
+          </div>
+        ) : data.status === "Awaiting Review" ? (
+          <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
+            <button
+              type="button"
+              onClick={() => {
+                setData((prev) => ({
+                  ...COMPLETED_JOB_DETAIL_DATA,
+                  id: prev.id,
+                  jobId: prev.jobId,
+                  title: prev.title,
+                }));
+                toast.success("Job marked as completed!");
+              }}
+              className="px-5 py-2.5 rounded-md bg-primary text-white hover:bg-primary-hover text-xs sm:text-sm font-medium transition-colors cursor-pointer shadow-2xs"
+            >
+              Mark as Completed
+            </button>
+            <button
+              type="button"
+              onClick={() => setIsQualityIssueModalOpen(true)}
+              className="px-5 py-2.5 rounded-md bg-primary text-white hover:bg-primary-hover text-xs sm:text-sm font-medium transition-colors cursor-pointer shadow-2xs"
+            >
+              Raise Quality Issue
+            </button>
+          </div>
+        ) : (
+          <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
+            <button
+              type="button"
+              onClick={() => setIsEditCrewModalOpen(true)}
+              className="px-4 py-2 rounded-md bg-primary text-white hover:bg-primary-hover text-xs sm:text-sm font-medium transition-colors cursor-pointer shadow-2xs"
+            >
+              Edit Crew/Equipment
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setData((prev) => ({
+                  ...COMPLETED_JOB_DETAIL_DATA,
+                  id: prev.id,
+                  jobId: prev.jobId,
+                  title: prev.title,
+                }));
+                toast.success("Job marked as completed!");
+              }}
+              className={`px-4 py-2 rounded-md text-xs sm:text-sm font-medium transition-colors cursor-pointer ${
+                data.status === "On Hold"
+                  ? "bg-page-bg text-secondary-subheading border border-border"
+                  : "bg-blue-100 text-primary-dark hover:bg-blue-200/80"
+              }`}
+            >
+              Mark as Completed
+            </button>
+          </div>
+        )}
       </div>
 
       {/* 3. Main Container with Reusable TopTab */}
@@ -209,7 +259,13 @@ export const AdminJobDetail: React.FC<AdminJobDetailProps> = ({
           )}
 
           {activeTab === "task-evidence" && (
-            <JobTaskEvidenceTab tasks={data.tasks} />
+            <JobTaskEvidenceTab
+              tasks={data.tasks}
+              evidencePhotos={data.evidencePhotos}
+              checklist={data.checklist}
+              workNote={data.workNote}
+              taskCompletionSubtitle={data.taskCompletionSubtitle}
+            />
           )}
 
           {activeTab === "billing" && <JobBillingTab />}
@@ -275,6 +331,18 @@ export const AdminJobDetail: React.FC<AdminJobDetailProps> = ({
           setData((prev) => ({
             ...prev,
             alertBanner: undefined,
+          }));
+        }}
+      />
+
+      {/* 7. Quality Issue Decision Modal */}
+      <QualityIssueDecisionModal
+        isOpen={isQualityIssueModalOpen}
+        onClose={() => setIsQualityIssueModalOpen(false)}
+        onConfirmIssue={() => {
+          setData((prev) => ({
+            ...prev,
+            status: "Quality Issue",
           }));
         }}
       />

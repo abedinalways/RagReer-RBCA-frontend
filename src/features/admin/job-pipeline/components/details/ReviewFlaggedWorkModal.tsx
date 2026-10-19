@@ -230,7 +230,7 @@ export const ReviewFlaggedWorkModal: React.FC<ReviewFlaggedWorkModalProps> = ({
               </div>
             </div>
 
-            <div className="rounded-lg bg-[#edf4fc] p-3 min-w-[145px] shrink-0 flex flex-col justify-between">
+            <div className="rounded-lg bg-highlight-blue-bg border border-highlight-blue-border p-3 min-w-[145px] shrink-0 flex flex-col justify-between">
               <div>
                 <span className="text-sm md:text-base text-secondary-subheading font-normal block">
                   Additional Cost
@@ -306,7 +306,7 @@ export const ReviewFlaggedWorkModal: React.FC<ReviewFlaggedWorkModalProps> = ({
                 type="text"
                 disabled
                 value="Auto filled"
-                className="w-full rounded-sm border border-border bg-[#f8fafc] px-3 py-2 text-sm md:text-base text-secondary-subheading cursor-not-allowed"
+                className="w-full rounded-sm border border-border bg-input-disabled-bg px-3 py-2 text-sm md:text-base text-secondary-subheading cursor-not-allowed"
               />
             </div>
             <div>
@@ -317,7 +317,7 @@ export const ReviewFlaggedWorkModal: React.FC<ReviewFlaggedWorkModalProps> = ({
                 type="text"
                 disabled
                 value="Auto filled"
-                className="w-full rounded-sm border border-border bg-[#f8fafc] px-3 py-2 text-sm md:text-base text-secondary-subheading cursor-not-allowed"
+                className="w-full rounded-sm border border-border bg-input-disabled-bg px-3 py-2 text-sm md:text-base text-secondary-subheading cursor-not-allowed"
               />
             </div>
             <div>
@@ -328,7 +328,7 @@ export const ReviewFlaggedWorkModal: React.FC<ReviewFlaggedWorkModalProps> = ({
                 type="text"
                 disabled
                 value="Auto filled"
-                className="w-full rounded-sm  border border-border bg-[#f8fafc] px-3 py-2 text-sm md:text-base text-secondary-subheading cursor-not-allowed"
+                className="w-full rounded-sm border border-border bg-input-disabled-bg px-3 py-2 text-sm md:text-base text-secondary-subheading cursor-not-allowed"
               />
             </div>
             <div>
@@ -375,7 +375,7 @@ export const ReviewFlaggedWorkModal: React.FC<ReviewFlaggedWorkModalProps> = ({
                       {selectedServices.map((service) => (
                         <span
                           key={service}
-                          className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-sm md:text-base font-normal bg-[#edf4fc] text-info border border-[#d2e4f7]"
+                          className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-sm md:text-base font-normal bg-highlight-blue-bg text-info border border-highlight-blue-border"
                         >
                           {service}
                           <button
@@ -452,7 +452,7 @@ export const ReviewFlaggedWorkModal: React.FC<ReviewFlaggedWorkModalProps> = ({
                         <button
                           type="button"
                           onClick={() => removeLineItem(item.id)}
-                          className="px-2.5 py-0.5 rounded border border-red-300 text-decline hover:bg-red-50 text-xs md:text-sm font-medium transition-colors cursor-pointer"
+                          className="px-2.5 py-0.5 rounded border border-decline-border text-decline hover:bg-decline-secondary text-xs md:text-sm font-medium transition-colors cursor-pointer"
                         >
                           Remove
                         </button>
@@ -594,7 +594,7 @@ export const ReviewFlaggedWorkModal: React.FC<ReviewFlaggedWorkModalProps> = ({
           </div>
 
           {/* Totals Summary Box */}
-          <div className="rounded-sm bg-[#edf4fc] p-3 space-y-1.5 text-xs md:text-sm">
+          <div className="rounded-sm bg-highlight-blue-bg border border-highlight-blue-border p-3 space-y-1.5 text-xs md:text-sm">
             <div className="flex items-center justify-between">
               <span className="text-secondary-subheading font-normal">Subtotal</span>
               <span className="font-medium text-txt-primary">$3,995.00</span>

@@ -33,42 +33,48 @@
   --color-border-card: #e7f1fb;
   --color-border-subtle: #f2f4f7;
 
-  /* Status & Badges */
-  --color-info: #0777f6;
-  --color-status-running-bg: #eaf2f9;
-  --color-status-running-text: #2d6a9f;
-  --color-tag-rescheduling-bg: rgba(245, 181, 23, 0.15);
-  --color-tag-rescheduling-border: rgba(245, 181, 23, 0.5);
-  --color-tag-rescheduling-text: #b47804;
-  --color-trend-up: #16a34a;
-  --color-trend-down: #e11d48;
-  --color-decline: #d92d20;
-  --color-decline-border: #fda29b;
-  --color-decline-secondary: #fef3f2;
-  --color-note-green-bg: rgba(4, 145, 62, 0.09);
-  --color-note-green-border: #04913e;
-  --color-terms-bg: #fefbf0;
-  --color-terms-border: #fedf89;
-  --color-flagged-amber: #f5b517;
-  --color-status-hold: #f5b517;
-  --color-badge-pending-bg: #fef6ee;
-  --color-badge-pending-text: #b54708;
-  --color-badge-pending-border: #fecdca;
-  --color-badge-pending-dot: #f79009;
-  --color-badge-active-bg: #ecfdf3;
-  --color-badge-active-text: #027a48;
-  --color-badge-active-border: #abefc6;
-  --color-badge-active-dot: #12b76a;
-  --color-banner-blue: #a3bfdb;
-  --color-table-total-bg: #eaf2f9;
-  --color-note-green-text: #027a48;
-  --color-password-weak: rgba(235, 61, 77, 0.45);
-  --color-password-medium: #f59e0b;
-  --color-password-good: #0777f6;
-  --color-password-strong: #16a34a;
-  --color-service-purple: #8b5cf6;
-  --color-attention-bg: #f4f8fc;
-  --color-attention-border: #e5eef7;
+    /* Status & Badges */
+    --color-info: #0777F6;
+    --color-status-running-bg: #EAF2F9;
+    --color-status-running-text: #2D6A9F;
+    --color-tag-rescheduling-bg: rgba(245, 181, 23, 0.15);
+    --color-tag-rescheduling-border: rgba(245, 181, 23, 0.50);
+    --color-tag-rescheduling-text: #B47804;
+    --color-trend-up: #16A34A;
+    --color-trend-down: #E11D48;
+    --color-decline: #D92D20;
+    --color-decline-border: #FDA29B;
+    --color-decline-secondary: #FEF3F2;
+    --color-note-green-bg: rgba(4, 145, 62, 0.09);
+    --color-note-green-border: #04913E;
+    --color-terms-bg: #FEFBF0;
+    --color-terms-border: #FEDF89;
+    --color-flagged-amber: #f5b517;
+    --color-status-hold: #f5b517;
+    --color-badge-pending-bg: #FEF6EE;
+    --color-badge-pending-text: #B54708;
+    --color-badge-pending-border: #FECDCA;
+    --color-badge-pending-dot: #F79009;
+    --color-badge-active-bg: #ECFDF3;
+    --color-badge-active-text: #027A48;
+    --color-badge-active-border: #ABEFC6;
+    --color-badge-active-dot: #12B76A;
+    --color-banner-blue: #A3BFDB;
+    --color-table-total-bg: #EAF2F9;
+    --color-note-green-text: #027A48;
+    --color-password-weak: rgba(235, 61, 77, 0.45);
+    --color-password-medium: #F59E0B;
+    --color-password-good: #0777F6;
+    --color-password-strong: #16A34A;
+    --color-service-purple: #8B5CF6;
+    --color-attention-bg: #F4F8FC;
+    --color-attention-border: #E5EEF7;
+    --color-highlight-blue-bg: #EDF4FC;
+    --color-highlight-blue-border: #D2E4F7;
+    --color-callout-amber-bg: #FFFBEB;
+    --color-callout-amber-border: #FEF3C7;
+    --color-callout-amber-text: #B45309;
+    --color-input-disabled-bg: #F8FAFC;
 
   /* Appointment Figma Exact Colors */
   --color-apt-pref-bg: #eaeaea;
@@ -179,6 +185,12 @@
     --color-pipeline-review: #eaaa08;
     --color-pipeline-issue: #f04438;
     --color-pipeline-hours: #12b76a;
+    --color-highlight-blue-bg: #EDF4FC;
+    --color-highlight-blue-border: #D2E4F7;
+    --color-callout-amber-bg: #FFFBEB;
+    --color-callout-amber-border: #FEF3C7;
+    --color-callout-amber-text: #B45309;
+    --color-input-disabled-bg: #F8FAFC;
   }
 
   body {
