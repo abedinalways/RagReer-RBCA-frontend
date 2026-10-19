@@ -67,9 +67,9 @@ export const JOB_STATUS_STYLES: Record<JobPipelineStatus, JobStatusStyle> = {
   },
   "On Hold": {
     badgeBg: "bg-terms-bg",
-    badgeText: "text-badge-pending-text",
-    badgeBorder: "border-terms-border",
-    dotBg: "bg-badge-pending-dot",
+    badgeText: "text-flagged-amber",
+    badgeBorder: "border-flagged-amber/50",
+    dotBg: "bg-flagged-amber",
     label: "On Hold",
   },
 };

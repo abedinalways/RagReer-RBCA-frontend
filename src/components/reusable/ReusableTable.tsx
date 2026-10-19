@@ -37,10 +37,7 @@ export function ReusableTable<T>({
       )
     : 1;
   const visibleData = pagination
-    ? data.slice(
-        (currentPage - 1) * itemsPerPage,
-        currentPage * itemsPerPage,
-      )
+    ? data.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
     : data;
 
   return (

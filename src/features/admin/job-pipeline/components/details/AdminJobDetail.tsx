@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import { TopTab, type TopTabItem } from "@/components/reusable/TopTab";
-import { DEFAULT_JOB_DETAIL_DATA } from "../../data/jobDetailsData";
+import { getJobDetailById } from "../../data/jobDetailsData";
 import { JOB_STATUS_STYLES } from "../../data/jobPipelineData";
 import { JobDetailData } from "../../types/jobDetailsTypes";
 import { JobOverviewTab } from "./JobOverviewTab";
@@ -14,6 +14,7 @@ import { JobBillingTab } from "./JobBillingTab";
 import { JobActivityTab } from "./JobActivityTab";
 import { EditCrewEquipmentModal } from "./EditCrewEquipmentModal";
 import { ChangeCrewLeaderModal } from "./ChangeCrewLeaderModal";
+import { ReviewFlaggedWorkModal } from "./ReviewFlaggedWorkModal";
 
 export type DetailTabKey =
   | "overview"
@@ -41,18 +42,17 @@ export const AdminJobDetail: React.FC<AdminJobDetailProps> = ({
   jobId,
   initialTab,
 }) => {
-  const [data, setData] = useState<JobDetailData>(() => ({
-    ...DEFAULT_JOB_DETAIL_DATA,
-    jobId: jobId
-      ? jobId.startsWith("#")
-        ? jobId
-        : `#${jobId}`
-      : DEFAULT_JOB_DETAIL_DATA.jobId,
-  }));
+  const [data, setData] = useState<JobDetailData>(() =>
+    getJobDetailById(jobId)
+  );
 
   const [activeTab, setActiveTab] = useState<DetailTabKey>(() =>
     normalizeTabKey(initialTab)
   );
+
+  useEffect(() => {
+    setData(getJobDetailById(jobId));
+  }, [jobId]);
 
   useEffect(() => {
     if (initialTab) {
@@ -62,6 +62,7 @@ export const AdminJobDetail: React.FC<AdminJobDetailProps> = ({
 
   const [isEditCrewModalOpen, setIsEditCrewModalOpen] = useState(false);
   const [isChangeLeaderModalOpen, setIsChangeLeaderModalOpen] = useState(false);
+  const [isReviewFlaggedModalOpen, setIsReviewFlaggedModalOpen] = useState(false);
 
   const statusStyle = JOB_STATUS_STYLES[data.status] || {
     badgeBg: "bg-blue-50",
@@ -141,6 +142,49 @@ export const AdminJobDetail: React.FC<AdminJobDetailProps> = ({
 
       {/* 3. Main Container with Reusable TopTab */}
       <div className="rounded-xl border border-border bg-card-bg shadow-2xs overflow-hidden">
+        {/* Flagged Additional Work Banner (e.g. On Hold status) */}
+        {data.alertBanner && activeTab === "overview" && (
+          <div className="p-4 sm:p-5 pb-3">
+            <div className="rounded-sm border border-flagged-amber/50 bg-terms-bg p-3.5 sm:p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 shadow-2xs animate-in fade-in duration-150">
+              <div className="flex items-start gap-3 min-w-0">
+                <div className="mt-0.5 text-flagged-amber shrink-0">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="12" y1="8" x2="12" y2="12" />
+                    <line x1="12" y1="16" x2="12.01" y2="16" />
+                  </svg>
+                </div>
+                <div className="flex flex-col min-w-0">
+                  <h4 className="font-barlow text-base sm:text-lg font-medium text-flagged-amber leading-tight">
+                    {data.alertBanner.title}
+                  </h4>
+                  <p className="text-xs sm:text-sm text-secondary-subheading font-normal mt-0.5">
+                    {data.alertBanner.description}
+                  </p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setIsReviewFlaggedModalOpen(true)}
+                className="px-5 py-2 rounded-md bg-primary text-white hover:bg-primary-hover text-xs sm:text-sm font-medium transition-colors cursor-pointer shrink-0 self-start sm:self-auto shadow-2xs"
+              >
+                {data.alertBanner.actionText}
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Reusable TopTab with dynamic basePath matching /admin/job-pipeline/[id]/[tab] */}
         <TopTab<DetailTabKey>
           tabs={tabs}
@@ -170,7 +214,9 @@ export const AdminJobDetail: React.FC<AdminJobDetailProps> = ({
 
           {activeTab === "billing" && <JobBillingTab />}
 
-          {activeTab === "activity" && <JobActivityTab />}
+          {activeTab === "activity" && (
+            <JobActivityTab activities={data.activities} />
+          )}
         </div>
       </div>
 
@@ -208,6 +254,27 @@ export const AdminJobDetail: React.FC<AdminJobDetailProps> = ({
               },
               ...prev.crew.filter((c) => !c.isLeader),
             ],
+          }));
+        }}
+      />
+
+      {/* 6. Review Flagged Work Modal */}
+      <ReviewFlaggedWorkModal
+        isOpen={isReviewFlaggedModalOpen}
+        onClose={() => setIsReviewFlaggedModalOpen(false)}
+        jobId={data.jobId}
+        propertyName={data.property.name}
+        propertyAddress={data.property.address}
+        onSendToCustomer={() => {
+          setData((prev) => ({
+            ...prev,
+            alertBanner: undefined,
+          }));
+        }}
+        onReject={() => {
+          setData((prev) => ({
+            ...prev,
+            alertBanner: undefined,
           }));
         }}
       />

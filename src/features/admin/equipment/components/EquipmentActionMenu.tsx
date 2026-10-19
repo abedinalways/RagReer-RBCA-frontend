@@ -23,7 +23,10 @@ export function EquipmentActionMenu({
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
         setIsOpen(false);
       }
     };
@@ -34,7 +37,13 @@ export function EquipmentActionMenu({
   }, [isOpen]);
 
   return (
-    <div className={cn("relative inline-block text-left", isOpen ? "z-50" : "z-10")} ref={containerRef}>
+    <div
+      className={cn(
+        "relative inline-block text-left",
+        isOpen ? "z-50" : "z-10",
+      )}
+      ref={containerRef}
+    >
       <button
         type="button"
         onClick={(e) => {

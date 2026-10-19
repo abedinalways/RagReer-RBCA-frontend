@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import BillingIcon from "../../../../../components/icons/admin/BillingIcon";
 
 export const JobBillingTab: React.FC = () => {
   return (
@@ -12,31 +13,8 @@ export const JobBillingTab: React.FC = () => {
       </div>
 
       <div className="p-8 sm:p-16 flex flex-col items-center justify-center text-center">
-        {/* Circular Receipt Icon Container matching Screenshot 1 */}
-        <div className="h-14 w-14 rounded-full bg-blue-50 flex items-center justify-center mb-4 ring-4 ring-blue-50/50">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="22"
-            height="22"
-            fill="none"
-            viewBox="0 0 24 24"
-            className="text-primary"
-          >
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="1.5"
-              d="M9 14h6m-6-3h6M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1 2-1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1-2-1z"
-            />
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="1.5"
-              d="M12 7.5v.01"
-            />
-          </svg>
+        <div className="p-4 rounded-full bg-table-total-bg/40">
+          <BillingIcon />
         </div>
 
         <h4 className="font-barlow text-xl sm:text-2xl font-medium text-primary-heading mb-1.5">

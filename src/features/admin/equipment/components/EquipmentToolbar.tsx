@@ -24,23 +24,17 @@ export function EquipmentToolbar({
       { value: "", label: "All Equipment Type" },
       ...EQUIPMENT_TYPES.map((t) => ({ value: t, label: t })),
     ],
-    []
+    [],
   );
 
   const conditionOptions = useMemo(
-    () => [
-      { value: "", label: "All Condition" },
-      ...EQUIPMENT_CONDITIONS,
-    ],
-    []
+    () => [{ value: "", label: "All Condition" }, ...EQUIPMENT_CONDITIONS],
+    [],
   );
 
   const statusOptions = useMemo(
-    () => [
-      { value: "", label: "All Status" },
-      ...EQUIPMENT_STATUSES,
-    ],
-    []
+    () => [{ value: "", label: "All Status" }, ...EQUIPMENT_STATUSES],
+    [],
   );
 
   return (

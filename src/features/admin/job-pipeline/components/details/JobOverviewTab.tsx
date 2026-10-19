@@ -20,6 +20,13 @@ export const JobOverviewTab: React.FC<JobOverviewTabProps> = ({
   onViewContract,
   onChangeCrewLeader,
 }) => {
+  const [showAllCrew, setShowAllCrew] = React.useState(false);
+
+  const initialCrewCount = 2;
+  const hasMoreCrew = data.crew.length > initialCrewCount;
+  const visibleCrew = showAllCrew ? data.crew : data.crew.slice(0, initialCrewCount);
+  const extraCrewCount = data.crew.length - initialCrewCount;
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 md:gap-6 animate-in fade-in duration-150">
       {/* Left 8 Columns */}
@@ -229,10 +236,10 @@ export const JobOverviewTab: React.FC<JobOverviewTabProps> = ({
           </div>
 
           <div className="space-y-2.5">
-            {data.crew.map((member) => (
+            {visibleCrew.map((member) => (
               <div
                 key={member.id}
-                className={`rounded-lg p-2.5 flex items-center gap-3 ${
+                className={`rounded-lg p-2.5 flex items-center gap-3 transition-colors ${
                   member.isLeader
                     ? "border border-blue-200 bg-blue-50/60"
                     : "border border-border bg-page-bg/60"
@@ -254,11 +261,19 @@ export const JobOverviewTab: React.FC<JobOverviewTabProps> = ({
               </div>
             ))}
 
-            {data.additionalCrewCount > 0 && (
+            {hasMoreCrew ? (
+              <button
+                type="button"
+                onClick={() => setShowAllCrew((prev) => !prev)}
+                className="text-xs text-secondary-subheading hover:text-primary transition-colors text-center block font-medium py-1 w-full cursor-pointer"
+              >
+                {showAllCrew ? "Show less" : `+ ${extraCrewCount} more`}
+              </button>
+            ) : data.additionalCrewCount > 0 ? (
               <span className="text-xs text-secondary-subheading text-center block font-medium py-0.5">
                 + {data.additionalCrewCount} more
               </span>
-            )}
+            ) : null}
           </div>
 
           <button

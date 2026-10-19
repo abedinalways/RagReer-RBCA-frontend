@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { Check } from "lucide-react";
 import { JobTaskCompletionItem } from "../../types/jobDetailsTypes";
 
 interface JobTaskEvidenceTabProps {
@@ -22,6 +23,38 @@ export const JobTaskEvidenceTab: React.FC<JobTaskEvidenceTabProps> = ({ tasks })
     }));
   };
 
+  const activeTasksCount = tasks.filter((t) => t.status !== "-").length;
+  const completedCount = tasks.filter((t) => t.status === "Completed").length;
+  const displayTotal = activeTasksCount > 0 ? tasks.length : 0;
+
+  const renderTaskStatus = (status: string) => {
+    if (status === "Completed") {
+      return (
+        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm text-xs font-medium bg-badge-active-bg text-badge-active-text border border-badge-active-border whitespace-nowrap">
+          <span className="w-1.5 h-1.5 rounded-full bg-badge-active-dot" />
+          Completed
+        </span>
+      );
+    }
+    if (status === "In Progress") {
+      return (
+        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm text-xs font-medium bg-blue-50 text-info border border-blue-100 whitespace-nowrap">
+          <span className="w-1.5 h-1.5 rounded-full bg-info" />
+          In Progress
+        </span>
+      );
+    }
+    if (status === "Break") {
+      return (
+        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm text-xs font-medium bg-terms-bg text-badge-pending-text border border-terms-border whitespace-nowrap">
+          <span className="w-1.5 h-1.5 rounded-full bg-badge-pending-dot" />
+          Break
+        </span>
+      );
+    }
+    return <span className="text-secondary-subheading font-normal">{status}</span>;
+  };
+
   return (
     <div className="w-full space-y-4 sm:space-y-5 animate-in fade-in duration-150">
       {/* 1. Task Completion Tracking */}
@@ -40,7 +73,7 @@ export const JobTaskEvidenceTab: React.FC<JobTaskEvidenceTabProps> = ({ tasks })
             </h3>
             {openSections.taskTracking && (
               <span className="text-xs text-secondary-subheading mt-1 font-normal">
-                Task 0/0 completed
+                Task {completedCount}/{displayTotal} completed
               </span>
             )}
           </div>
@@ -52,7 +85,7 @@ export const JobTaskEvidenceTab: React.FC<JobTaskEvidenceTabProps> = ({ tasks })
               <thead>
                 <tr className="bg-page-bg/70 border-b border-border text-secondary-subheading font-medium whitespace-nowrap">
                   <th className="py-2.5 px-4 font-medium">Task</th>
-                  <th className="py-2.5 px-4 text-center font-medium">Assigned Crew</th>
+                  <th className="py-2.5 px-4 font-medium">Assigned Crew</th>
                   <th className="py-2.5 px-4 text-center font-medium">Status</th>
                   <th className="py-2.5 px-4 text-center font-medium">Evidence</th>
                 </tr>
@@ -63,14 +96,38 @@ export const JobTaskEvidenceTab: React.FC<JobTaskEvidenceTabProps> = ({ tasks })
                     <td className="py-3 px-4 font-normal text-txt-primary whitespace-nowrap">
                       {t.task}
                     </td>
-                    <td className="py-3 px-4 text-center text-secondary-subheading whitespace-nowrap">
-                      {t.assignedCrew}
+                    <td className="py-3 px-4 whitespace-nowrap">
+                      {typeof t.assignedCrew === "object" ? (
+                        <div className="flex items-center gap-2.5 min-w-[150px]">
+                          <img
+                            src={t.assignedCrew.avatar}
+                            alt={t.assignedCrew.name}
+                            className="h-7 w-7 rounded-full object-cover border border-border shrink-0"
+                          />
+                          <div className="flex flex-col min-w-0">
+                            <span className="font-medium text-txt-primary text-xs truncate">
+                              {t.assignedCrew.name}
+                            </span>
+                            <span className="text-[11px] text-secondary-subheading font-normal">
+                              {t.assignedCrew.role}
+                            </span>
+                          </div>
+                        </div>
+                      ) : (
+                        <span className="text-secondary-subheading font-normal">
+                          {t.assignedCrew}
+                        </span>
+                      )}
                     </td>
-                    <td className="py-3 px-4 text-center text-secondary-subheading whitespace-nowrap">
-                      {t.status}
+                    <td className="py-3 px-4 text-center whitespace-nowrap">
+                      {renderTaskStatus(t.status)}
                     </td>
-                    <td className="py-3 px-4 text-center text-secondary-subheading whitespace-nowrap">
-                      {t.evidence}
+                    <td className="py-3 px-4 text-center whitespace-nowrap">
+                      {t.status === "Completed" || t.evidence === "completed" ? (
+                        <Check className="w-4 h-4 text-info mx-auto" strokeWidth={2} />
+                      ) : (
+                        <span className="text-secondary-subheading font-normal">-</span>
+                      )}
                     </td>
                   </tr>
                 ))}
