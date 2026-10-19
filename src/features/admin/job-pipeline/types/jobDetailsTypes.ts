@@ -57,12 +57,32 @@ export interface JobTimeTrackingRow {
   billableHours: string;
 }
 
+export interface JobTaskAssignedCrew {
+  name: string;
+  role: string;
+  avatar: string;
+}
+
 export interface JobTaskCompletionItem {
   id: string;
   task: string;
-  assignedCrew: string;
+  assignedCrew: JobTaskAssignedCrew | string;
   status: string;
   evidence: string;
+}
+
+export interface JobActivityItem {
+  id: string;
+  title: string;
+  description: string;
+  timestamp: string;
+  dotColor: "amber" | "green" | "blue" | "orange";
+}
+
+export interface JobAlertBanner {
+  title: string;
+  description: string;
+  actionText: string;
 }
 
 export interface JobDetailData {
@@ -81,4 +101,6 @@ export interface JobDetailData {
   additionalCrewCount: number;
   timeTracking: JobTimeTrackingRow[];
   tasks: JobTaskCompletionItem[];
+  activities?: JobActivityItem[];
+  alertBanner?: JobAlertBanner;
 }
