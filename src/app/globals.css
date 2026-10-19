@@ -1,37 +1,37 @@
 @import "tailwindcss";
 
 @theme {
-    --font-barlow: var(--font-barlow-condensed);
+  --font-barlow: var(--font-barlow-condensed);
 
-    /* Figma Exact Variables */
-    --color-primary-heading: #1D1F20;
-    --color-secondary-subheading: #5C5F60;
-    --color-txt-primary: #2F3131;
+  /* Figma Exact Variables */
+  --color-primary-heading: #1d1f20;
+  --color-secondary-subheading: #5c5f60;
+  --color-txt-primary: #2f3131;
 
-    /* Brand Colors */
-    --color-primary: #5980A6;
-    --color-primary-hover: #4A6E91;
-    --color-primary-light: #EAF0F6;
-    --color-primary-text: #FFFFFF;
-    --color-primary-dark: #1D1F20;
+  /* Brand Colors */
+  --color-primary: #5980a6;
+  --color-primary-hover: #4a6e91;
+  --color-primary-light: #eaf0f6;
+  --color-primary-text: #ffffff;
+  --color-primary-dark: #1d1f20;
 
-    /* Backgrounds & Surface */
-    --color-layout-bg: #FFFFFF;
-    --color-page-bg: #F5F6F8;
-    --color-app-bg: #FAFAFA;
-    --color-input-bg: #FFFFFF;
-    --color-card-bg: #FFFFFF;
-    --color-pure-white-bg: #FFFFFF;
-    --color-blue-50: #E7F1FB;
-    --color-blue-100: #CADFF4;
-    --color-nav-bg: #EAF2F9;
-    --color-surface: #E9E9EA;
+  /* Backgrounds & Surface */
+  --color-layout-bg: #ffffff;
+  --color-page-bg: #f5f6f8;
+  --color-app-bg: #fafafa;
+  --color-input-bg: #ffffff;
+  --color-card-bg: #ffffff;
+  --color-pure-white-bg: #ffffff;
+  --color-blue-50: #e7f1fb;
+  --color-blue-100: #cadff4;
+  --color-nav-bg: #eaf2f9;
+  --color-surface: #e9e9ea;
 
-    /* Borders */
-    --color-border: #EAECF0;
-    --color-border-input:#d9dadc;
-    --color-border-card: #E7F1FB;
-    --color-border-subtle: #F2F4F7;
+  /* Borders */
+  --color-border: #eaecf0;
+  --color-border-input: #d9dadc;
+  --color-border-card: #e7f1fb;
+  --color-border-subtle: #f2f4f7;
 
     /* Status & Badges */
     --color-info: #0777F6;
@@ -76,127 +76,127 @@
     --color-callout-amber-text: #B45309;
     --color-input-disabled-bg: #F8FAFC;
 
-    /* Appointment Figma Exact Colors */
-    --color-apt-pref-bg: #EAEAEA;
-    --color-apt-pref-bar: #5C5F60;
-    --color-apt-pending-bg: #FEF7DA;
-    --color-apt-pending-bar: #EAAA08;
-    --color-apt-confirmed-bg: #DBF0E5;
-    --color-apt-confirmed-bar: #12B76A;
-    --color-apt-crew-bg: #D1FADF;
-    --color-apt-crew-bar: #0E9384;
-    --color-apt-upcoming-bg: #FEF0C7;
-    --color-apt-upcoming-bar: #F59E0B;
-    --color-apt-ongoing-bg: #D4E7F7;
-    --color-apt-ongoing-bar: #0777F6;
-    --color-apt-delayed-bg: #FEE4D1;
-    --color-apt-delayed-bar: #EC7032;
-    --color-apt-completed-bg: #D1FADF;
-    --color-apt-completed-bar: #16A34A;
-    --color-apt-cancelled-bg: #FEE4E2;
-    --color-apt-cancelled-bar: #D92D20;
-    --color-apt-resched-bg: #FBD5DA;
-    --color-apt-resched-bar: #F04438;
+  /* Appointment Figma Exact Colors */
+  --color-apt-pref-bg: #eaeaea;
+  --color-apt-pref-bar: #5c5f60;
+  --color-apt-pending-bg: #fef7da;
+  --color-apt-pending-bar: #eaaa08;
+  --color-apt-confirmed-bg: #dbf0e5;
+  --color-apt-confirmed-bar: #12b76a;
+  --color-apt-crew-bg: #d1fadf;
+  --color-apt-crew-bar: #0e9384;
+  --color-apt-upcoming-bg: #fef0c7;
+  --color-apt-upcoming-bar: #f59e0b;
+  --color-apt-ongoing-bg: #d4e7f7;
+  --color-apt-ongoing-bar: #0777f6;
+  --color-apt-delayed-bg: #fee4d1;
+  --color-apt-delayed-bar: #ec7032;
+  --color-apt-completed-bg: #d1fadf;
+  --color-apt-completed-bar: #16a34a;
+  --color-apt-cancelled-bg: #fee4e2;
+  --color-apt-cancelled-bar: #d92d20;
+  --color-apt-resched-bg: #fbd5da;
+  --color-apt-resched-bar: #f04438;
 
-    /* Job Pipeline KPI Card Left Border Colors */
-    --color-pipeline-today: #EC7032;
-    --color-pipeline-progress: #0777F6;
-    --color-pipeline-review: #EAAA08;
-    --color-pipeline-issue: #F04438;
-    --color-pipeline-hours: #12B76A;
+  /* Job Pipeline KPI Card Left Border Colors */
+  --color-pipeline-today: #ec7032;
+  --color-pipeline-progress: #0777f6;
+  --color-pipeline-review: #eaaa08;
+  --color-pipeline-issue: #f04438;
+  --color-pipeline-hours: #12b76a;
 }
 
 @layer base {
-    :root {
-        /* CSS Custom Properties matching exact Figma naming */
-        --Primary_Heading: #1D1F20;
-        --Secondary_subheading: #5C5F60;
-        --txt-primary: #2F3131;
-        --Blue-50: #E7F1FB;
-        --Blue-100: #CADFF4;
-        --Pure-white-Bg: #FFFFFF;
-        --Info: #0777F6;
-        --Surface: #E9E9EA;
+  :root {
+    /* CSS Custom Properties matching exact Figma naming */
+    --Primary_Heading: #1d1f20;
+    --Secondary_subheading: #5c5f60;
+    --txt-primary: #2f3131;
+    --Blue-50: #e7f1fb;
+    --Blue-100: #cadff4;
+    --Pure-white-Bg: #ffffff;
+    --Info: #0777f6;
+    --Surface: #e9e9ea;
 
-        --primary-heading: #1D1F20;
-        --secondary-heading: #5C5F60;
-        --secondary-subheading: #5C5F60;
-        --color-primary: #5980A6;
-        --color-info: #0777F6;
-        --color-decline: #D92D20;
-        --color-decline-border: #FDA29B;
-        --color-decline-secondary: #FEF3F2;
-        --color-note-green-bg: rgba(4, 145, 62, 0.09);
-        --color-note-green-border: #04913E;
-        --color-note-green-text: #027A48;
-        --color-terms-bg: #FEFBF0;
-        --color-terms-border: #FEDF89;
-        --color-flagged-amber: #f5b517;
-        --color-status-hold: #f5b517;
-        --color-badge-pending-bg: #FEF6EE;
-        --color-badge-pending-text: #B54708;
-        --color-badge-pending-border: #FECDCA;
-        --color-badge-pending-dot: #F79009;
-        --color-badge-active-bg: #ECFDF3;
-        --color-badge-active-text: #027A48;
-        --color-badge-active-border: #ABEFC6;
-        --color-badge-active-dot: #12B76A;
-        --color-banner-blue: #A3BFDB;
-        --color-table-total-bg: #EAF2F9;
-        --color-password-weak: rgba(235, 61, 77, 0.45);
-        --color-password-medium: #F59E0B;
-        --color-password-good: #0777F6;
-        --color-password-strong: #16A34A;
-        --color-service-purple: #8B5CF6;
-        --color-attention-bg: #F4F8FC;
-        --color-attention-border: #E5EEF7;
-        --color-highlight-blue-bg: #EDF4FC;
-        --color-highlight-blue-border: #D2E4F7;
-        --color-callout-amber-bg: #FFFBEB;
-        --color-callout-amber-border: #FEF3C7;
-        --color-callout-amber-text: #B45309;
-        --color-input-disabled-bg: #F8FAFC;
-        --color-blue-50: #E7F1FB;
-        --color-blue-100: #CADFF4;
-        --color-nav-bg: #EAF2F9;
-        --color-page-bg: #F5F6F8;
-        --color-app-bg: #FAFAFA;
-        --color-card-bg: #FFFFFF;
-        --color-surface: #E9E9EA;
+    --primary-heading: #1d1f20;
+    --secondary-heading: #5c5f60;
+    --secondary-subheading: #5c5f60;
+    --color-primary: #5980a6;
+    --color-info: #0777f6;
+    --color-decline: #d92d20;
+    --color-decline-border: #fda29b;
+    --color-decline-secondary: #fef3f2;
+    --color-note-green-bg: rgba(4, 145, 62, 0.09);
+    --color-note-green-border: #04913e;
+    --color-note-green-text: #027a48;
+    --color-terms-bg: #fefbf0;
+    --color-terms-border: #fedf89;
+    --color-flagged-amber: #f5b517;
+    --color-status-hold: #f5b517;
+    --color-badge-pending-bg: #fef6ee;
+    --color-badge-pending-text: #b54708;
+    --color-badge-pending-border: #fecdca;
+    --color-badge-pending-dot: #f79009;
+    --color-badge-active-bg: #ecfdf3;
+    --color-badge-active-text: #027a48;
+    --color-badge-active-border: #abefc6;
+    --color-badge-active-dot: #12b76a;
+    --color-banner-blue: #a3bfdb;
+    --color-table-total-bg: #eaf2f9;
+    --color-password-weak: rgba(235, 61, 77, 0.45);
+    --color-password-medium: #f59e0b;
+    --color-password-good: #0777f6;
+    --color-password-strong: #16a34a;
+    --color-service-purple: #8b5cf6;
+    --color-attention-bg: #f4f8fc;
+    --color-attention-border: #e5eef7;
+    --color-blue-50: #e7f1fb;
+    --color-blue-100: #cadff4;
+    --color-nav-bg: #eaf2f9;
+    --color-page-bg: #f5f6f8;
+    --color-app-bg: #fafafa;
+    --color-card-bg: #ffffff;
+    --color-surface: #e9e9ea;
 
-        --color-apt-pref-bg: #EAEAEA;
-        --color-apt-pref-bar: #5C5F60;
-        --color-apt-pending-bg: #FEF7DA;
-        --color-apt-pending-bar: #EAAA08;
-        --color-apt-confirmed-bg: #DBF0E5;
-        --color-apt-confirmed-bar: #12B76A;
-        --color-apt-crew-bg: #D1FADF;
-        --color-apt-crew-bar: #0E9384;
-        --color-apt-upcoming-bg: #FEF0C7;
-        --color-apt-upcoming-bar: #F59E0B;
-        --color-apt-ongoing-bg: #D4E7F7;
-        --color-apt-ongoing-bar: #0777F6;
-        --color-apt-delayed-bg: #FEE4D1;
-        --color-apt-delayed-bar: #EC7032;
-        --color-apt-completed-bg: #D1FADF;
-        --color-apt-completed-bar: #16A34A;
-        --color-apt-cancelled-bg: #FEE4E2;
-        --color-apt-cancelled-bar: #D92D20;
-        --color-apt-resched-bg: #FBD5DA;
-        --color-apt-resched-bar: #F04438;
+    --color-apt-pref-bg: #eaeaea;
+    --color-apt-pref-bar: #5c5f60;
+    --color-apt-pending-bg: #fef7da;
+    --color-apt-pending-bar: #eaaa08;
+    --color-apt-confirmed-bg: #dbf0e5;
+    --color-apt-confirmed-bar: #12b76a;
+    --color-apt-crew-bg: #d1fadf;
+    --color-apt-crew-bar: #0e9384;
+    --color-apt-upcoming-bg: #fef0c7;
+    --color-apt-upcoming-bar: #f59e0b;
+    --color-apt-ongoing-bg: #d4e7f7;
+    --color-apt-ongoing-bar: #0777f6;
+    --color-apt-delayed-bg: #fee4d1;
+    --color-apt-delayed-bar: #ec7032;
+    --color-apt-completed-bg: #d1fadf;
+    --color-apt-completed-bar: #16a34a;
+    --color-apt-cancelled-bg: #fee4e2;
+    --color-apt-cancelled-bar: #d92d20;
+    --color-apt-resched-bg: #fbd5da;
+    --color-apt-resched-bar: #f04438;
 
-        /* Job Pipeline KPI Card Colors */
-        --color-pipeline-today: #EC7032;
-        --color-pipeline-progress: #0777F6;
-        --color-pipeline-review: #EAAA08;
-        --color-pipeline-issue: #F04438;
-        --color-pipeline-hours: #12B76A;
-    }
+    /* Job Pipeline KPI Card Colors */
+    --color-pipeline-today: #ec7032;
+    --color-pipeline-progress: #0777f6;
+    --color-pipeline-review: #eaaa08;
+    --color-pipeline-issue: #f04438;
+    --color-pipeline-hours: #12b76a;
+    --color-highlight-blue-bg: #EDF4FC;
+    --color-highlight-blue-border: #D2E4F7;
+    --color-callout-amber-bg: #FFFBEB;
+    --color-callout-amber-border: #FEF3C7;
+    --color-callout-amber-text: #B45309;
+    --color-input-disabled-bg: #F8FAFC;
+  }
 
-    body {
-        @apply min-h-screen antialiased;
-        background-color: var(--color-page-bg);
-        color: var(--color-txt-primary);
-        font-family: var(--font-barlow-condensed), system-ui, sans-serif;
-    }
+  body {
+    @apply min-h-screen antialiased;
+    background-color: var(--color-page-bg);
+    color: var(--color-txt-primary);
+    font-family: var(--font-barlow-condensed), system-ui, sans-serif;
+  }
 }
