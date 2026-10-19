@@ -8,6 +8,42 @@ interface JobTimeTrackingTabProps {
 }
 
 export const JobTimeTrackingTab: React.FC<JobTimeTrackingTabProps> = ({ data }) => {
+  const renderStatus = (status: string) => {
+    if (status === "In Progress") {
+      return (
+        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm text-xs font-medium bg-blue-50 text-info border border-blue-100 whitespace-nowrap">
+          <span className="w-1.5 h-1.5 rounded-full bg-info" />
+          In Progress
+        </span>
+      );
+    }
+    if (status === "Break") {
+      return (
+        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm text-xs font-medium bg-terms-bg text-badge-pending-text border border-terms-border whitespace-nowrap">
+          <span className="w-1.5 h-1.5 rounded-full bg-badge-pending-dot" />
+          Break
+        </span>
+      );
+    }
+    if (status === "Hold" || status === "On Hold") {
+      return (
+        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm text-xs font-medium bg-terms-bg text-flagged-amber border border-flagged-amber/50 whitespace-nowrap">
+          <span className="w-1.5 h-1.5 rounded-full bg-flagged-amber" />
+          Hold
+        </span>
+      );
+    }
+    if (status === "Completed") {
+      return (
+        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm text-xs font-medium bg-badge-active-bg text-badge-active-text border border-badge-active-border whitespace-nowrap">
+          <span className="w-1.5 h-1.5 rounded-full bg-badge-active-dot" />
+          Completed
+        </span>
+      );
+    }
+    return <span className="text-secondary-subheading font-normal">{status}</span>;
+  };
+
   return (
     <div className="w-full rounded-xl border border-border bg-card-bg shadow-2xs overflow-hidden animate-in fade-in duration-150">
       <div className="w-full overflow-x-auto">
@@ -39,34 +75,40 @@ export const JobTimeTrackingTab: React.FC<JobTimeTrackingTabProps> = ({ data }) 
                       <span className="font-medium text-txt-primary truncate">
                         {row.name}
                       </span>
-                      <span className="text-[11px] md:text-xs text-secondary-subheading">
+                      <span className="text-[11px] md:text-xs text-secondary-subheading font-normal">
                         {row.role}
                       </span>
                     </div>
                   </div>
                 </td>
-                <td className="py-3 px-4 text-center text-secondary-subheading whitespace-nowrap">
+                <td className="py-3 px-4 text-center text-secondary-subheading whitespace-nowrap font-normal">
                   {row.travelStart}
                 </td>
-                <td className="py-3 px-4 text-center text-secondary-subheading whitespace-nowrap">
+                <td className="py-3 px-4 text-center text-secondary-subheading whitespace-nowrap font-normal">
                   {row.arrived}
                 </td>
-                <td className="py-3 px-4 text-center text-secondary-subheading whitespace-nowrap">
+                <td className="py-3 px-4 text-center text-secondary-subheading whitespace-nowrap font-normal">
                   {row.workStart}
                 </td>
-                <td className="py-3 px-4 text-center text-secondary-subheading whitespace-nowrap">
+                <td className="py-3 px-4 text-center text-secondary-subheading whitespace-nowrap font-normal">
                   {row.breakTime}
                 </td>
-                <td className="py-3 px-4 text-center text-secondary-subheading whitespace-nowrap">
+                <td className="py-3 px-4 text-center text-secondary-subheading whitespace-nowrap font-normal">
                   {row.workStop}
                 </td>
-                <td className="py-3 px-4 text-center text-secondary-subheading whitespace-nowrap">
-                  {row.currentStatus}
+                <td className="py-3 px-4 text-center whitespace-nowrap">
+                  {renderStatus(row.currentStatus)}
                 </td>
-                <td className="py-3 px-4 text-center text-secondary-subheading whitespace-nowrap">
+                <td className="py-3 px-4 text-center text-secondary-subheading whitespace-nowrap font-normal">
                   {row.totalTime}
                 </td>
-                <td className="py-3 px-4 text-right font-medium text-txt-primary whitespace-nowrap">
+                <td
+                  className={`py-3 px-4 text-right whitespace-nowrap ${
+                    row.billableHours === "-"
+                      ? "text-secondary-subheading font-normal"
+                      : "font-medium text-txt-primary"
+                  }`}
+                >
                   {row.billableHours}
                 </td>
               </tr>
