@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-<<<<<<< HEAD
 import { Check, X } from "lucide-react";
 import {
   JobTaskCompletionItem,
@@ -9,10 +8,6 @@ import {
   JobChecklistItem,
   JobWorkNote,
 } from "../../types/jobDetailsTypes";
-=======
-import { Check } from "lucide-react";
-import { JobTaskCompletionItem } from "../../types/jobDetailsTypes";
->>>>>>> eb7aa08845e74b774b515e01a3ec6455f402d7bb
 
 interface JobTaskEvidenceTabProps {
   tasks: JobTaskCompletionItem[];
@@ -47,15 +42,11 @@ export const JobTaskEvidenceTab: React.FC<JobTaskEvidenceTabProps> = ({
   const completedCount = tasks.filter((t) => t.status === "Completed").length;
   const displayTotal = activeTasksCount > 0 ? tasks.length : 0;
 
-<<<<<<< HEAD
   const subtitle =
     taskCompletionSubtitle ||
     (openSections.taskTracking && displayTotal > 0
       ? `Task ${completedCount}/${displayTotal} completed`
       : undefined);
-
-=======
->>>>>>> eb7aa08845e74b774b515e01a3ec6455f402d7bb
   const renderTaskStatus = (status: string) => {
     if (status === "Completed") {
       return (
@@ -84,14 +75,10 @@ export const JobTaskEvidenceTab: React.FC<JobTaskEvidenceTabProps> = ({
     return <span className="text-secondary-subheading font-normal">{status}</span>;
   };
 
-<<<<<<< HEAD
   // Divide checklist into 2 columns
   const midPoint = checklist ? Math.ceil(checklist.length / 2) : 0;
   const leftChecklist = checklist ? checklist.slice(0, midPoint) : [];
   const rightChecklist = checklist ? checklist.slice(midPoint) : [];
-
-=======
->>>>>>> eb7aa08845e74b774b515e01a3ec6455f402d7bb
   return (
     <div className="w-full space-y-4 sm:space-y-5 animate-in fade-in duration-150">
       {/* 1. Task Completion Tracking */}
@@ -110,11 +97,7 @@ export const JobTaskEvidenceTab: React.FC<JobTaskEvidenceTabProps> = ({
             </h3>
             {openSections.taskTracking && subtitle && (
               <span className="text-xs text-secondary-subheading mt-1 font-normal">
-<<<<<<< HEAD
                 {subtitle}
-=======
-                Task {completedCount}/{displayTotal} completed
->>>>>>> eb7aa08845e74b774b515e01a3ec6455f402d7bb
               </span>
             )}
           </div>
@@ -165,11 +148,7 @@ export const JobTaskEvidenceTab: React.FC<JobTaskEvidenceTabProps> = ({
                     </td>
                     <td className="py-3 px-4 text-center whitespace-nowrap">
                       {t.status === "Completed" || t.evidence === "completed" ? (
-<<<<<<< HEAD
                         <Check className="w-4 h-4 text-info mx-auto stroke-[2.5]" />
-=======
-                        <Check className="w-4 h-4 text-info mx-auto" strokeWidth={2} />
->>>>>>> eb7aa08845e74b774b515e01a3ec6455f402d7bb
                       ) : (
                         <span className="text-secondary-subheading font-normal">-</span>
                       )}
