@@ -24,7 +24,7 @@ export function ServicesToolbar({
       { value: "", label: "All Categories" },
       ...SERVICE_CATEGORIES.map((cat) => ({ value: cat, label: cat })),
     ],
-    []
+    [],
   );
 
   const applicableOptions = useMemo(
@@ -32,7 +32,7 @@ export function ServicesToolbar({
       { value: "", label: "Applicable To" },
       ...SERVICE_APPLICABLE_OPTIONS.map((app) => ({ value: app, label: app })),
     ],
-    []
+    [],
   );
 
   const pricingOptions = useMemo(
@@ -40,7 +40,7 @@ export function ServicesToolbar({
       { value: "", label: "Pricing Type" },
       ...SERVICE_PRICING_TYPES.map((pt) => ({ value: pt, label: pt })),
     ],
-    []
+    [],
   );
 
   const statusOptions = useMemo(
@@ -49,7 +49,7 @@ export function ServicesToolbar({
       { value: "active", label: "Active" },
       { value: "inactive", label: "Inactive" },
     ],
-    []
+    [],
   );
 
   return (

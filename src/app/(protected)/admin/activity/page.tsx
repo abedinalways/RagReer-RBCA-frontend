@@ -3,7 +3,8 @@ import { ActivityLogView } from "@/features/admin/activity/components/ActivityLo
 
 export const metadata: Metadata = {
   title: "Activity Log | Admin",
-  description: "View real-time system activity, staff audit trails, and security event histories.",
+  description:
+    "View real-time system activity, staff audit trails, and security event histories.",
 };
 
 export default function AdminActivityPage() {
