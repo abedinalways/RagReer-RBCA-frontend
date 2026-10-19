@@ -15,7 +15,18 @@ export interface ModalProps {
   footerClassName?: string;
   hideHeaderBorder?: boolean;
   hideFooterBorder?: boolean;
-  maxWidth?: "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl" | "6xl" | "7xl" | "full";
+  maxWidth?:
+    | "sm"
+    | "md"
+    | "lg"
+    | "xl"
+    | "2xl"
+    | "3xl"
+    | "4xl"
+    | "5xl"
+    | "6xl"
+    | "7xl"
+    | "full";
   className?: string;
   contentClassName?: string;
   overlayClassName?: string;
@@ -81,7 +92,7 @@ export const Modal: React.FC<ModalProps> = ({
     <div
       className={cn(
         "fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md p-3 sm:p-4 overflow-y-auto animate-in fade-in duration-200",
-        overlayClassName
+        overlayClassName,
       )}
       onClick={(e) => {
         if (e.target === e.currentTarget) {
@@ -97,7 +108,7 @@ export const Modal: React.FC<ModalProps> = ({
           "bg-card-bg w-full rounded-xl shadow-2xl border border-border flex flex-col my-auto max-h-[92vh] animate-in zoom-in-95 duration-150",
           !className?.includes("overflow-") && "overflow-hidden",
           MAX_WIDTH_CLASSES[maxWidth],
-          className
+          className,
         )}
       >
         {title && (
@@ -105,13 +116,13 @@ export const Modal: React.FC<ModalProps> = ({
             className={cn(
               "flex items-center justify-between px-4 sm:px-6 py-3.5 sm:py-4.5 shrink-0",
               !hideHeaderBorder && "border-b border-border",
-              headerClassName
+              headerClassName,
             )}
           >
             <div
               className={cn(
                 "text-lg sm:text-xl font-medium text-primary-heading",
-                titleClassName
+                titleClassName,
               )}
             >
               {title}
@@ -133,7 +144,7 @@ export const Modal: React.FC<ModalProps> = ({
           className={cn(
             "p-4 sm:p-6 flex-1",
             !contentClassName?.includes("overflow-") && "overflow-y-auto",
-            contentClassName
+            contentClassName,
           )}
         >
           {children}
@@ -144,7 +155,7 @@ export const Modal: React.FC<ModalProps> = ({
             className={cn(
               "flex items-center justify-end gap-3 px-4 sm:px-6 py-3.5 sm:py-4 bg-card-bg shrink-0",
               !hideFooterBorder && "border-t border-border",
-              footerClassName
+              footerClassName,
             )}
           >
             {footer}
