@@ -14,7 +14,7 @@ const BillingIcon: React.FC<React.SVGProps<SVGSVGElement>> = ({
     {...props}
   >
     <path
-      stroke="#5980A6"
+      stroke="currentColor"
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth="1.5"

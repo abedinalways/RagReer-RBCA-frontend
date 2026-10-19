@@ -1,14 +1,29 @@
 "use client";
 
 import React, { useState } from "react";
-import { Check } from "lucide-react";
-import { JobTaskCompletionItem } from "../../types/jobDetailsTypes";
+import { Check, X } from "lucide-react";
+import {
+  JobTaskCompletionItem,
+  JobEvidencePhotos,
+  JobChecklistItem,
+  JobWorkNote,
+} from "../../types/jobDetailsTypes";
 
 interface JobTaskEvidenceTabProps {
   tasks: JobTaskCompletionItem[];
+  evidencePhotos?: JobEvidencePhotos;
+  checklist?: JobChecklistItem[];
+  workNote?: JobWorkNote;
+  taskCompletionSubtitle?: string;
 }
 
-export const JobTaskEvidenceTab: React.FC<JobTaskEvidenceTabProps> = ({ tasks }) => {
+export const JobTaskEvidenceTab: React.FC<JobTaskEvidenceTabProps> = ({
+  tasks,
+  evidencePhotos,
+  checklist,
+  workNote,
+  taskCompletionSubtitle,
+}) => {
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     taskTracking: true,
     evidence: true,
@@ -27,6 +42,11 @@ export const JobTaskEvidenceTab: React.FC<JobTaskEvidenceTabProps> = ({ tasks })
   const completedCount = tasks.filter((t) => t.status === "Completed").length;
   const displayTotal = activeTasksCount > 0 ? tasks.length : 0;
 
+  const subtitle =
+    taskCompletionSubtitle ||
+    (openSections.taskTracking && displayTotal > 0
+      ? `Task ${completedCount}/${displayTotal} completed`
+      : undefined);
   const renderTaskStatus = (status: string) => {
     if (status === "Completed") {
       return (
@@ -55,6 +75,10 @@ export const JobTaskEvidenceTab: React.FC<JobTaskEvidenceTabProps> = ({ tasks })
     return <span className="text-secondary-subheading font-normal">{status}</span>;
   };
 
+  // Divide checklist into 2 columns
+  const midPoint = checklist ? Math.ceil(checklist.length / 2) : 0;
+  const leftChecklist = checklist ? checklist.slice(0, midPoint) : [];
+  const rightChecklist = checklist ? checklist.slice(midPoint) : [];
   return (
     <div className="w-full space-y-4 sm:space-y-5 animate-in fade-in duration-150">
       {/* 1. Task Completion Tracking */}
@@ -71,9 +95,9 @@ export const JobTaskEvidenceTab: React.FC<JobTaskEvidenceTabProps> = ({ tasks })
             <h3 className="font-barlow text-base sm:text-lg font-medium text-primary-heading leading-tight">
               Task Completion Tracking
             </h3>
-            {openSections.taskTracking && (
+            {openSections.taskTracking && subtitle && (
               <span className="text-xs text-secondary-subheading mt-1 font-normal">
-                Task {completedCount}/{displayTotal} completed
+                {subtitle}
               </span>
             )}
           </div>
@@ -124,7 +148,7 @@ export const JobTaskEvidenceTab: React.FC<JobTaskEvidenceTabProps> = ({ tasks })
                     </td>
                     <td className="py-3 px-4 text-center whitespace-nowrap">
                       {t.status === "Completed" || t.evidence === "completed" ? (
-                        <Check className="w-4 h-4 text-info mx-auto" strokeWidth={2} />
+                        <Check className="w-4 h-4 text-info mx-auto stroke-[2.5]" />
                       ) : (
                         <span className="text-secondary-subheading font-normal">-</span>
                       )}
@@ -153,15 +177,63 @@ export const JobTaskEvidenceTab: React.FC<JobTaskEvidenceTabProps> = ({ tasks })
         </button>
 
         {openSections.evidence && (
-          <div className="border-t border-border p-6 sm:p-10">
-            <div className="max-w-lg mx-auto rounded-xl border border-border/80 bg-page-bg/30 p-6 sm:p-8 text-center flex flex-col items-center justify-center">
-              <h4 className="font-barlow text-base sm:text-lg font-medium text-primary-heading mb-1.5">
-                No Evidence Submitted
-              </h4>
-              <p className="text-xs sm:text-sm text-secondary-subheading leading-relaxed max-w-sm font-normal">
-                Before and after photos will appear here after the crew completes the assigned work.
-              </p>
-            </div>
+          <div className="border-t border-border p-4 sm:p-5">
+            {evidencePhotos && (evidencePhotos.before.length > 0 || evidencePhotos.after.length > 0) ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+                {/* Before Photos */}
+                <div className="rounded-lg border border-border bg-card-bg p-3.5 sm:p-4">
+                  <h4 className="font-barlow text-sm sm:text-base font-medium text-txt-primary mb-3">
+                    Before Photos
+                  </h4>
+                  <div className="flex items-center gap-2.5 sm:gap-3 overflow-x-auto pb-1">
+                    {evidencePhotos.before.map((img, idx) => (
+                      <div
+                        key={idx}
+                        className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden border border-border/40 shrink-0 shadow-2xs"
+                      >
+                        <img
+                          src={img}
+                          alt={`Before ${idx + 1}`}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* After Photos */}
+                <div className="rounded-lg border border-border bg-card-bg p-3.5 sm:p-4">
+                  <h4 className="font-barlow text-sm sm:text-base font-medium text-txt-primary mb-3">
+                    After Photos
+                  </h4>
+                  <div className="flex items-center gap-2.5 sm:gap-3 overflow-x-auto pb-1">
+                    {evidencePhotos.after.map((img, idx) => (
+                      <div
+                        key={idx}
+                        className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden border border-border/40 shrink-0 shadow-2xs"
+                      >
+                        <img
+                          src={img}
+                          alt={`After ${idx + 1}`}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="p-6 sm:p-10">
+                <div className="max-w-lg mx-auto rounded-xl border border-border/80 bg-page-bg/30 p-6 sm:p-8 text-center flex flex-col items-center justify-center">
+                  <h4 className="font-barlow text-base sm:text-lg font-medium text-primary-heading mb-1.5">
+                    No Evidence Submitted
+                  </h4>
+                  <p className="text-xs sm:text-sm text-secondary-subheading leading-relaxed max-w-sm font-normal">
+                    Before and after photos will appear here after the crew completes the assigned work.
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -182,15 +254,63 @@ export const JobTaskEvidenceTab: React.FC<JobTaskEvidenceTabProps> = ({ tasks })
         </button>
 
         {openSections.checklist && (
-          <div className="border-t border-border p-6 sm:p-10">
-            <div className="max-w-lg mx-auto rounded-xl border border-border/80 bg-page-bg/30 p-6 sm:p-8 text-center flex flex-col items-center justify-center">
-              <h4 className="font-barlow text-base sm:text-lg font-medium text-primary-heading mb-1.5">
-                No Activity Yet
-              </h4>
-              <p className="text-xs sm:text-sm text-secondary-subheading leading-relaxed max-w-sm font-normal">
-                Completed service checklist will appear here once the leader submit the job for review.
-              </p>
-            </div>
+          <div className="border-t border-border p-4 sm:p-5">
+            {checklist && checklist.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Left Column Box */}
+                <div className="rounded-lg border border-border divide-y divide-border bg-card-bg overflow-hidden">
+                  {leftChecklist.map((item) => (
+                    <div
+                      key={item.id}
+                      className="px-4 py-3 flex items-center gap-2.5 text-xs sm:text-sm text-secondary-subheading"
+                    >
+                      {item.completed ? (
+                        <div className="w-4 h-4 rounded border border-info bg-blue-50/80 flex items-center justify-center text-info shrink-0">
+                          <Check className="w-3 h-3 stroke-[3]" />
+                        </div>
+                      ) : (
+                        <div className="w-4 h-4 rounded flex items-center justify-center text-decline shrink-0 font-medium text-xs">
+                          <X className="w-3.5 h-3.5 stroke-[2.5]" />
+                        </div>
+                      )}
+                      <span className="font-normal text-txt-primary">{item.text}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Right Column Box */}
+                <div className="rounded-lg border border-border divide-y divide-border bg-card-bg overflow-hidden">
+                  {rightChecklist.map((item) => (
+                    <div
+                      key={item.id}
+                      className="px-4 py-3 flex items-center gap-2.5 text-xs sm:text-sm text-secondary-subheading"
+                    >
+                      {item.completed ? (
+                        <div className="w-4 h-4 rounded border border-info bg-blue-50/80 flex items-center justify-center text-info shrink-0">
+                          <Check className="w-3 h-3 stroke-[3]" />
+                        </div>
+                      ) : (
+                        <div className="w-4 h-4 rounded flex items-center justify-center text-decline shrink-0 font-medium text-xs">
+                          <X className="w-3.5 h-3.5 stroke-[2.5]" />
+                        </div>
+                      )}
+                      <span className="font-normal text-txt-primary">{item.text}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="p-6 sm:p-10">
+                <div className="max-w-lg mx-auto rounded-xl border border-border/80 bg-page-bg/30 p-6 sm:p-8 text-center flex flex-col items-center justify-center">
+                  <h4 className="font-barlow text-base sm:text-lg font-medium text-primary-heading mb-1.5">
+                    No Activity Yet
+                  </h4>
+                  <p className="text-xs sm:text-sm text-secondary-subheading leading-relaxed max-w-sm font-normal">
+                    Completed service checklist will appear here once the leader submit the job for review.
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -211,18 +331,38 @@ export const JobTaskEvidenceTab: React.FC<JobTaskEvidenceTabProps> = ({ tasks })
         </button>
 
         {openSections.workNote && (
-          <div className="border-t border-border p-6 sm:p-10">
-            <div className="max-w-lg mx-auto rounded-xl border border-border/80 bg-page-bg/30 p-6 sm:p-8 text-center flex flex-col items-center justify-center">
-              <h4 className="font-barlow text-base sm:text-lg font-medium text-primary-heading mb-1.5">
-                No Works Not Yet
-              </h4>
-              <p className="text-xs sm:text-sm text-secondary-subheading leading-relaxed max-w-sm font-normal">
-                Notes from Crew leader will appear here once the job has been submitted for review.
-              </p>
-            </div>
+          <div className="border-t border-border p-4 sm:p-5 space-y-3">
+            {workNote ? (
+              <>
+                <div className="rounded-lg border border-border bg-card-bg p-3.5 sm:p-4">
+                  <p className="text-xs sm:text-sm text-secondary-subheading font-normal leading-relaxed">
+                    {workNote.text}
+                  </p>
+                </div>
+                <div className="text-xs text-secondary-subheading font-normal">
+                  Submitted by{" "}
+                  <span className="text-txt-primary underline hover:text-primary transition-colors cursor-pointer">
+                    {workNote.submittedBy} ({workNote.submitterRole})
+                  </span>
+                </div>
+              </>
+            ) : (
+              <div className="p-6 sm:p-10">
+                <div className="max-w-lg mx-auto rounded-xl border border-border/80 bg-page-bg/30 p-6 sm:p-8 text-center flex flex-col items-center justify-center">
+                  <h4 className="font-barlow text-base sm:text-lg font-medium text-primary-heading mb-1.5">
+                    No Works Not Yet
+                  </h4>
+                  <p className="text-xs sm:text-sm text-secondary-subheading leading-relaxed max-w-sm font-normal">
+                    Notes from Crew leader will appear here once the job has been submitted for review.
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>
     </div>
   );
 };
+
+export default JobTaskEvidenceTab;
