@@ -2,23 +2,23 @@
   "default_branch": "main",
   "branches": [
     "development",
+    "feature/admin-dashboard",
     "feature/customer-portal",
     "feature/website-structured",
-    "main",
-    "origin"
+    "main"
   ],
   "parent": {
     "development": "main",
+    "feature/admin-dashboard": "main",
     "feature/customer-portal": "main",
     "feature/website-structured": "main",
-    "main": null,
-    "origin": "main"
+    "main": null
   },
   "order": [
     "main",
     "development",
+    "feature/admin-dashboard",
     "feature/customer-portal",
-    "feature/website-structured",
-    "origin"
+    "feature/website-structured"
   ]
 }
