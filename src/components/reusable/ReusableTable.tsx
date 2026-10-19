@@ -37,10 +37,7 @@ export function ReusableTable<T>({
       )
     : 1;
   const visibleData = pagination
-    ? data.slice(
-        (currentPage - 1) * itemsPerPage,
-        currentPage * itemsPerPage,
-      )
+    ? data.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
     : data;
 
   return (
@@ -56,14 +53,16 @@ export function ReusableTable<T>({
               {columns.map((col, idx) => (
                 <th
                   key={idx}
-                  className="py-3 px-4 font-medium text-secondary-subheading capitalize tracking-wider whitespace-nowrap"
+                  className={`py-3 px-4 font-medium text-secondary-subheading whitespace-nowrap text-xs sm:text-sm ${
+                    col.headerClassName || ""
+                  }`}
                 >
                   {col.header}
                 </th>
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-border-subtle bg-card-bg text-sm lg:text-base">
+          <tbody className="divide-y divide-border-subtle bg-card-bg text-sm">
             {visibleData.length > 0 ? (
               visibleData.map((row, rowIdx) => (
                 <tr
@@ -73,7 +72,9 @@ export function ReusableTable<T>({
                   {columns.map((col, colIdx) => (
                     <td
                       key={colIdx}
-                      className="py-3.5 px-4 text-txt-primary text-sm lg:text-base"
+                      className={`py-3.5 px-4 text-txt-primary text-sm ${
+                        col.className || ""
+                      }`}
                     >
                       {col.cell
                         ? col.cell(row)

@@ -1,0 +1,24 @@
+{
+  "default_branch": "main",
+  "branches": [
+    "development",
+    "feature/customer-portal",
+    "feature/website-structured",
+    "main",
+    "origin"
+  ],
+  "parent": {
+    "development": "main",
+    "feature/customer-portal": "main",
+    "feature/website-structured": "main",
+    "main": null,
+    "origin": "main"
+  },
+  "order": [
+    "main",
+    "development",
+    "feature/customer-portal",
+    "feature/website-structured",
+    "origin"
+  ]
+}

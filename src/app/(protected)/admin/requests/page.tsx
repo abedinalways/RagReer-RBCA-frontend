@@ -1,13 +1,10 @@
 import type { Metadata } from "next";
-import { PlaceholderPage } from "@/components/shared/PlaceholderPage";
+import { AdminServiceRequestsView } from "@/features/admin/requests/components/AdminServiceRequestsView";
 
-export const metadata: Metadata = { title: "Requests" };
+export const metadata: Metadata = {
+  title: "Service Requests — Admin",
+};
 
 export default function AdminRequestsPage() {
-  return (
-    <PlaceholderPage
-      title="Requests"
-      description="Service request triage & dispatch — implementation lives in features/requests."
-    />
-  );
+  return <AdminServiceRequestsView />;
 }

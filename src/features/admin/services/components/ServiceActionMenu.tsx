@@ -23,7 +23,10 @@ export function ServiceActionMenu({
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
         setIsOpen(false);
       }
     };
@@ -34,7 +37,13 @@ export function ServiceActionMenu({
   }, [isOpen]);
 
   return (
-    <div className={cn("relative inline-block text-left", isOpen ? "z-50" : "z-10")} ref={containerRef}>
+    <div
+      className={cn(
+        "relative inline-block text-left",
+        isOpen ? "z-50" : "z-10",
+      )}
+      ref={containerRef}
+    >
       <button
         type="button"
         onClick={(e) => {
@@ -56,7 +65,7 @@ export function ServiceActionMenu({
               setIsOpen(false);
               onEdit(item);
             }}
-            className="w-full text-center px-4 py-2 rounded-md bg-[#5980A6] text-white hover:bg-[#4A6E91] font-medium text-sm transition-colors cursor-pointer"
+            className="w-full text-center px-4 py-2 rounded-md font-medium text-sm transition-colors cursor-pointer text-txt-primary hover:bg-primary hover:text-white"
           >
             Edit
           </button>
@@ -68,7 +77,7 @@ export function ServiceActionMenu({
                 setIsOpen(false);
                 onView(item);
               }}
-              className="w-full text-center px-4 py-2 rounded-md bg-page-bg/60 text-txt-primary hover:bg-page-bg font-medium text-sm transition-colors cursor-pointer"
+              className="w-full text-center px-4 py-2 rounded-md font-medium text-sm transition-colors cursor-pointer text-txt-primary hover:bg-primary hover:text-white"
             >
               View
             </button>
@@ -80,7 +89,7 @@ export function ServiceActionMenu({
               setIsOpen(false);
               onDelete(item);
             }}
-            className="w-full text-center px-4 py-2 rounded-md bg-page-bg/60 text-txt-primary hover:bg-red-50 hover:text-red-600 font-medium text-sm transition-colors cursor-pointer"
+            className="w-full text-center px-4 py-2 rounded-md font-medium text-sm transition-colors cursor-pointer text-txt-primary hover:bg-red-50 hover:text-red-600"
           >
             Delete
           </button>

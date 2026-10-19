@@ -1,4 +1,7 @@
-import { PERMISSIONS, type Permission } from "@/access-control/permissions/permissions";
+import {
+  PERMISSIONS,
+  type Permission,
+} from "@/access-control/permissions/permissions";
 import type { WorkspaceNavigationItem } from "../../workspace.types";
 import {
   LayoutDashboard,
@@ -18,14 +21,24 @@ import {
   Home,
   User,
   MoreHorizontal,
+  Coins,
+  CircleDollarSign,
+  HandCoins,
   type LucideIcon,
 } from "lucide-react";
+import type { ComponentType } from "react";
+import ServiceIcon from "@/components/icons/admin/ServiceIcon";
+import JobsIcon from "@/components/icons/admin/JobsIcon";
+import ScheduleIcon from "../../../components/icons/admin/ScheduleIcon";
+import PropertiesIcon from "../../../components/icons/admin/PropertiesIcon";
+
+export type NavIcon = LucideIcon | ComponentType<{ className?: string }>;
 
 export interface AdminSubNavItem {
   id: string;
   label: string;
   href: string;
-  icon: LucideIcon;
+  icon: NavIcon;
   permission?: Permission;
 }
 
@@ -33,7 +46,7 @@ export interface AdminNavGroup {
   id: string;
   label: string;
   href?: string;
-  icon?: LucideIcon;
+  icon?: NavIcon;
   items?: AdminSubNavItem[];
   permission?: Permission;
   defaultExpanded?: boolean;
@@ -56,16 +69,30 @@ export const adminGroupedNavigation: AdminNavGroup[] = [
     items: [
       {
         id: "requests",
-        label: "Requests",
+        label: "Service Requests",
         href: "/admin/requests",
-        icon: Inbox,
+        icon: ServiceIcon,
         permission: PERMISSIONS.REQUEST.VIEW,
       },
       {
-        id: "jobs",
-        label: "Jobs",
-        href: "/admin/jobs",
-        icon: Briefcase,
+        id: "job-pipeline",
+        label: "Job Pipeline",
+        href: "/admin/job-pipeline",
+        icon: JobsIcon,
+        permission: PERMISSIONS.JOB.VIEW,
+      },
+      {
+        id: "schedule",
+        label: "Job Schedule",
+        href: "/admin/schedule",
+        icon: ScheduleIcon,
+        permission: PERMISSIONS.JOB.VIEW,
+      },
+      {
+        id: "properties",
+        label: "Properties",
+        href: "/admin/properties",
+        icon: PropertiesIcon,
         permission: PERMISSIONS.JOB.VIEW,
       },
     ],
@@ -119,15 +146,29 @@ export const adminGroupedNavigation: AdminNavGroup[] = [
   {
     id: "finance",
     label: "Finance",
-    href: "/admin/reports",
+    href: "/admin/payroll",
     icon: Receipt,
     permission: PERMISSIONS.REPORT.VIEW,
     items: [
       {
-        id: "reports",
-        label: "Reports",
-        href: "/admin/reports",
-        icon: BarChart3,
+        id: "payroll",
+        label: "Payroll",
+        href: "/admin/payroll",
+        icon: Coins,
+        permission: PERMISSIONS.REPORT.VIEW,
+      },
+      {
+        id: "accounts-receivable",
+        label: "Accounts Receivable",
+        href: "/admin/accounts-receivable",
+        icon: CircleDollarSign,
+        permission: PERMISSIONS.REPORT.VIEW,
+      },
+      {
+        id: "financial-summary",
+        label: "Financial Summary",
+        href: "/admin/financial-summary",
+        icon: HandCoins,
         permission: PERMISSIONS.REPORT.VIEW,
       },
     ],
@@ -183,7 +224,7 @@ export interface AdminMobileNavItem {
   id: string;
   label: string;
   href: string;
-  icon: LucideIcon;
+  icon: NavIcon;
   isMoreTrigger?: boolean;
 }
 
@@ -216,13 +257,67 @@ export const adminMobileNavigationItems: AdminMobileNavItem[] = [
 ];
 
 export const adminNavigation: WorkspaceNavigationItem[] = [
-  { label: "Dashboard", href: "/admin/dashboard", icon: "📊", permission: PERMISSIONS.DASHBOARD.VIEW, section: "Overview" },
-  { label: "CRM", href: "/admin/crm", icon: "🤝", permission: PERMISSIONS.CRM.VIEW, section: "Business" },
-  { label: "Leads", href: "/admin/leads", icon: "🧲", permission: PERMISSIONS.LEAD.VIEW, section: "Business" },
-  { label: "Customers", href: "/admin/customers", icon: "👥", permission: PERMISSIONS.CUSTOMER.VIEW, section: "Business" },
-  { label: "Workers", href: "/admin/workers", icon: "🛠️", permission: PERMISSIONS.WORKER.VIEW, section: "Business" },
-  { label: "Requests", href: "/admin/requests", icon: "📨", permission: PERMISSIONS.REQUEST.VIEW, section: "Operations" },
-  { label: "Jobs", href: "/admin/jobs", icon: "🧾", permission: PERMISSIONS.JOB.VIEW, section: "Operations" },
-  { label: "Reports", href: "/admin/reports", icon: "📈", permission: PERMISSIONS.REPORT.VIEW, section: "Insights" },
-  { label: "Settings", href: "/admin/settings", icon: "⚙️", permission: PERMISSIONS.SETTING.VIEW, section: "System" },
+  {
+    label: "Dashboard",
+    href: "/admin/dashboard",
+    icon: "📊",
+    permission: PERMISSIONS.DASHBOARD.VIEW,
+    section: "Overview",
+  },
+  {
+    label: "CRM",
+    href: "/admin/crm",
+    icon: "🤝",
+    permission: PERMISSIONS.CRM.VIEW,
+    section: "Business",
+  },
+  {
+    label: "Leads",
+    href: "/admin/leads",
+    icon: "🧲",
+    permission: PERMISSIONS.LEAD.VIEW,
+    section: "Business",
+  },
+  {
+    label: "Customers",
+    href: "/admin/customers",
+    icon: "👥",
+    permission: PERMISSIONS.CUSTOMER.VIEW,
+    section: "Business",
+  },
+  {
+    label: "Workers",
+    href: "/admin/workers",
+    icon: "🛠️",
+    permission: PERMISSIONS.WORKER.VIEW,
+    section: "Business",
+  },
+  {
+    label: "Requests",
+    href: "/admin/requests",
+    icon: "📨",
+    permission: PERMISSIONS.REQUEST.VIEW,
+    section: "Operations",
+  },
+  {
+    label: "Jobs",
+    href: "/admin/jobs",
+    icon: "🧾",
+    permission: PERMISSIONS.JOB.VIEW,
+    section: "Operations",
+  },
+  {
+    label: "Reports",
+    href: "/admin/reports",
+    icon: "📈",
+    permission: PERMISSIONS.REPORT.VIEW,
+    section: "Insights",
+  },
+  {
+    label: "Settings",
+    href: "/admin/settings",
+    icon: "⚙️",
+    permission: PERMISSIONS.SETTING.VIEW,
+    section: "System",
+  },
 ];

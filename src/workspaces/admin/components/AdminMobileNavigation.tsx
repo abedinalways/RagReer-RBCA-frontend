@@ -16,13 +16,17 @@ interface AdminMobileNavigationProps {
  * - Inactive: text-primary (#5980A6) with stroke icons
  * - Active: solid filled blue button (bg-primary #5980A6) with white icon and white text
  */
-export function AdminMobileNavigation({ onMoreClick }: AdminMobileNavigationProps) {
+export function AdminMobileNavigation({
+  onMoreClick,
+}: AdminMobileNavigationProps) {
   const pathname = usePathname();
 
   // Check which category is active
-  const isDashboardActive = pathname === "/admin/dashboard" || pathname === "/admin";
+  const isDashboardActive =
+    pathname === "/admin/dashboard" || pathname === "/admin";
   const isOperationsActive =
-    pathname.startsWith("/admin/requests") || pathname.startsWith("/admin/jobs");
+    pathname.startsWith("/admin/requests") ||
+    pathname.startsWith("/admin/jobs");
   const isUsersActive =
     pathname.startsWith("/admin/customers") ||
     pathname.startsWith("/admin/workers") ||
@@ -36,7 +40,10 @@ export function AdminMobileNavigation({ onMoreClick }: AdminMobileNavigationProp
     pathname.startsWith("/admin/settings") ||
     pathname.startsWith("/admin/activity") ||
     pathname.startsWith("/admin/crm") ||
-    pathname.startsWith("/admin/reports");
+    pathname.startsWith("/admin/reports") ||
+    pathname.startsWith("/admin/payroll") ||
+    pathname.startsWith("/admin/accounts-receivable") ||
+    pathname.startsWith("/admin/financial-summary");
 
   return (
     <nav
@@ -66,19 +73,19 @@ export function AdminMobileNavigation({ onMoreClick }: AdminMobileNavigationProp
                 "flex flex-1 flex-col items-center justify-center py-2 px-2.5 rounded-xl transition-all cursor-pointer active:scale-95",
                 isActive
                   ? "bg-primary text-primary-text shadow-xs"
-                  : "text-primary hover:bg-blue-100/60"
+                  : "text-primary hover:bg-blue-100/60",
               )}
             >
               <IconComponent
                 className={cn(
                   "h-5 w-5 shrink-0 transition-colors",
-                  isActive ? "text-primary-text" : "text-primary"
+                  isActive ? "text-primary-text" : "text-primary",
                 )}
               />
               <span
                 className={cn(
                   "text-[11px] font-medium mt-0.5 leading-tight tracking-tight",
-                  isActive ? "text-primary-text font-semibold" : "text-primary"
+                  isActive ? "text-primary-text font-semibold" : "text-primary",
                 )}
               >
                 {item.label}
