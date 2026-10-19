@@ -69,6 +69,12 @@
     --color-service-purple: #8B5CF6;
     --color-attention-bg: #F4F8FC;
     --color-attention-border: #E5EEF7;
+    --color-highlight-blue-bg: #EDF4FC;
+    --color-highlight-blue-border: #D2E4F7;
+    --color-callout-amber-bg: #FFFBEB;
+    --color-callout-amber-border: #FEF3C7;
+    --color-callout-amber-text: #B45309;
+    --color-input-disabled-bg: #F8FAFC;
 
     /* Appointment Figma Exact Colors */
     --color-apt-pref-bg: #EAEAEA;
@@ -144,6 +150,12 @@
         --color-service-purple: #8B5CF6;
         --color-attention-bg: #F4F8FC;
         --color-attention-border: #E5EEF7;
+        --color-highlight-blue-bg: #EDF4FC;
+        --color-highlight-blue-border: #D2E4F7;
+        --color-callout-amber-bg: #FFFBEB;
+        --color-callout-amber-border: #FEF3C7;
+        --color-callout-amber-text: #B45309;
+        --color-input-disabled-bg: #F8FAFC;
         --color-blue-50: #E7F1FB;
         --color-blue-100: #CADFF4;
         --color-nav-bg: #EAF2F9;

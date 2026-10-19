@@ -85,6 +85,23 @@ export interface JobAlertBanner {
   actionText: string;
 }
 
+export interface JobEvidencePhotos {
+  before: string[];
+  after: string[];
+}
+
+export interface JobChecklistItem {
+  id: string;
+  text: string;
+  completed: boolean;
+}
+
+export interface JobWorkNote {
+  text: string;
+  submittedBy: string;
+  submitterRole: string;
+}
+
 export interface JobDetailData {
   id: string;
   jobId: string;
@@ -103,4 +120,8 @@ export interface JobDetailData {
   tasks: JobTaskCompletionItem[];
   activities?: JobActivityItem[];
   alertBanner?: JobAlertBanner;
+  evidencePhotos?: JobEvidencePhotos;
+  checklist?: JobChecklistItem[];
+  workNote?: JobWorkNote;
+  taskCompletionSubtitle?: string;
 }
