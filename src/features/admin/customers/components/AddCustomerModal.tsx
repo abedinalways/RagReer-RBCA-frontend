@@ -1,14 +1,35 @@
 "use client";
 import React, { useState } from "react";
-import { ChevronDown, Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { Modal } from "@/components/reusable/Modal";
-import { CustomerItem, NewCustomerFormData } from "../types/adminCustomers.types";
+import { CustomSelect } from "@/components/ui/CustomSelect";
+import {
+  CustomerItem,
+  NewCustomerFormData,
+} from "../types/adminCustomers.types";
 
 interface AddCustomerModalProps {
   isOpen: boolean;
   onClose: () => void;
   onCustomerCreated: (newCustomer: CustomerItem) => void;
 }
+
+const CUSTOMER_TYPE_OPTIONS = [
+  { value: "Individual", label: "Individual" },
+  { value: "Portfolio", label: "Portfolio" },
+];
+
+const BILLING_TYPE_OPTIONS = [
+  { value: "Per Visit", label: "Per Visit" },
+  { value: "Consolidated Monthly", label: "Consolidated Monthly" },
+  { value: "Separate Per Property", label: "Separate Per Property" },
+];
+
+const ROLE_OPTIONS = [
+  { value: "Customer", label: "Customer" },
+  { value: "Crew Member", label: "Crew Member" },
+  { value: "Crew Leader", label: "Crew Leader" },
+];
 
 export const AddCustomerModal: React.FC<AddCustomerModalProps> = ({
   isOpen,
@@ -44,8 +65,8 @@ export const AddCustomerModal: React.FC<AddCustomerModalProps> = ({
         "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120&auto=format&fit=crop&q=80",
       status: "Draft",
       customerType:
-        formData.customerType === "Commercial" ? "Commercial" : "Residential",
-      role: (formData.role as CustomerItem["role"]) || "Property Owner",
+        (formData.customerType as CustomerItem["customerType"]) || "Individual",
+      role: (formData.role as CustomerItem["role"]) || "Customer",
       organizationName: formData.organizationName,
       email: formData.email || "customer@example.com",
       phone: formData.phone || "999-(1234)-555",
@@ -150,42 +171,32 @@ export const AddCustomerModal: React.FC<AddCustomerModalProps> = ({
             <label className="block text-xs font-medium text-primary-heading">
               Customer Type <span className="text-decline">*</span>
             </label>
-            <div className="relative">
-              <select
-                value={formData.customerType}
-                onChange={(e) =>
-                  setFormData({ ...formData, customerType: e.target.value })
-                }
-                className="w-full border border-border rounded-md px-3 py-2 text-xs sm:text-sm bg-card-bg text-primary-heading appearance-none focus:outline-none focus:border-primary pr-8 cursor-pointer"
-              >
-                <option value="">Select Customer Type</option>
-                <option value="Residential">Residential</option>
-                <option value="Commercial">Commercial</option>
-              </select>
-              <ChevronDown className="w-3.5 h-3.5 text-secondary-subheading absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-            </div>
+            <CustomSelect
+              value={formData.customerType}
+              onChange={(val) =>
+                setFormData({ ...formData, customerType: val })
+              }
+              options={CUSTOMER_TYPE_OPTIONS}
+              placeholder="Select Customer Type"
+              size="sm"
+              triggerClassName="h-10 text-xs sm:text-sm border-border bg-card-bg rounded-md"
+              dropdownClassName="border-border bg-card-bg shadow-lg rounded-md"
+            />
           </div>
 
           <div className="space-y-1">
             <label className="block text-xs font-medium text-primary-heading">
               Role <span className="text-decline">*</span>
             </label>
-            <div className="relative">
-              <select
-                value={formData.role}
-                onChange={(e) =>
-                  setFormData({ ...formData, role: e.target.value })
-                }
-                className="w-full border border-border rounded-md px-3 py-2 text-xs sm:text-sm bg-card-bg text-primary-heading appearance-none focus:outline-none focus:border-primary pr-8 cursor-pointer"
-              >
-                <option value="">Select Role</option>
-                <option value="Property Owner">Property Owner</option>
-                <option value="Property Manager">Property Manager</option>
-                <option value="Tenant">Tenant</option>
-                <option value="General Contractor">General Contractor</option>
-              </select>
-              <ChevronDown className="w-3.5 h-3.5 text-secondary-subheading absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-            </div>
+            <CustomSelect
+              value={formData.role}
+              onChange={(val) => setFormData({ ...formData, role: val })}
+              options={ROLE_OPTIONS}
+              placeholder="Choose Role"
+              size="sm"
+              triggerClassName="h-10 text-xs sm:text-sm border-border bg-card-bg rounded-md"
+              dropdownClassName="border-border bg-card-bg shadow-lg rounded-md"
+            />
           </div>
         </div>
 
@@ -227,22 +238,15 @@ export const AddCustomerModal: React.FC<AddCustomerModalProps> = ({
           <label className="block text-xs font-medium text-primary-heading">
             Billing Type
           </label>
-          <div className="relative">
-            <select
-              value={formData.billingType}
-              onChange={(e) =>
-                setFormData({ ...formData, billingType: e.target.value })
-              }
-              className="w-full border border-border rounded-md px-3 py-2 text-xs sm:text-sm bg-card-bg text-primary-heading appearance-none focus:outline-none focus:border-primary pr-8 cursor-pointer"
-            >
-              <option value="">Select Billing Type</option>
-              <option value="Per Visit">Per Visit</option>
-              <option value="Monthly">Monthly</option>
-              <option value="Prepaid">Prepaid</option>
-              <option value="Net 30">Net 30</option>
-            </select>
-            <ChevronDown className="w-3.5 h-3.5 text-secondary-subheading absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-          </div>
+          <CustomSelect
+            value={formData.billingType}
+            onChange={(val) => setFormData({ ...formData, billingType: val })}
+            options={BILLING_TYPE_OPTIONS}
+            placeholder="Select Billing Type"
+            size="sm"
+            triggerClassName="h-10 text-xs sm:text-sm border-border bg-card-bg rounded-md"
+            dropdownClassName="border-border bg-card-bg shadow-lg rounded-md"
+          />
         </div>
 
         {/* Set Default Password */}

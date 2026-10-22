@@ -18,15 +18,7 @@ export const AdminCustomersEmptyState: React.FC<
           Customers
         </h1>
         <div className="flex items-center gap-2">
-          {onViewSampleCustomer && (
-            <button
-              type="button"
-              onClick={onViewSampleCustomer}
-              className="px-4 py-2 border border-border text-secondary-subheading hover:bg-page-bg text-xs sm:text-sm font-medium rounded-md transition-colors cursor-pointer"
-            >
-              View Sample Customer
-            </button>
-          )}
+       
           <button
             type="button"
             onClick={onAddCustomer}

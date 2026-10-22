@@ -14,12 +14,25 @@ export interface CustomerItem {
   name: string;
   avatar: string;
   status: CustomerStatus;
-  customerType: "Residential" | "Commercial";
-  role: "Property Owner" | "Property Manager" | "Tenant" | "General Contractor";
+  customerType: "Individual" | "Portfolio" | "Residential" | "Commercial";
+  role:
+    | "Customer"
+    | "Crew Member"
+    | "Crew Leader"
+    | "Property Owner"
+    | "Property Manager"
+    | "Tenant"
+    | "General Contractor";
   organizationName?: string;
   email: string;
   phone: string;
-  billingType: "Per Visit" | "Monthly" | "Prepaid" | "Net 30";
+  billingType:
+    | "Per Visit"
+    | "Consolidated Monthly"
+    | "Separate Per Property"
+    | "Monthly"
+    | "Prepaid"
+    | "Net 30";
   portalAccess: "Sent" | "Pending" | "Joined";
   memberSince: string;
   activeServicesCount: number;
