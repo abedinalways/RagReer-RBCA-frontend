@@ -15,6 +15,7 @@ import {
   CustomerItem,
   CustomerStatus,
 } from "../types/adminCustomers.types";
+import { CustomerActionMenu } from "./CustomerActionMenu";
 
 interface AdminCustomersListProps {
   customers: CustomerItem[];
@@ -39,23 +40,6 @@ export const AdminCustomersList: React.FC<AdminCustomersListProps> = ({
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(25);
-
-  // Active action menu row ID
-  const [actionMenuOpenId, setActionMenuOpenId] = useState<string | null>(null);
-  const actionMenuRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        actionMenuRef.current &&
-        !actionMenuRef.current.contains(event.target as Node)
-      ) {
-        setActionMenuOpenId(null);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
 
   // Filtered and sorted customers
   const filteredCustomers = useMemo(() => {
@@ -256,65 +240,14 @@ export const AdminCustomersList: React.FC<AdminCustomersListProps> = ({
     },
     {
       header: "Action",
-      className: "text-center w-14 relative",
-      cell: (row) => {
-        const isMenuOpen = actionMenuOpenId === row.id;
-
-        return (
-          <div className="relative inline-block text-left">
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                setActionMenuOpenId(isMenuOpen ? null : row.id);
-              }}
-              className="p-1.5 rounded-md text-secondary-subheading hover:text-primary hover:bg-page-bg transition-colors cursor-pointer"
-              title="Actions"
-            >
-              <MoreHorizontal className="w-4 h-4" />
-            </button>
-
-            {/* Action Popup Dropdown (Figma Screenshot 2) */}
-            {isMenuOpen && (
-              <div
-                ref={actionMenuRef}
-                className="absolute right-0 top-8 z-30 w-36 rounded-lg bg-card-bg border border-border shadow-xl p-1 space-y-1 animate-in fade-in zoom-in-95 duration-100"
-              >
-                <button
-                  type="button"
-                  onClick={() => {
-                    setActionMenuOpenId(null);
-                    onSelectCustomer(row.id);
-                  }}
-                  className="w-full text-left px-3 py-1.5 rounded-md text-xs font-medium bg-primary text-white hover:bg-primary-hover transition-colors cursor-pointer"
-                >
-                  View Details
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setActionMenuOpenId(null);
-                    onSelectCustomer(row.id);
-                  }}
-                  className="w-full text-left px-3 py-1.5 rounded-md text-xs text-txt-primary hover:bg-page-bg transition-colors cursor-pointer"
-                >
-                  Log History
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setActionMenuOpenId(null);
-                    onDeleteCustomer(row.id);
-                  }}
-                  className="w-full text-left px-3 py-1.5 rounded-md text-xs text-txt-primary hover:bg-decline-secondary hover:text-decline transition-colors cursor-pointer"
-                >
-                  Delete
-                </button>
-              </div>
-            )}
-          </div>
-        );
-      },
+      className: "text-center w-14",
+      cell: (row) => (
+        <CustomerActionMenu
+          customer={row}
+          onSelectCustomer={onSelectCustomer}
+          onDeleteCustomer={onDeleteCustomer}
+        />
+      ),
     },
   ];
 
