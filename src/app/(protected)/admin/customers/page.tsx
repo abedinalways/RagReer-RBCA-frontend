@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
-import { PlaceholderPage } from "@/components/shared/PlaceholderPage";
+import { AdminCustomersView } from "@/features/admin/customers/components/AdminCustomersView";
 
-export const metadata: Metadata = { title: "Customers" };
+export const metadata: Metadata = {
+  title: "Customers | Admin Console",
+  description: "Manage customer profiles, contracts, properties, billing, and portal access.",
+};
 
 export default function AdminCustomersPage() {
-  return (
-    <PlaceholderPage
-      title="Customers"
-      description="Customer records & lifecycle — implementation lives in features/customers."
-    />
-  );
+  return <AdminCustomersView />;
 }

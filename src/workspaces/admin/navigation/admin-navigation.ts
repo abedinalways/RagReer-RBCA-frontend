@@ -113,7 +113,7 @@ export const adminGroupedNavigation: AdminNavGroup[] = [
       },
       {
         id: "workers",
-        label: "Workers",
+        label: "Crew Members",
         href: "/admin/workers",
         icon: HardHat,
         permission: PERMISSIONS.WORKER.VIEW,
