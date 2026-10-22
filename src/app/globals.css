@@ -97,6 +97,9 @@
   --color-apt-cancelled-bar: #d92d20;
   --color-apt-resched-bg: #fbd5da;
   --color-apt-resched-bar: #f04438;
+  --color-apt-holiday-bg: #f5edfc;
+  --color-apt-holiday-bar: #8b5cf6;
+  --color-apt-weekend-dot: #475467;
 
   /* Job Pipeline KPI Card Left Border Colors */
   --color-pipeline-today: #ec7032;
@@ -178,6 +181,9 @@
     --color-apt-cancelled-bar: #d92d20;
     --color-apt-resched-bg: #fbd5da;
     --color-apt-resched-bar: #f04438;
+    --color-apt-holiday-bg: #f5edfc;
+    --color-apt-holiday-bar: #8b5cf6;
+    --color-apt-weekend-dot: #475467;
 
     /* Job Pipeline KPI Card Colors */
     --color-pipeline-today: #ec7032;
