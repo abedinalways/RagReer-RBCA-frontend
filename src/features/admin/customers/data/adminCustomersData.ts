@@ -7,18 +7,18 @@ export const defaultMockCustomer: CustomerItem = {
   avatar:
     "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80",
   status: "Active",
-  customerType: "Residential",
-  role: "Customer",
-  organizationName: "",
+  customerType: "Commercial",
+  role: "Tenant",
+  organizationName: "Weatherly Property Group",
   email: "alexmorgan@gmail.com",
-  phone: "999-(1234)-555",
-  billingType: "Per Visit",
-  portalAccess: "Sent",
+  phone: "999-(12345)-555",
+  billingType: "Consolidated Monthly",
+  portalAccess: "Joined",
   portalAccessEnabled: true,
-  memberSince: "Not joined yet",
-  activeServicesCount: "01",
-  propertiesCount: "01",
-  outstandingAmount: "$0",
+  memberSince: "Sep 01, 2026",
+  activeServicesCount: "03",
+  propertiesCount: "12",
+  outstandingAmount: "$1,528.00",
 };
 
 export const mockCustomersList: CustomerItem[] = [

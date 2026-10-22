@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Check } from "lucide-react";
+import toast from "react-hot-toast";
 import {
   defaultMockCustomer,
   mockCustomersList,
@@ -28,22 +28,16 @@ export const AdminCustomersView: React.FC<AdminCustomersViewProps> = ({
     initialCustomerId || null
   );
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
-
-  const showToast = (message: string) => {
-    setToastMessage(message);
-    setTimeout(() => setToastMessage(null), 4000);
-  };
 
   const handleCustomerCreated = (newCustomer: CustomerItem) => {
     setCustomers((prev) => [newCustomer, ...prev]);
     setSelectedCustomerId(newCustomer.id);
-    showToast(`Customer ${newCustomer.name} created successfully!`);
+    toast.success(`Customer ${newCustomer.name} created successfully!`);
   };
 
   const handleDeleteCustomer = (customerId: string) => {
     setCustomers((prev) => prev.filter((c) => c.id !== customerId));
-    showToast("Customer deleted successfully!");
+    toast.success("Customer deleted successfully!");
   };
 
   const handleTogglePortalAccess = (customerId: string) => {
@@ -51,9 +45,11 @@ export const AdminCustomersView: React.FC<AdminCustomersViewProps> = ({
       prev.map((c) => {
         if (c.id === customerId) {
           const nextVal = !c.portalAccessEnabled;
-          showToast(
-            `Portal access for ${c.name} is now ${nextVal ? "Enabled" : "Disabled"}`
-          );
+          if (nextVal) {
+            toast.success(`Portal access enabled for ${c.name}`);
+          } else {
+            toast.error(`Portal access disabled for ${c.name}`);
+          }
           return {
             ...c,
             portalAccessEnabled: nextVal,
@@ -66,7 +62,7 @@ export const AdminCustomersView: React.FC<AdminCustomersViewProps> = ({
   };
 
   const handleSendInvitation = (customer: CustomerItem) => {
-    showToast(`Invitation sent to ${customer.email}!`);
+    toast.success(`Invitation sent to ${customer.email}!`);
   };
 
   const handleBackToList = () => {
@@ -81,13 +77,6 @@ export const AdminCustomersView: React.FC<AdminCustomersViewProps> = ({
 
     return (
       <div className="space-y-4">
-        {toastMessage && (
-          <div className="fixed top-5 right-5 z-50 bg-primary-dark text-white px-4 py-2.5 rounded-md shadow-lg flex items-center gap-2 text-xs sm:text-sm animate-in fade-in slide-in-from-top-2">
-            <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-            <span>{toastMessage}</span>
-          </div>
-        )}
-
         <CustomerDetailsView
           customer={currentCustomer}
           initialTab={initialTab}
@@ -102,13 +91,6 @@ export const AdminCustomersView: React.FC<AdminCustomersViewProps> = ({
   if (customers.length === 0) {
     return (
       <div className="space-y-4">
-        {toastMessage && (
-          <div className="fixed top-5 right-5 z-50 bg-primary-dark text-white px-4 py-2.5 rounded-md shadow-lg flex items-center gap-2 text-xs sm:text-sm animate-in fade-in slide-in-from-top-2">
-            <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-            <span>{toastMessage}</span>
-          </div>
-        )}
-
         <AdminCustomersEmptyState
           onAddCustomer={() => setIsAddModalOpen(true)}
         />
@@ -126,13 +108,6 @@ export const AdminCustomersView: React.FC<AdminCustomersViewProps> = ({
   // 3. Otherwise show All Customer List Reusable Table (New Screenshots 1 & 2)
   return (
     <div className="space-y-4">
-      {toastMessage && (
-        <div className="fixed top-5 right-5 z-50 bg-primary-dark text-white px-4 py-2.5 rounded-md shadow-lg flex items-center gap-2 text-xs sm:text-sm animate-in fade-in slide-in-from-top-2">
-          <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-          <span>{toastMessage}</span>
-        </div>
-      )}
-
       <AdminCustomersList
         customers={customers}
         onSelectCustomer={(id) => setSelectedCustomerId(id)}

@@ -18,6 +18,7 @@ export const CustomerActionMenu: React.FC<CustomerActionMenuProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [hoveredKey, setHoveredKey] = useState<string | null>(null);
   const [menuPosition, setMenuPosition] = useState<{
     top?: number;
     bottom?: number;
@@ -52,6 +53,7 @@ export const CustomerActionMenu: React.FC<CustomerActionMenuProps> = ({
     e.stopPropagation();
     if (!isOpen) {
       updatePosition();
+      setHoveredKey(null);
     }
     setIsOpen((prev) => !prev);
   };
@@ -105,6 +107,27 @@ export const CustomerActionMenu: React.FC<CustomerActionMenuProps> = ({
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [isOpen]);
 
+  const menuOptions = [
+    {
+      key: "view_details",
+      label: "View Details",
+      action: () => onSelectCustomer(customer.id),
+      isDestructive: false,
+    },
+    {
+      key: "log_history",
+      label: "Log History",
+      action: () => onSelectCustomer(customer.id),
+      isDestructive: false,
+    },
+    {
+      key: "delete",
+      label: "Delete",
+      action: () => onDeleteCustomer(customer.id),
+      isDestructive: true,
+    },
+  ];
+
   return (
     <div className="relative inline-block text-left">
       <button
@@ -139,39 +162,35 @@ export const CustomerActionMenu: React.FC<CustomerActionMenuProps> = ({
             }}
             className="w-40 sm:w-44 rounded-lg border border-border bg-card-bg p-2 shadow-xl animate-in fade-in zoom-in-95 duration-100"
           >
-            <div className="flex flex-col gap-1.5">
-              <button
-                type="button"
-                onClick={() => {
-                  setIsOpen(false);
-                  onSelectCustomer(customer.id);
-                }}
-                className="w-full py-2 px-3 rounded-md text-xs md:text-sm font-medium text-center transition-colors duration-150 cursor-pointer bg-primary text-white hover:bg-primary-hover focus:outline-hidden"
-              >
-                View Details
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setIsOpen(false);
-                  onSelectCustomer(customer.id);
-                }}
-                className="w-full py-2 px-3 rounded-md text-xs md:text-sm font-medium text-center transition-colors duration-150 cursor-pointer bg-page-bg text-txt-primary hover:bg-primary hover:text-white focus:bg-primary focus:text-white focus:outline-hidden"
-              >
-                Log History
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setIsOpen(false);
-                  onDeleteCustomer(customer.id);
-                }}
-                className="w-full py-2 px-3 rounded-md text-xs md:text-sm font-medium text-center transition-colors duration-150 cursor-pointer bg-page-bg text-txt-primary hover:bg-decline hover:text-white focus:bg-decline focus:text-white focus:outline-hidden"
-              >
-                Delete
-              </button>
+            <div
+              className="flex flex-col gap-1.5"
+              onMouseLeave={() => setHoveredKey(null)}
+            >
+              {menuOptions.map((opt) => {
+                const isHovered = hoveredKey === opt.key;
+                return (
+                  <button
+                    key={opt.key}
+                    type="button"
+                    onMouseEnter={() => setHoveredKey(opt.key)}
+                    onClick={() => {
+                      setIsOpen(false);
+                      opt.action();
+                    }}
+                    className={`w-full py-2 px-3 rounded-md text-xs md:text-sm font-medium text-center transition-colors duration-150 cursor-pointer focus:outline-hidden ${
+                      isHovered
+                        ? opt.isDestructive
+                          ? "bg-decline text-white"
+                          : "bg-primary text-white"
+                        : opt.isDestructive
+                        ? "bg-page-bg text-txt-primary hover:bg-decline hover:text-white focus:bg-decline focus:text-white"
+                        : "bg-page-bg text-txt-primary hover:bg-primary hover:text-white focus:bg-primary focus:text-white"
+                    }`}
+                  >
+                    {opt.label}
+                  </button>
+                );
+              })}
             </div>
           </div>,
           document.body

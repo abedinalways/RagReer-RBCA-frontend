@@ -3,11 +3,89 @@ export type CustomerTabKey =
   | "properties"
   | "services"
   | "proposals"
+  | "estimates"
   | "contracts-agreements"
   | "billing"
-  | "activity";
+  | "activity"
+  | "calendar";
 
 export type CustomerStatus = "Draft" | "Active" | "Inactive" | "Pending";
+
+export interface CustomerUpcomingVisit {
+  id: string;
+  month: string;
+  day: string;
+  duration: string;
+  status: "Scheduled";
+  title: string;
+  subtitle: string;
+  location: string;
+  crewName: string;
+  crewAvatars: string[];
+}
+
+export interface CustomerActiveJob {
+  id: string;
+  requestId?: string;
+  propertyAddress: string;
+  service: string;
+  serviceType: "Recurring" | "One-Time";
+  assignedCrew: { id: string; name: string; avatar: string }[];
+  status:
+    | "In Progress"
+    | "Scheduled"
+    | "Waiting for Review"
+    | "Completed"
+    | "Site Visit in Progress"
+    | "Site Visit Completed"
+    | "Site Visit Scheduled"
+    | "Estimate Approved"
+    | "Estimate Declined"
+    | "Estimate Accepted"
+    | "Contract Signed"
+    | "On Hold"
+    | "Waiting For Payment"
+    | "Cancelled";
+  nextVisit: string;
+}
+
+export interface CustomerActivityItem {
+  id: string;
+  title: string;
+  description: string;
+  timestamp: string;
+  type: "orange" | "blue" | "amber" | "green";
+}
+
+export interface CustomerPropertyItem {
+  id: string;
+  title: string;
+  category: "Residential" | "Commercial" | "Church" | "HOA";
+  status: "Active" | "Inactive";
+  address: string;
+  size: string;
+  imageUrl: string;
+}
+
+export type CustomerEstimateStatus =
+  | "Draft"
+  | "Sent"
+  | "Pending Approval"
+  | "Approved"
+  | "Change Requested"
+  | "Expired"
+  | "Declined"
+  | "Cancelled";
+
+export interface CustomerEstimateItem {
+  id: string;
+  requestId: string;
+  propertyAddress: string;
+  serviceType: string;
+  issueDate: string;
+  status: CustomerEstimateStatus;
+  amount: string;
+}
 
 export interface CustomerItem {
   id: string; // e.g. "CTR-1278"

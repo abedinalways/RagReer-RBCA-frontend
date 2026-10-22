@@ -46,11 +46,13 @@ const PropertyLocationMap = dynamic(
 interface AdminPropertyDetailViewProps {
   property?: AdminPropertyDetailData;
   onBack: () => void;
+  breadcrumbs?: React.ReactNode;
+  onViewCalendar?: () => void;
 }
 
 export const AdminPropertyDetailView: React.FC<
   AdminPropertyDetailViewProps
-> = ({ property = defaultAdminPropertyDetail, onBack }) => {
+> = ({ property = defaultAdminPropertyDetail, onBack, breadcrumbs, onViewCalendar }) => {
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [galleryIndex, setGalleryIndex] = useState(0);
 
@@ -141,18 +143,22 @@ export const AdminPropertyDetailView: React.FC<
 
   return (
     <div className="space-y-4">
-      {/* Breadcrumb (Figma Screenshot 3) */}
-      <div className="flex items-center gap-1.5 text-xs sm:text-sm text-secondary-subheading">
-        <button
-          type="button"
-          onClick={onBack}
-          className="hover:text-primary transition-colors cursor-pointer"
-        >
-          Properties
-        </button>
-        <ChevronRight className="w-3.5 h-3.5 text-secondary-subheading/60" />
-        <span className="text-primary-heading font-medium">Details</span>
-      </div>
+      {/* Breadcrumb */}
+      {breadcrumbs ? (
+        breadcrumbs
+      ) : (
+        <div className="flex items-center gap-1.5 text-xs sm:text-sm text-secondary-subheading">
+          <button
+            type="button"
+            onClick={onBack}
+            className="hover:text-primary transition-colors cursor-pointer"
+          >
+            Properties
+          </button>
+          <ChevronRight className="w-3.5 h-3.5 text-secondary-subheading/60" />
+          <span className="text-primary-heading font-medium">Details</span>
+        </div>
+      )}
 
       {/* Main 2-Column Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -458,13 +464,24 @@ export const AdminPropertyDetailView: React.FC<
               <h3 className="font-medium text-primary-heading text-sm sm:text-base font-barlow-condensed">
                 Upcoming Visits
               </h3>
-              <Link
-                href="/admin/schedule"
-                className="text-xs font-medium text-primary hover:underline flex items-center gap-0.5"
-              >
-                <span>View Calendar</span>
-                <ChevronRight className="w-3 h-3" />
-              </Link>
+              {onViewCalendar ? (
+                <button
+                  type="button"
+                  onClick={onViewCalendar}
+                  className="text-xs font-medium text-primary hover:underline flex items-center gap-0.5 cursor-pointer"
+                >
+                  <span>View Calendar</span>
+                  <ChevronRight className="w-3 h-3" />
+                </button>
+              ) : (
+                <Link
+                  href="/admin/schedule"
+                  className="text-xs font-medium text-primary hover:underline flex items-center gap-0.5"
+                >
+                  <span>View Calendar</span>
+                  <ChevronRight className="w-3 h-3" />
+                </Link>
+              )}
             </div>
 
             <div className="space-y-3">
