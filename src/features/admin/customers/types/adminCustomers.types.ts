@@ -7,10 +7,11 @@ export type CustomerTabKey =
   | "billing"
   | "activity";
 
-export type CustomerStatus = "Draft" | "Active" | "Inactive";
+export type CustomerStatus = "Draft" | "Active" | "Inactive" | "Pending";
 
 export interface CustomerItem {
   id: string; // e.g. "CTR-1278"
+  customerCode?: string; // e.g. "#CTR-1278"
   name: string;
   avatar: string;
   status: CustomerStatus;
@@ -34,9 +35,10 @@ export interface CustomerItem {
     | "Prepaid"
     | "Net 30";
   portalAccess: "Sent" | "Pending" | "Joined";
+  portalAccessEnabled?: boolean;
   memberSince: string;
-  activeServicesCount: number;
-  propertiesCount: number;
+  activeServicesCount: number | string;
+  propertiesCount: number | string;
   outstandingAmount: string;
 }
 

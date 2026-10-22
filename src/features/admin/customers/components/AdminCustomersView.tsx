@@ -10,6 +10,7 @@ import {
   CustomerTabKey,
 } from "../types/adminCustomers.types";
 import { AdminCustomersEmptyState } from "./AdminCustomersEmptyState";
+import { AdminCustomersList } from "./AdminCustomersList";
 import { AddCustomerModal } from "./AddCustomerModal";
 import { CustomerDetailsView } from "./CustomerDetailsView";
 
@@ -40,19 +41,39 @@ export const AdminCustomersView: React.FC<AdminCustomersViewProps> = ({
     showToast(`Customer ${newCustomer.name} created successfully!`);
   };
 
-  const handleSendInvitation = (customer: CustomerItem) => {
-    showToast(`Invitation sent to ${customer.email}!`);
+  const handleDeleteCustomer = (customerId: string) => {
+    setCustomers((prev) => prev.filter((c) => c.id !== customerId));
+    showToast("Customer deleted successfully!");
   };
 
-  const handleViewSampleCustomer = () => {
-    setSelectedCustomerId(defaultMockCustomer.id);
+  const handleTogglePortalAccess = (customerId: string) => {
+    setCustomers((prev) =>
+      prev.map((c) => {
+        if (c.id === customerId) {
+          const nextVal = !c.portalAccessEnabled;
+          showToast(
+            `Portal access for ${c.name} is now ${nextVal ? "Enabled" : "Disabled"}`
+          );
+          return {
+            ...c,
+            portalAccessEnabled: nextVal,
+            portalAccess: nextVal ? "Joined" : "Pending",
+          };
+        }
+        return c;
+      })
+    );
+  };
+
+  const handleSendInvitation = (customer: CustomerItem) => {
+    showToast(`Invitation sent to ${customer.email}!`);
   };
 
   const handleBackToList = () => {
     setSelectedCustomerId(null);
   };
 
-  // If a customer is selected, show the Customer Details page (Figma Screenshot 3 & 4)
+  // 1. If a customer is selected, show Customer Details page (Figma Screenshot 3 & 4)
   if (selectedCustomerId) {
     const currentCustomer =
       customers.find((c) => c.id === selectedCustomerId) ||
@@ -77,7 +98,32 @@ export const AdminCustomersView: React.FC<AdminCustomersViewProps> = ({
     );
   }
 
-  // Otherwise show the Empty State (Figma Screenshot 1)
+  // 2. If no customers exist, show Empty State Card (Figma Screenshot 1)
+  if (customers.length === 0) {
+    return (
+      <div className="space-y-4">
+        {toastMessage && (
+          <div className="fixed top-5 right-5 z-50 bg-primary-dark text-white px-4 py-2.5 rounded-md shadow-lg flex items-center gap-2 text-xs sm:text-sm animate-in fade-in slide-in-from-top-2">
+            <Check className="w-4 h-4 text-emerald-400 shrink-0" />
+            <span>{toastMessage}</span>
+          </div>
+        )}
+
+        <AdminCustomersEmptyState
+          onAddCustomer={() => setIsAddModalOpen(true)}
+        />
+
+        {/* Add Customer Modal */}
+        <AddCustomerModal
+          isOpen={isAddModalOpen}
+          onClose={() => setIsAddModalOpen(false)}
+          onCustomerCreated={handleCustomerCreated}
+        />
+      </div>
+    );
+  }
+
+  // 3. Otherwise show All Customer List Reusable Table (New Screenshots 1 & 2)
   return (
     <div className="space-y-4">
       {toastMessage && (
@@ -87,12 +133,15 @@ export const AdminCustomersView: React.FC<AdminCustomersViewProps> = ({
         </div>
       )}
 
-      <AdminCustomersEmptyState
+      <AdminCustomersList
+        customers={customers}
+        onSelectCustomer={(id) => setSelectedCustomerId(id)}
         onAddCustomer={() => setIsAddModalOpen(true)}
-        onViewSampleCustomer={handleViewSampleCustomer}
+        onDeleteCustomer={handleDeleteCustomer}
+        onTogglePortalAccess={handleTogglePortalAccess}
       />
 
-      {/* Add Customer Modal (Figma Screenshot 2) */}
+      {/* Add Customer Modal */}
       <AddCustomerModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
