@@ -83,7 +83,7 @@ export const adminGroupedNavigation: AdminNavGroup[] = [
       },
       {
         id: "schedule",
-        label: "Job Schedule",
+        label: "Schedule",
         href: "/admin/schedule",
         icon: ScheduleIcon,
         permission: PERMISSIONS.JOB.VIEW,
