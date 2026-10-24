@@ -13,6 +13,8 @@ import { AdminCustomersEmptyState } from "./AdminCustomersEmptyState";
 import { AdminCustomersList } from "./AdminCustomersList";
 import { AddCustomerModal } from "./AddCustomerModal";
 import { CustomerDetailsView } from "./CustomerDetailsView";
+import { CustomerLogHistoryView } from "./CustomerLogHistoryView";
+import { DeleteCustomerModal } from "./DeleteCustomerModal";
 
 interface AdminCustomersViewProps {
   initialCustomerId?: string;
@@ -28,6 +30,8 @@ export const AdminCustomersView: React.FC<AdminCustomersViewProps> = ({
     initialCustomerId || null
   );
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [logHistoryCustomer, setLogHistoryCustomer] = useState<CustomerItem | null>(null);
+  const [deletingCustomer, setDeletingCustomer] = useState<CustomerItem | null>(null);
 
   const handleCustomerCreated = (newCustomer: CustomerItem) => {
     setCustomers((prev) => [newCustomer, ...prev]);
@@ -69,7 +73,19 @@ export const AdminCustomersView: React.FC<AdminCustomersViewProps> = ({
     setSelectedCustomerId(null);
   };
 
-  // 1. If a customer is selected, show Customer Details page (Figma Screenshot 3 & 4)
+  // 1. If Log History is selected from Action Menu (Figma Image 1)
+  if (logHistoryCustomer) {
+    return (
+      <div className="space-y-4">
+        <CustomerLogHistoryView
+          customer={logHistoryCustomer}
+          onBack={() => setLogHistoryCustomer(null)}
+        />
+      </div>
+    );
+  }
+
+  // 2. If a customer is selected, show Customer Details page (Figma Screenshot 3 & 4)
   if (selectedCustomerId) {
     const currentCustomer =
       customers.find((c) => c.id === selectedCustomerId) ||
@@ -87,7 +103,7 @@ export const AdminCustomersView: React.FC<AdminCustomersViewProps> = ({
     );
   }
 
-  // 2. If no customers exist, show Empty State Card (Figma Screenshot 1)
+  // 3. If no customers exist, show Empty State Card (Figma Screenshot 1)
   if (customers.length === 0) {
     return (
       <div className="space-y-4">
@@ -105,15 +121,29 @@ export const AdminCustomersView: React.FC<AdminCustomersViewProps> = ({
     );
   }
 
-  // 3. Otherwise show All Customer List Reusable Table (New Screenshots 1 & 2)
+  // 4. Otherwise show All Customer List Reusable Table (New Screenshots 1 & 2)
   return (
     <div className="space-y-4">
       <AdminCustomersList
         customers={customers}
         onSelectCustomer={(id) => setSelectedCustomerId(id)}
+        onViewLogHistory={(customer) => setLogHistoryCustomer(customer)}
         onAddCustomer={() => setIsAddModalOpen(true)}
-        onDeleteCustomer={handleDeleteCustomer}
+        onDeleteCustomer={(customer) => setDeletingCustomer(customer)}
         onTogglePortalAccess={handleTogglePortalAccess}
+      />
+
+      {/* Delete Customer Confirmation Modal (Figma Image 4) */}
+      <DeleteCustomerModal
+        customer={deletingCustomer}
+        isOpen={Boolean(deletingCustomer)}
+        onClose={() => setDeletingCustomer(null)}
+        onConfirm={() => {
+          if (deletingCustomer) {
+            handleDeleteCustomer(deletingCustomer.id);
+            setDeletingCustomer(null);
+          }
+        }}
       />
 
       {/* Add Customer Modal */}

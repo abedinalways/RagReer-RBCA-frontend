@@ -8,12 +8,14 @@ import { CustomerItem } from "../types/adminCustomers.types";
 interface CustomerActionMenuProps {
   customer: CustomerItem;
   onSelectCustomer: (customerId: string) => void;
-  onDeleteCustomer: (customerId: string) => void;
+  onViewLogHistory?: (customer: CustomerItem) => void;
+  onDeleteCustomer: (customer: CustomerItem) => void;
 }
 
 export const CustomerActionMenu: React.FC<CustomerActionMenuProps> = ({
   customer,
   onSelectCustomer,
+  onViewLogHistory,
   onDeleteCustomer,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -117,13 +119,19 @@ export const CustomerActionMenu: React.FC<CustomerActionMenuProps> = ({
     {
       key: "log_history",
       label: "Log History",
-      action: () => onSelectCustomer(customer.id),
+      action: () => {
+        if (onViewLogHistory) {
+          onViewLogHistory(customer);
+        } else {
+          onSelectCustomer(customer.id);
+        }
+      },
       isDestructive: false,
     },
     {
       key: "delete",
       label: "Delete",
-      action: () => onDeleteCustomer(customer.id),
+      action: () => onDeleteCustomer(customer),
       isDestructive: true,
     },
   ];
@@ -160,14 +168,14 @@ export const CustomerActionMenu: React.FC<CustomerActionMenuProps> = ({
               right: `${menuPosition.right}px`,
               zIndex: 9999,
             }}
-            className="w-40 sm:w-44 rounded-lg border border-border bg-card-bg p-2 shadow-xl animate-in fade-in zoom-in-95 duration-100"
+            className="w-36 sm:w-40 rounded-lg border border-border bg-card-bg p-2 shadow-xl animate-in fade-in zoom-in-95 duration-100"
           >
             <div
               className="flex flex-col gap-1.5"
               onMouseLeave={() => setHoveredKey(null)}
             >
               {menuOptions.map((opt) => {
-                const isHovered = hoveredKey === opt.key;
+                const isActive = (hoveredKey ?? menuOptions[0]?.key) === opt.key;
                 return (
                   <button
                     key={opt.key}
@@ -177,11 +185,11 @@ export const CustomerActionMenu: React.FC<CustomerActionMenuProps> = ({
                       setIsOpen(false);
                       opt.action();
                     }}
-                    className={`w-full py-2 px-3 rounded-md text-xs md:text-sm font-medium text-center transition-colors duration-150 cursor-pointer focus:outline-hidden ${
-                      isHovered
+                    className={`w-full py-2 px-3 rounded-md text-xs sm:text-sm font-medium text-center transition-colors duration-150 cursor-pointer focus:outline-hidden ${
+                      isActive
                         ? opt.isDestructive
-                          ? "bg-decline text-white"
-                          : "bg-primary text-white"
+                          ? "bg-decline text-white shadow-2xs"
+                          : "bg-primary text-white shadow-2xs"
                         : opt.isDestructive
                         ? "bg-page-bg text-txt-primary hover:bg-decline hover:text-white focus:bg-decline focus:text-white"
                         : "bg-page-bg text-txt-primary hover:bg-primary hover:text-white focus:bg-primary focus:text-white"

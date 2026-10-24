@@ -20,14 +20,16 @@ import { CustomerActionMenu } from "./CustomerActionMenu";
 interface AdminCustomersListProps {
   customers: CustomerItem[];
   onSelectCustomer: (customerId: string) => void;
+  onViewLogHistory?: (customer: CustomerItem) => void;
   onAddCustomer: () => void;
-  onDeleteCustomer: (customerId: string) => void;
+  onDeleteCustomer: (customer: CustomerItem) => void;
   onTogglePortalAccess: (customerId: string) => void;
 }
 
 export const AdminCustomersList: React.FC<AdminCustomersListProps> = ({
   customers,
   onSelectCustomer,
+  onViewLogHistory,
   onAddCustomer,
   onDeleteCustomer,
   onTogglePortalAccess,
@@ -245,6 +247,7 @@ export const AdminCustomersList: React.FC<AdminCustomersListProps> = ({
         <CustomerActionMenu
           customer={row}
           onSelectCustomer={onSelectCustomer}
+          onViewLogHistory={onViewLogHistory}
           onDeleteCustomer={onDeleteCustomer}
         />
       ),
