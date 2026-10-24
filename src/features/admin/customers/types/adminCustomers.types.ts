@@ -153,3 +153,33 @@ export interface CustomerContractItem {
   status: CustomerContractStatus;
 }
 
+export interface CustomerBillingSummary {
+  poNumber: string;
+  accountName: string;
+  totalBilledAmount: string;
+  paidAmount: string;
+  outstandingAmount: string;
+  overdueAmount: string;
+}
+
+export interface CustomerBillingSettings {
+  billingType: string;
+  validity: string;
+  consolidatedBilling: string;
+}
+
+export type CustomerPaymentStatus = "Pending" | "Paid" | "Due";
+
+export interface CustomerPaymentItem {
+  id: string;
+  invoiceId: string;
+  service: string;
+  propertiesCount: number;
+  billingPeriod: string;
+  amount: string;
+  dueDate: string;
+  method: string;
+  status: CustomerPaymentStatus;
+}
+
+

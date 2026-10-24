@@ -18,6 +18,7 @@ import CustomerPropertiesTab from "./CustomerPropertiesTab";
 import CustomerServicesTab from "./CustomerServicesTab";
 import CustomerEstimatesTab from "./CustomerEstimatesTab";
 import CustomerContractsTab from "./CustomerContractsTab";
+import CustomerBillingTab from "./CustomerBillingTab";
 import CustomerGenericEmptyTab from "./CustomerGenericEmptyTab";
 import CustomerAppointmentsCalendarView from "./CustomerAppointmentsCalendarView";
 import { AdminPropertyDetailView } from "@/features/admin/properties/components/AdminPropertyDetailView";
@@ -333,12 +334,14 @@ export const CustomerDetailsView: React.FC<CustomerDetailsViewProps> = ({
           <CustomerEstimatesTab />
         )}
         {activeTab === "contracts-agreements" && <CustomerContractsTab />}
+        {activeTab === "billing" && <CustomerBillingTab customer={customer} />}
         {activeTab !== "overview" &&
           activeTab !== "properties" &&
           activeTab !== "services" &&
           activeTab !== "estimates" &&
           activeTab !== "proposals" &&
-          activeTab !== "contracts-agreements" && (
+          activeTab !== "contracts-agreements" &&
+          activeTab !== "billing" && (
             <CustomerGenericEmptyTab tabKey={activeTab} />
           )}
       </div>

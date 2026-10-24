@@ -5,6 +5,9 @@ import {
   CustomerPropertyItem,
   CustomerEstimateItem,
   CustomerContractItem,
+  CustomerBillingSummary,
+  CustomerBillingSettings,
+  CustomerPaymentItem,
 } from "../types/adminCustomers.types";
 
 const CREW_AVATARS = [
@@ -519,5 +522,56 @@ export const CUSTOMER_CONTRACTS_LIST: CustomerContractItem[] = [
     startDate: "Mar 15, 2026",
     endDate: "Mar 14, 2028",
     status: "Active",
+  },
+];
+
+export const CUSTOMER_BILLING_SUMMARY: CustomerBillingSummary = {
+  poNumber: "PO12587",
+  accountName: "Weatherly Property Group",
+  totalBilledAmount: "$5,000.00",
+  paidAmount: "$4,580.00",
+  outstandingAmount: "$0.00",
+  overdueAmount: "$0.00",
+};
+
+export const CUSTOMER_BILLING_SETTINGS: CustomerBillingSettings = {
+  billingType: "Per Visit",
+  validity: "30 Days",
+  consolidatedBilling: "Weatherly Property Group",
+};
+
+export const CUSTOMER_PAYMENTS_LIST: CustomerPaymentItem[] = [
+  {
+    id: "pay-1",
+    invoiceId: "#INV124",
+    service: "Landscape & Property M...",
+    propertiesCount: 20,
+    billingPeriod: "12 months",
+    amount: "$4,580.00",
+    dueDate: "Oct 01, 2026",
+    method: "Cash",
+    status: "Pending",
+  },
+  {
+    id: "pay-2",
+    invoiceId: "#INV124",
+    service: "Landscape & Property M...",
+    propertiesCount: 20,
+    billingPeriod: "One time",
+    amount: "$4,580.00",
+    dueDate: "Oct 01, 2026",
+    method: "Online",
+    status: "Paid",
+  },
+  {
+    id: "pay-3",
+    invoiceId: "#INV124",
+    service: "Landscape & Property M...",
+    propertiesCount: 20,
+    billingPeriod: "12 months",
+    amount: "$4,580.00",
+    dueDate: "Oct 01, 2026",
+    method: "Cash",
+    status: "Due",
   },
 ];
