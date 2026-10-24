@@ -132,3 +132,24 @@ export interface NewCustomerFormData {
   defaultPassword?: string;
   sendInvitation: boolean;
 }
+
+export type CustomerContractStatus =
+  | "Draft"
+  | "Sent"
+  | "Pending"
+  | "Signed"
+  | "Expired"
+  | "Active";
+
+export interface CustomerContractItem {
+  id: string;
+  contractId: string;
+  service: string;
+  propertiesCount: number;
+  agreement: string;
+  billing: string;
+  startDate: string;
+  endDate: string;
+  status: CustomerContractStatus;
+}
+

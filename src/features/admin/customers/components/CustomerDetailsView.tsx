@@ -17,6 +17,7 @@ import CustomerOverviewTab from "./CustomerOverviewTab";
 import CustomerPropertiesTab from "./CustomerPropertiesTab";
 import CustomerServicesTab from "./CustomerServicesTab";
 import CustomerEstimatesTab from "./CustomerEstimatesTab";
+import CustomerContractsTab from "./CustomerContractsTab";
 import CustomerGenericEmptyTab from "./CustomerGenericEmptyTab";
 import CustomerAppointmentsCalendarView from "./CustomerAppointmentsCalendarView";
 import { AdminPropertyDetailView } from "@/features/admin/properties/components/AdminPropertyDetailView";
@@ -50,7 +51,7 @@ export const CustomerDetailsView: React.FC<CustomerDetailsViewProps> = ({
     { key: "overview", label: "Overview" },
     { key: "properties", label: "Properties" },
     { key: "services", label: "Services" },
-    { key: "estimates", label: "Estimates" },
+    { key: "estimates", label: "Proposals" },
     { key: "contracts-agreements", label: "Contracts & Agreements" },
     { key: "billing", label: "Billing" },
     { key: "activity", label: "Activity" },
@@ -331,11 +332,13 @@ export const CustomerDetailsView: React.FC<CustomerDetailsViewProps> = ({
         {(activeTab === "estimates" || activeTab === "proposals") && (
           <CustomerEstimatesTab />
         )}
+        {activeTab === "contracts-agreements" && <CustomerContractsTab />}
         {activeTab !== "overview" &&
           activeTab !== "properties" &&
           activeTab !== "services" &&
           activeTab !== "estimates" &&
-          activeTab !== "proposals" && (
+          activeTab !== "proposals" &&
+          activeTab !== "contracts-agreements" && (
             <CustomerGenericEmptyTab tabKey={activeTab} />
           )}
       </div>
