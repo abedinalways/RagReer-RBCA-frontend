@@ -4,7 +4,10 @@ export type CustomerTabKey =
   | "services"
   | "proposals"
   | "estimates"
+  | "contracts"
   | "contracts-agreements"
+  | "invoices"
+  | "payments"
   | "billing"
   | "activity"
   | "calendar";

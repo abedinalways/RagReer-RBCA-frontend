@@ -88,13 +88,13 @@ export const CUSTOMER_OVERVIEW_ACTIVE_JOBS: CustomerActiveJob[] = [
   },
 ];
 
-export const CUSTOMER_RECENT_ACTIVITIES: CustomerActivityItem[] = [
+export const CUSTOMER_ALL_ACTIVITIES: CustomerActivityItem[] = [
   {
     id: "act-1",
     title: "Reviewed Estimate",
     description: "#CTR-125 reviewed the estimate",
     timestamp: "3 minutes ago",
-    type: "orange",
+    type: "amber",
   },
   {
     id: "act-2",
@@ -112,12 +112,36 @@ export const CUSTOMER_RECENT_ACTIVITIES: CustomerActivityItem[] = [
   },
   {
     id: "act-4",
+    title: "Account Status",
+    description: "#CTR-126 account active with no restrictions",
+    timestamp: "Active since 3 days",
+    type: "amber",
+  },
+  {
+    id: "act-5",
+    title: "Subscription Type",
+    description: "#CTR-127 premium subscription expires in 12 days",
+    timestamp: "Expires on 2024-07-15",
+    type: "amber",
+  },
+  {
+    id: "act-6",
+    title: "Support Tickets",
+    description: "#CTR-128 submitted 2 tickets, 1 resolved",
+    timestamp: "Last ticket updated 2 hours ago",
+    type: "amber",
+  },
+  {
+    id: "act-7",
     title: "Invitation Accepted",
-    description: "#CTR-125 accepted your invitation",
+    description: "#CTR-125 accepted your invitaion",
     timestamp: "1 hour ago",
     type: "green",
   },
 ];
+
+export const CUSTOMER_RECENT_ACTIVITIES: CustomerActivityItem[] =
+  CUSTOMER_ALL_ACTIVITIES.slice(0, 4);
 
 export const CUSTOMER_PROPERTIES_LIST: CustomerPropertyItem[] = [
   {

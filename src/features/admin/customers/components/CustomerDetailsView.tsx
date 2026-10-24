@@ -19,6 +19,7 @@ import CustomerServicesTab from "./CustomerServicesTab";
 import CustomerEstimatesTab from "./CustomerEstimatesTab";
 import CustomerContractsTab from "./CustomerContractsTab";
 import CustomerBillingTab from "./CustomerBillingTab";
+import CustomerActivityTab from "./CustomerActivityTab";
 import CustomerGenericEmptyTab from "./CustomerGenericEmptyTab";
 import CustomerAppointmentsCalendarView from "./CustomerAppointmentsCalendarView";
 import { AdminPropertyDetailView } from "@/features/admin/properties/components/AdminPropertyDetailView";
@@ -39,9 +40,15 @@ export const CustomerDetailsView: React.FC<CustomerDetailsViewProps> = ({
   onSendInvitation,
 }) => {
   const router = useRouter();
-  // Normalize initialTab so proposals maps to estimates
+  // Normalize initialTab so aliases map to the appropriate key
   const normalizedInitialTab: CustomerTabKey =
-    initialTab === "proposals" ? "estimates" : initialTab;
+    initialTab === "proposals" || initialTab === "estimates"
+      ? "estimates"
+      : initialTab === "contracts"
+      ? "contracts-agreements"
+      : initialTab === "invoices" || initialTab === "payments"
+      ? "billing"
+      : initialTab;
   const [activeTab, setActiveTab] = useState<CustomerTabKey>(normalizedInitialTab);
   const [showCalendarView, setShowCalendarView] = useState<boolean>(
     normalizedInitialTab === "calendar"
@@ -335,13 +342,18 @@ export const CustomerDetailsView: React.FC<CustomerDetailsViewProps> = ({
         )}
         {activeTab === "contracts-agreements" && <CustomerContractsTab />}
         {activeTab === "billing" && <CustomerBillingTab customer={customer} />}
+        {activeTab === "activity" && <CustomerActivityTab />}
         {activeTab !== "overview" &&
           activeTab !== "properties" &&
           activeTab !== "services" &&
           activeTab !== "estimates" &&
           activeTab !== "proposals" &&
           activeTab !== "contracts-agreements" &&
-          activeTab !== "billing" && (
+          activeTab !== "contracts" &&
+          activeTab !== "billing" &&
+          activeTab !== "invoices" &&
+          activeTab !== "payments" &&
+          activeTab !== "activity" && (
             <CustomerGenericEmptyTab tabKey={activeTab} />
           )}
       </div>
