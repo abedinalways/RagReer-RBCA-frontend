@@ -23,6 +23,9 @@ import {
 } from "../types/crewMembers.types";
 import { CrewDetailsOverviewTab } from "./CrewDetailsOverviewTab";
 import { CrewJobsTab } from "./CrewJobsTab";
+import { CrewTimeTab } from "./CrewTimeTab";
+import { CrewPerformanceTab } from "./CrewPerformanceTab";
+import { CrewActivityTab } from "./CrewActivityTab";
 import { SetHourlyRateModal } from "./SetHourlyRateModal";
 import { SuspendMemberModal } from "./SuspendMemberModal";
 import JobsIcon from "../../../../components/icons/admin/JobsIcon";
@@ -286,74 +289,11 @@ export const CrewMemberDetailsView: React.FC<CrewMemberDetailsViewProps> = ({
 
       {activeTab === "jobs" && <CrewJobsTab member={member} />}
 
-      {activeTab === "time" && (
-        <div className="bg-card-bg rounded-xl border border-border p-6 shadow-2xs space-y-4">
-          <h2 className="text-base sm:text-lg font-medium text-primary-heading font-barlow-condensed border-b border-border pb-3">
-            Timesheet & Worked Hours
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="p-4 rounded-lg border border-border bg-page-bg/40 space-y-1">
-              <span className="text-xs text-secondary-subheading">Total Hours</span>
-              <p className="text-xl font-semibold text-primary">{member.workedThisMonth || "12h 40m"}</p>
-            </div>
-            <div className="p-4 rounded-lg border border-border bg-page-bg/40 space-y-1">
-              <span className="text-xs text-secondary-subheading">Pay Frequency</span>
-              <p className="text-xl font-semibold text-primary">{member.frequency || "Monthly"}</p>
-            </div>
-            <div className="p-4 rounded-lg border border-border bg-page-bg/40 space-y-1">
-              <span className="text-xs text-secondary-subheading">Estimated Earnings</span>
-              <p className="text-xl font-semibold text-primary">{member.netPayable || "$2,090"}</p>
-            </div>
-          </div>
-        </div>
-      )}
+      {activeTab === "time" && <CrewTimeTab member={member} />}
 
-      {activeTab === "performance" && (
-        <div className="bg-card-bg rounded-xl border border-border p-6 shadow-2xs space-y-4">
-          <h2 className="text-base sm:text-lg font-medium text-primary-heading font-barlow-condensed border-b border-border pb-3">
-            Performance Metrics
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="p-4 rounded-lg border border-border bg-page-bg/40 space-y-1">
-              <span className="text-xs text-secondary-subheading">Completion Rate</span>
-              <p className="text-xl font-semibold text-trend-up">98.5%</p>
-            </div>
-            <div className="p-4 rounded-lg border border-border bg-page-bg/40 space-y-1">
-              <span className="text-xs text-secondary-subheading">Customer Rating</span>
-              <p className="text-xl font-semibold text-primary">4.9 / 5.0</p>
-            </div>
-            <div className="p-4 rounded-lg border border-border bg-page-bg/40 space-y-1">
-              <span className="text-xs text-secondary-subheading">Total Strikes</span>
-              <p className="text-xl font-semibold text-decline">{member.strikes}</p>
-            </div>
-          </div>
-        </div>
-      )}
+      {activeTab === "performance" && <CrewPerformanceTab member={member} />}
 
-      {activeTab === "activity" && (
-        <div className="bg-card-bg rounded-xl border border-border p-6 shadow-2xs space-y-4">
-          <h2 className="text-base sm:text-lg font-medium text-primary-heading font-barlow-condensed border-b border-border pb-3">
-            All Activity Log
-          </h2>
-          <div className="space-y-3">
-            {[
-              { title: "Started Travel", desc: `${member.name} started travel for #JOB12458`, time: "4 minutes ago", color: "bg-info" },
-              { title: "Last Logged In", desc: `${member.crewId} logged in from mobile portal`, time: "1 hour ago", color: "bg-flagged-amber" },
-              { title: "Job Assigned", desc: `Assigned to ${member.name} by Operations Team`, time: "1 hour ago", color: "bg-trend-up" },
-              { title: "Profile Verified", desc: "Orientation completed and profile verified", time: "Oct 24, 2026", color: "bg-info" },
-            ].map((act, idx) => (
-              <div key={idx} className="flex items-start gap-3 p-3 rounded-lg border border-border hover:bg-page-bg/30 transition-colors">
-                <span className={`w-2.5 h-2.5 rounded-full mt-1 shrink-0 ${act.color}`} />
-                <div className="flex-1 space-y-0.5">
-                  <p className="text-xs sm:text-sm font-medium text-primary-heading">{act.title}</p>
-                  <p className="text-[11px] sm:text-xs text-secondary-subheading">{act.desc}</p>
-                </div>
-                <span className="text-[11px] text-secondary-subheading shrink-0">{act.time}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      {activeTab === "activity" && <CrewActivityTab member={member} />}
 
       {/* Set Hourly Rate Modal (Screenshot 4) */}
       <SetHourlyRateModal

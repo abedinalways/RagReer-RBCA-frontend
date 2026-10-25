@@ -110,3 +110,25 @@ export interface CrewAssignedJob {
   role: "Leader" | "Member";
   status: CrewJobStatus;
 }
+
+export interface CrewTimeBreakdownItem {
+  id: string;
+  date: string;
+  jobId: string;
+  workStart: string;
+  workStop: string;
+  breakTime: string;
+  totalTime: string;
+  billableHours: string;
+}
+
+export interface CrewQualityHistoryItem {
+  id: string;
+  date: string;
+  jobId: string;
+  propertyAddress: string;
+  issue: string;
+  resolution: string;
+  status: "Active" | "Resolved";
+}
+

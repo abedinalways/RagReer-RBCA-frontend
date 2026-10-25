@@ -5,6 +5,8 @@ import {
   CrewActivityItem,
   RouteAssignedMember,
   CrewAssignedJob,
+  CrewTimeBreakdownItem,
+  CrewQualityHistoryItem,
 } from "../types/crewMembers.types";
 
 export const defaultMockCrewMember: CrewMemberItem = {
@@ -512,3 +514,147 @@ export const mockCrewAssignedJobs: CrewAssignedJob[] = [
     status: "Revision Requested",
   },
 ];
+
+export const mockCrewTimeBreakdownList: CrewTimeBreakdownItem[] = [
+  {
+    id: "TB-1",
+    date: "Aug 05, 2026",
+    jobId: "#JOB12458",
+    workStart: "08:40 AM",
+    workStop: "04:00 PM",
+    breakTime: "01:00 PM - 01:30 PM",
+    totalTime: "04h 18m",
+    billableHours: "03h 20m",
+  },
+  {
+    id: "TB-2",
+    date: "Aug 06, 2026",
+    jobId: "#JOB12459",
+    workStart: "09:15 AM",
+    workStop: "05:15 PM",
+    breakTime: "12:30 PM - 01:00 PM",
+    totalTime: "04h 45m",
+    billableHours: "04h 00m",
+  },
+  {
+    id: "TB-3",
+    date: "Aug 05, 2026",
+    jobId: "#JOB12458",
+    workStart: "08:40 AM",
+    workStop: "04:00 PM",
+    breakTime: "01:00 PM - 01:30 PM",
+    totalTime: "04h 18m",
+    billableHours: "03h 20m",
+  },
+  {
+    id: "TB-4",
+    date: "Aug 07, 2026",
+    jobId: "#JOB12460",
+    workStart: "07:50 AM",
+    workStop: "03:45 PM",
+    breakTime: "10:15 AM - 10:45 AM",
+    totalTime: "04h 30m",
+    billableHours: "04h 00m",
+  },
+  {
+    id: "TB-5",
+    date: "Aug 07, 2026",
+    jobId: "#JOB12460",
+    workStart: "07:50 AM",
+    workStop: "03:45 PM",
+    breakTime: "10:15 AM - 10:45 AM",
+    totalTime: "04h 30m",
+    billableHours: "04h 00m",
+  },
+  {
+    id: "TB-6",
+    date: "Aug 07, 2026",
+    jobId: "#JOB12460",
+    workStart: "07:50 AM",
+    workStop: "03:45 PM",
+    breakTime: "10:15 AM - 10:45 AM",
+    totalTime: "04h 30m",
+    billableHours: "04h 00m",
+  },
+];
+
+export const mockCrewQualityHistoryList: CrewQualityHistoryItem[] = [
+  {
+    id: "QH-1",
+    date: "Aug 05, 2026",
+    jobId: "#JOB12458",
+    propertyAddress: "987 Willow Street",
+    issue: "Incomplete trimming",
+    resolution: "10% Discount Applied",
+    status: "Active",
+  },
+  {
+    id: "QH-2",
+    date: "Aug 05, 2026",
+    jobId: "#JOB12458",
+    propertyAddress: "987 Willow Street",
+    issue: "Missed service area",
+    resolution: "10% Discount Applied",
+    status: "Resolved",
+  },
+];
+
+export const mockAllActivitiesList: CrewActivityItem[] = [
+  {
+    id: "ACT-ALL-1",
+    type: "status",
+    dotColor: "amber",
+    title: "Reviewed Estimate",
+    description: "#CTR-125 reviewed the estimate",
+    timestamp: "3 minutes ago",
+  },
+  {
+    id: "ACT-ALL-2",
+    type: "travel",
+    dotColor: "blue",
+    title: "Sent Service Request",
+    description: "#CTR-125 sent service request for property #PRT1258",
+    timestamp: "4 minutes ago",
+  },
+  {
+    id: "ACT-ALL-3",
+    type: "login",
+    dotColor: "amber",
+    title: "Last Logged In",
+    description: "#CTR-125 last logged in about 30 mins ago",
+    timestamp: "1 hour ago",
+  },
+  {
+    id: "ACT-ALL-4",
+    type: "status",
+    dotColor: "amber",
+    title: "Account Status",
+    description: "#CTR-126 account active with no restrictions",
+    timestamp: "Active since 3 days",
+  },
+  {
+    id: "ACT-ALL-5",
+    type: "general",
+    dotColor: "amber",
+    title: "Subscription Type",
+    description: "#CTR-127 premium subscription expires in 12 days",
+    timestamp: "Expires on 2024-07-15",
+  },
+  {
+    id: "ACT-ALL-6",
+    type: "general",
+    dotColor: "amber",
+    title: "Support Tickets",
+    description: "#CTR-128 submitted 2 tickets, 1 resolved",
+    timestamp: "Last ticket updated 2 hours ago",
+  },
+  {
+    id: "ACT-ALL-7",
+    type: "assignment",
+    dotColor: "green",
+    title: "Invitation Accepted",
+    description: "#CTR-125 accepted your invitaion",
+    timestamp: "1 hour ago",
+  },
+];
+
