@@ -31,6 +31,7 @@ import ServiceIcon from "@/components/icons/admin/ServiceIcon";
 import JobsIcon from "@/components/icons/admin/JobsIcon";
 import ScheduleIcon from "../../../components/icons/admin/ScheduleIcon";
 import PropertiesIcon from "../../../components/icons/admin/PropertiesIcon";
+import PeopleIcon from "../../../components/icons/PeopleIcon";
 
 export type NavIcon = LucideIcon | ComponentType<{ className?: string }>;
 
@@ -115,16 +116,10 @@ export const adminGroupedNavigation: AdminNavGroup[] = [
         id: "workers",
         label: "Crew Members",
         href: "/admin/workers",
-        icon: HardHat,
+        icon: PeopleIcon,
         permission: PERMISSIONS.WORKER.VIEW,
       },
-      {
-        id: "leads",
-        label: "Leads",
-        href: "/admin/leads",
-        icon: Target,
-        permission: PERMISSIONS.LEAD.VIEW,
-      },
+     
     ],
   },
   {
