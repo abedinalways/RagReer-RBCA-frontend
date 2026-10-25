@@ -73,6 +73,12 @@ export const AdminServiceRequestsView: React.FC = () => {
         toast(`Viewing customer: ${request.customer.name}`, { icon: "👤" });
         break;
       case "create_estimate":
+        router.push(
+          `/admin/requests/create-estimate?requestId=${encodeURIComponent(
+            request.requestId
+          )}`
+        );
+        break;
       case "view_estimate":
         toast(`Estimate action for ${request.requestId}`, { icon: "📄" });
         break;
@@ -144,7 +150,7 @@ export const AdminServiceRequestsView: React.FC = () => {
 
         <button
           type="button"
-          onClick={() => toast("Opening estimate creator...", { icon: "📋" })}
+          onClick={() => router.push("/admin/requests/create-estimate")}
           className="inline-flex items-center justify-center gap-2 rounded-sm bg-primary px-4 py-2 text-sm md:text-base font-medium text-white shadow-2xs hover:bg-primary-hover transition-colors cursor-pointer self-start sm:self-auto"
         >
           <span>Create Estimate</span>

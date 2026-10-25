@@ -112,7 +112,13 @@ export const AdminRequestDetail: React.FC<AdminRequestDetailProps> = ({
           <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap">
             <button
               type="button"
-              onClick={() => toast.success("Opening Estimate Creator...")}
+              onClick={() =>
+                router.push(
+                  `/admin/requests/create-estimate?requestId=${encodeURIComponent(
+                    data.requestId
+                  )}`
+                )
+              }
               className="bg-primary hover:bg-primary-hover text-white px-4 sm:px-5 py-2 sm:py-2.5 rounded-sm text-xs sm:text-sm font-medium transition-colors cursor-pointer shadow-2xs"
             >
               Create Estimate
@@ -139,7 +145,13 @@ export const AdminRequestDetail: React.FC<AdminRequestDetailProps> = ({
             </button>
             <button
               type="button"
-              onClick={() => toast.success("Opening Estimate Creator...")}
+              onClick={() =>
+                router.push(
+                  `/admin/requests/create-estimate?requestId=${encodeURIComponent(
+                    data.requestId
+                  )}`
+                )
+              }
               className="border border-primary text-primary hover:bg-page-bg px-4 sm:px-5 py-2 sm:py-2.5 rounded-sm text-xs sm:text-sm font-medium transition-colors cursor-pointer"
             >
               Create Estimate
