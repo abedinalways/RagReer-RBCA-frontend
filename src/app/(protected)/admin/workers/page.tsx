@@ -1,13 +1,8 @@
 import type { Metadata } from "next";
-import { PlaceholderPage } from "@/components/shared/PlaceholderPage";
+import { AdminWorkersView } from "@/features/admin/workers/components/AdminWorkersView";
 
-export const metadata: Metadata = { title: "Workers" };
+export const metadata: Metadata = { title: "Crew Members" };
 
 export default function AdminWorkersPage() {
-  return (
-    <PlaceholderPage
-      title="Workers"
-      description="Worker records, skills & job assignment — implementation lives in features/workers."
-    />
-  );
+  return <AdminWorkersView />;
 }
