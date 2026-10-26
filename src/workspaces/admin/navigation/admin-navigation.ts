@@ -32,6 +32,9 @@ import JobsIcon from "@/components/icons/admin/JobsIcon";
 import ScheduleIcon from "../../../components/icons/admin/ScheduleIcon";
 import PropertiesIcon from "../../../components/icons/admin/PropertiesIcon";
 import PeopleIcon from "../../../components/icons/PeopleIcon";
+import EstimateSidebarIcon from "@/components/icons/admin/EstimateSidebarIcon";
+import ContractsIcon from "@/components/icons/admin/ContractsIcon";
+import InvoicesIcon from "@/components/icons/admin/InvoicesIcon";
 
 export type NavIcon = LucideIcon | ComponentType<{ className?: string }>;
 
@@ -125,16 +128,31 @@ export const adminGroupedNavigation: AdminNavGroup[] = [
   {
     id: "business",
     label: "Business",
-    href: "/admin/crm",
+    href: "/admin/estimates",
     icon: Building2,
-    permission: PERMISSIONS.CRM.VIEW,
+    permission: PERMISSIONS.ESTIMATION.VIEW,
+    defaultExpanded: true,
     items: [
       {
-        id: "crm",
-        label: "CRM",
-        href: "/admin/crm",
-        icon: Building2,
-        permission: PERMISSIONS.CRM.VIEW,
+        id: "estimates",
+        label: "Estimates",
+        href: "/admin/estimates",
+        icon: EstimateSidebarIcon,
+        permission: PERMISSIONS.ESTIMATION.VIEW,
+      },
+      {
+        id: "contracts",
+        label: "Contracts",
+        href: "/admin/contracts",
+        icon: ContractsIcon,
+        permission: PERMISSIONS.CONTRACT.VIEW,
+      },
+      {
+        id: "invoices",
+        label: "Invoices",
+        href: "/admin/invoices",
+        icon: InvoicesIcon,
+        permission: PERMISSIONS.INVOICE.VIEW,
       },
     ],
   },
