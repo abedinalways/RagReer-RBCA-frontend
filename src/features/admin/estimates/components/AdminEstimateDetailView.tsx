@@ -133,7 +133,9 @@ export const AdminEstimateDetailView: React.FC<
   };
 
   const handleCreateContract = () => {
-    toast.success("Opening Contract & Agreement creation...");
+    router.push(
+      `/admin/contracts/create?estimateId=${encodeURIComponent(data.estimateId)}`
+    );
   };
 
   const handleDownload = () => {
