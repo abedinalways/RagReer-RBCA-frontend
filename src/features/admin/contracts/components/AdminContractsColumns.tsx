@@ -22,17 +22,41 @@ export const contractStatusStyles: Record<
     badgeBorder: "border-[#B2DDFF]",
     dotBg: "bg-[#1570EF]",
   },
+  "Pending Sign": {
+    badgeBg: "bg-[#FEF7E6]",
+    badgeText: "text-[#B54708]",
+    badgeBorder: "border-[#FEDF89]",
+    dotBg: "bg-[#F79009]",
+  },
   "Pending Signature": {
     badgeBg: "bg-[#FEF7E6]",
     badgeText: "text-[#B54708]",
     badgeBorder: "border-[#FEDF89]",
     dotBg: "bg-[#F79009]",
   },
+  "Change Requested": {
+    badgeBg: "bg-[#FFF4ED]",
+    badgeText: "text-[#C4320A]",
+    badgeBorder: "border-[#FFD6AE]",
+    dotBg: "bg-[#EA580C]",
+  },
+  Signed: {
+    badgeBg: "bg-[#ECFDF3]",
+    badgeText: "text-[#027A48]",
+    badgeBorder: "border-[#ABEFC6]",
+    dotBg: "bg-[#12B76A]",
+  },
   Active: {
     badgeBg: "bg-[#ECFDF3]",
     badgeText: "text-[#027A48]",
     badgeBorder: "border-[#ABEFC6]",
     dotBg: "bg-[#12B76A]",
+  },
+  Cancelled: {
+    badgeBg: "bg-[#FEF3F2]",
+    badgeText: "text-[#D92D20]",
+    badgeBorder: "border-[#FDA29B]",
+    dotBg: "bg-[#D92D20]",
   },
   Completed: {
     badgeBg: "bg-[#F0FDF9]",
@@ -68,15 +92,6 @@ export const createAdminContractsColumns = (
       >
         {row.contractId}
       </button>
-    ),
-  },
-  {
-    header: "Estimate ID",
-    accessorKey: "estimateId",
-    cell: (row) => (
-      <span className="text-secondary-subheading font-normal text-xs sm:text-sm whitespace-nowrap">
-        {row.estimateId}
-      </span>
     ),
   },
   {
@@ -125,37 +140,19 @@ export const createAdminContractsColumns = (
   },
   {
     header: "Agreement Type",
-    accessorKey: "serviceAgreementType",
+    accessorKey: "agreementType",
     cell: (row) => (
       <span className="text-secondary-subheading text-xs sm:text-sm whitespace-nowrap">
-        {row.serviceAgreementType}
+        {row.agreementType || row.serviceAgreementType}
       </span>
     ),
   },
   {
-    header: "Start Date",
-    accessorKey: "startDate",
+    header: "Period",
+    accessorKey: "period",
     cell: (row) => (
       <span className="text-secondary-subheading text-xs sm:text-sm whitespace-nowrap">
-        {row.startDate}
-      </span>
-    ),
-  },
-  {
-    header: "End Date",
-    accessorKey: "endDate",
-    cell: (row) => (
-      <span className="text-secondary-subheading text-xs sm:text-sm whitespace-nowrap">
-        {row.endDate}
-      </span>
-    ),
-  },
-  {
-    header: "Amount",
-    accessorKey: "amount",
-    cell: (row) => (
-      <span className="text-txt-primary font-medium text-xs sm:text-sm whitespace-nowrap">
-        {row.amount}
+        {row.period || (row.startDate && row.endDate ? `${row.startDate} - ${row.endDate}` : "—")}
       </span>
     ),
   },

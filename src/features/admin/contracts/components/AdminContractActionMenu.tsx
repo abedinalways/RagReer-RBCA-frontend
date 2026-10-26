@@ -119,7 +119,7 @@ export const AdminContractActionMenu: React.FC<
         aria-expanded={isOpen}
         aria-haspopup="true"
         aria-label="Contract row actions"
-        className="flex h-8 w-8 items-center justify-center rounded-sm border border-border bg-card-bg text-secondary-subheading hover:text-txt-primary hover:bg-page-bg hover:border-primary/40 focus:outline-hidden transition-colors cursor-pointer"
+        className="flex h-8 w-8 items-center justify-center rounded-xs border border-border bg-card-bg text-secondary-subheading hover:text-txt-primary hover:bg-page-bg hover:border-primary/40 focus:outline-hidden transition-colors cursor-pointer"
       >
         <MoreHorizontal className="h-4 w-4" />
       </button>
@@ -142,7 +142,7 @@ export const AdminContractActionMenu: React.FC<
               right: `${menuPosition.right}px`,
               zIndex: 9999,
             }}
-            className="w-44 sm:w-48 rounded-sm border border-border bg-card-bg p-2 shadow-xl animate-in fade-in zoom-in-95 duration-100"
+            className="w-44 sm:w-48 rounded-xs border border-border bg-card-bg p-2 shadow-xl animate-in fade-in zoom-in-95 duration-100"
           >
             <div
               className="flex flex-col gap-1.5"

@@ -18,19 +18,11 @@ const ALL_STATUS_OPTIONS: (string | AdminContractStatus)[] = [
   "All Status",
   "Draft",
   "Sent",
-  "Pending Signature",
+  "Pending Sign",
+  "Signed",
+  "Change Requested",
   "Active",
-  "Completed",
-  "Expired",
-  "Terminated",
-];
-
-const ALL_AGREEMENT_TYPES = [
-  "Agreement Type",
-  "12 month agreement",
-  "6 month agreement",
-  "Month-to-month agreement",
-  "Annual Custom",
+  "Cancelled",
 ];
 
 export const AdminContractsView: React.FC = () => {
@@ -39,8 +31,6 @@ export const AdminContractsView: React.FC = () => {
     useState<AdminContractItem[]>(ADMIN_CONTRACTS_DATA);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("All Status");
-  const [selectedAgreementType, setSelectedAgreementType] =
-    useState("Agreement Type");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(25);
 
@@ -50,11 +40,13 @@ export const AdminContractsView: React.FC = () => {
   ) => {
     switch (actionKey) {
       case "view_details":
-        router.push(`/admin/contracts/create?contractId=${encodeURIComponent(contract.id)}`);
+        router.push(`/admin/contracts/${contract.id}`);
         break;
       case "edit":
         router.push(
-          `/admin/contracts/create?contractId=${encodeURIComponent(contract.id)}`
+          `/admin/contracts/create?contractId=${encodeURIComponent(
+            contract.id
+          )}`
         );
         break;
       case "view_customer":
@@ -68,11 +60,12 @@ export const AdminContractsView: React.FC = () => {
           )
         );
         break;
+      case "cancel":
       case "terminate":
-        toast.error(`Contract ${contract.contractId} terminated`);
+        toast.error(`Contract ${contract.contractId} cancelled`);
         setContracts((prev) =>
           prev.map((c) =>
-            c.id === contract.id ? { ...c, status: "Terminated" } : c
+            c.id === contract.id ? { ...c, status: "Cancelled" } : c
           )
         );
         break;
@@ -88,24 +81,25 @@ export const AdminContractsView: React.FC = () => {
       const matchesSearch =
         !q ||
         c.contractId.toLowerCase().includes(q) ||
-        c.estimateId.toLowerCase().includes(q) ||
+        (c.estimateId && c.estimateId.toLowerCase().includes(q)) ||
         c.customer.name.toLowerCase().includes(q) ||
         c.customer.email.toLowerCase().includes(q) ||
         c.propertyAddress.toLowerCase().includes(q) ||
-        c.serviceType.toLowerCase().includes(q);
+        c.serviceType.toLowerCase().includes(q) ||
+        (c.agreementType && c.agreementType.toLowerCase().includes(q)) ||
+        (c.period && c.period.toLowerCase().includes(q));
 
       const matchesStatus =
-        selectedStatus === "All Status" || c.status === selectedStatus;
+        selectedStatus === "All Status" ||
+        c.status === selectedStatus ||
+        (selectedStatus === "Pending Sign" &&
+          (c.status === "Pending Sign" || c.status === "Pending Signature")) ||
+        (selectedStatus === "Cancelled" &&
+          (c.status === "Cancelled" || c.status === "Terminated"));
 
-      const matchesAgreementType =
-        selectedAgreementType === "Agreement Type" ||
-        c.serviceAgreementType
-          .toLowerCase()
-          .includes(selectedAgreementType.toLowerCase());
-
-      return matchesSearch && matchesStatus && matchesAgreementType;
+      return matchesSearch && matchesStatus;
     });
-  }, [contracts, searchQuery, selectedStatus, selectedAgreementType]);
+  }, [contracts, searchQuery, selectedStatus]);
 
   const columns = useMemo(
     () => createAdminContractsColumns(handleActionClick),
@@ -114,18 +108,18 @@ export const AdminContractsView: React.FC = () => {
 
   return (
     <div className="w-full space-y-5 md:space-y-6 max-w-[1600px] mx-auto animate-in fade-in duration-200">
-      {/* 1. Page Header */}
+      {/* 1. Page Header matching Screenshot 2 */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <h1 className="font-barlow-condensed text-xl md:text-2xl font-medium tracking-tight text-primary-heading">
-          Contracts
+          Contracts & Agreements
         </h1>
 
         <button
           type="button"
           onClick={() => router.push("/admin/contracts/create")}
-          className="inline-flex items-center justify-center gap-2 rounded-sm bg-primary px-4 py-2 text-sm md:text-base font-medium text-white shadow-2xs hover:bg-primary-hover transition-colors cursor-pointer self-start sm:self-auto"
+          className="inline-flex items-center justify-center gap-2 rounded-xs bg-primary px-4 py-2 text-xs md:text-sm font-medium text-white shadow-2xs hover:bg-primary-hover transition-colors cursor-pointer self-start sm:self-auto"
         >
-          <span>Create Contract & Agreement</span>
+          <span>Create Contract & Agreements</span>
         </button>
       </div>
 
@@ -136,10 +130,10 @@ export const AdminContractsView: React.FC = () => {
         />
       ) : (
         <div className="rounded-sm border border-border bg-card-bg shadow-2xs overflow-hidden">
-          {/* Table Controls / Filter Bar matching Figma */}
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 p-4 sm:p-5 border-b border-border-subtle">
+          {/* Table Controls / Filter Bar matching Figma Screenshot 2 */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-4 sm:p-5 border-b border-border-subtle">
             <h2 className="font-barlow-condensed text-lg md:text-xl font-medium text-primary-heading leading-none">
-              All Contracts List
+              All Contracts & Agreements List
             </h2>
 
             <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
@@ -148,13 +142,13 @@ export const AdminContractsView: React.FC = () => {
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-secondary-subheading" />
                 <input
                   type="text"
-                  placeholder="Search customers"
+                  placeholder="Search contracts"
                   value={searchQuery}
                   onChange={(e) => {
                     setSearchQuery(e.target.value);
                     setCurrentPage(1);
                   }}
-                  className="w-full sm:w-56 h-9 rounded-md border border-border bg-page-bg/50 pl-8.5 pr-3 text-xs sm:text-sm text-txt-primary placeholder:text-secondary-subheading/60 focus:border-primary focus:bg-card-bg focus:outline-hidden transition-all"
+                  className="w-full sm:w-56 h-9 rounded-xs border border-border bg-card-bg pl-8.5 pr-3 text-xs md:text-sm text-txt-primary placeholder:text-secondary-subheading/60 focus:border-primary focus:outline-hidden transition-all"
                 />
               </div>
 
@@ -167,20 +161,7 @@ export const AdminContractsView: React.FC = () => {
                   setCurrentPage(1);
                 }}
                 className="w-32 sm:w-36"
-                triggerClassName="h-9 text-xs sm:text-sm bg-page-bg/50 border-border"
-                size="sm"
-              />
-
-              {/* Agreement Type Filter */}
-              <CustomSelect
-                options={ALL_AGREEMENT_TYPES}
-                value={selectedAgreementType}
-                onChange={(val) => {
-                  setSelectedAgreementType(val);
-                  setCurrentPage(1);
-                }}
-                className="w-40 sm:w-44"
-                triggerClassName="h-9 text-xs sm:text-sm bg-page-bg/50 border-border"
+                triggerClassName="h-9 text-xs md:text-sm bg-card-bg border-border rounded-xs"
                 size="sm"
               />
             </div>
