@@ -179,7 +179,13 @@ interface AdminScheduleAppointmentModalProps {
   preferredTime?: string;
   estimatedDuration?: string;
   dayOfWeek?: string;
-  onSuccess?: () => void;
+  onSuccess?: (details?: {
+    scheduledDate: string;
+    arrivalTime: string;
+    duration: string;
+    estimateVisit: string;
+    nextVisitOn?: string;
+  }) => void;
 }
 
 export const AdminScheduleAppointmentModal: React.FC<
@@ -429,7 +435,15 @@ export const AdminScheduleAppointmentModal: React.FC<
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     toast.success("Appointment scheduled successfully!");
-    if (onSuccess) onSuccess();
+    if (onSuccess) {
+      onSuccess({
+        scheduledDate: singleDate || dates[0] || "Aug 27, 2026",
+        arrivalTime: arrivalTime || "11:00 AM",
+        duration: durationValue || "2 hr/day",
+        estimateVisit: `${displayEstimatedVisits || 12} visit`,
+        nextVisitOn: "Sep 27, 2026",
+      });
+    }
     onClose();
   };
 
