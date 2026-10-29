@@ -17,14 +17,14 @@ export const ADMIN_CONTRACTS_DATA: AdminContractItem[] = [
         "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150",
     },
     propertyAddress: "124 Oak Street",
-    serviceType: "Residential Lawn...",
+    serviceType: "Commercial Lawn Care",
     agreementType: "12 Months",
-    period: "Jan 01 - Dec 31, 2026",
-    serviceAgreementType: "12 month agreement",
+    period: "Jan 01, 2026 to Dec 31, 2026",
+    serviceAgreementType: "12 month agreement (recurring)",
     requestType: "Recurring",
     frequency: "Monthly",
-    amount: "$3,600.00",
-    status: "Draft",
+    amount: "$2,518.00",
+    status: "Active",
     schedule: {
       startDate: "01/01/2026",
       endDate: "31/12/2026",
@@ -112,6 +112,29 @@ export const ADMIN_CONTRACTS_DATA: AdminContractItem[] = [
     frequency: "Monthly",
     amount: "$2,518.00",
     status: "Signed",
+    billingType: "Monthly",
+  },
+  {
+    id: "cn-1024-active",
+    contractId: "#CN-1024",
+    estimateId: "#EST-1024",
+    customer: {
+      name: "Alex Morgan",
+      email: "alexmorgan@gmail.com",
+      contact: "999-(1234)-555",
+      address: "124 Oak Street",
+      avatarUrl:
+        "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150",
+    },
+    propertyAddress: "124 Oak Street",
+    serviceType: "Commercial Lawn Care",
+    agreementType: "12 Months",
+    period: "Jan 01, 2026 to Dec 31, 2026",
+    serviceAgreementType: "12 month agreement (recurring)",
+    requestType: "Recurring",
+    frequency: "Monthly",
+    amount: "$2,518.00",
+    status: "Active",
     billingType: "Monthly",
   },
   {
@@ -232,9 +255,9 @@ export const ADMIN_CONTRACTS_DATA: AdminContractItem[] = [
 ];
 
 export const DEFAULT_CONTRACT_DETAIL: ContractDetailData = {
-  id: "cn-1024-1",
+  id: "cn-1024-active",
   contractId: "#CN-1024",
-  status: "Draft",
+  status: "Active",
   createdAt: "Aug 16, 2026",
   version: "1",
   agreementTitle: "Commercial Lawn Care Agreement",
@@ -349,33 +372,112 @@ export const DEFAULT_CONTRACT_DETAIL: ContractDetailData = {
 };
 
 export const getContractDetailById = (
-  id?: string
+  id?: string,
+  preferredStatus?: string | null
 ): ContractDetailData => {
-  if (!id) return DEFAULT_CONTRACT_DETAIL;
+  if (!id && !preferredStatus) return DEFAULT_CONTRACT_DETAIL;
 
-  const match = ADMIN_CONTRACTS_DATA.find(
-    (c) =>
-      c.id.toLowerCase() === id.toLowerCase() ||
-      c.contractId.toLowerCase() === id.toLowerCase() ||
-      c.contractId.replace("#", "").toLowerCase() === id.toLowerCase()
+  // 1. If preferredStatus is provided, prioritize finding a matching contract
+  if (preferredStatus) {
+    const statusMatch = ADMIN_CONTRACTS_DATA.find(
+      (c) =>
+        c.status.toLowerCase() === preferredStatus.toLowerCase() &&
+        (id ? c.id.toLowerCase() === id.toLowerCase() || c.contractId.toLowerCase().includes(id.toLowerCase()) : true)
+    ) || ADMIN_CONTRACTS_DATA.find(
+      (c) => c.status.toLowerCase() === preferredStatus.toLowerCase()
+    );
+
+    if (statusMatch) {
+      return {
+        ...DEFAULT_CONTRACT_DETAIL,
+        id: statusMatch.id,
+        contractId: statusMatch.contractId,
+        status: statusMatch.status,
+        customer: statusMatch.customer,
+        requestedService: statusMatch.serviceType.replace("...", ""),
+        serviceAgreementType:
+          statusMatch.serviceAgreementType || `${statusMatch.agreementType} agreement (recurring)`,
+        contractDuration: statusMatch.period || DEFAULT_CONTRACT_DETAIL.contractDuration,
+        property: {
+          ...DEFAULT_CONTRACT_DETAIL.property,
+          address: statusMatch.propertyAddress,
+        },
+      };
+    }
+  }
+
+  const lowerId = (id || "").toLowerCase().trim();
+
+  // 2. Direct keywords in ID: active, signed, sent, draft, pending
+  if (lowerId === "active" || lowerId.includes("active")) {
+    const match = ADMIN_CONTRACTS_DATA.find((c) => c.status === "Active") || DEFAULT_CONTRACT_DETAIL;
+    return {
+      ...DEFAULT_CONTRACT_DETAIL,
+      id: match.id,
+      contractId: match.contractId,
+      status: "Active",
+      customer: match.customer,
+    };
+  }
+
+  if (lowerId === "signed" || lowerId.includes("signed")) {
+    const match = ADMIN_CONTRACTS_DATA.find((c) => c.status === "Signed") || DEFAULT_CONTRACT_DETAIL;
+    return {
+      ...DEFAULT_CONTRACT_DETAIL,
+      id: match.id,
+      contractId: match.contractId,
+      status: "Signed",
+      customer: match.customer,
+    };
+  }
+
+  // 3. Exact item ID matching
+  const exactItemMatch = ADMIN_CONTRACTS_DATA.find(
+    (c) => c.id.toLowerCase() === lowerId
   );
+  if (exactItemMatch) {
+    return {
+      ...DEFAULT_CONTRACT_DETAIL,
+      id: exactItemMatch.id,
+      contractId: exactItemMatch.contractId,
+      status: exactItemMatch.status,
+      customer: exactItemMatch.customer,
+      requestedService: exactItemMatch.serviceType.replace("...", ""),
+      serviceAgreementType:
+        exactItemMatch.serviceAgreementType || `${exactItemMatch.agreementType} agreement (recurring)`,
+      contractDuration: exactItemMatch.period || DEFAULT_CONTRACT_DETAIL.contractDuration,
+      property: {
+        ...DEFAULT_CONTRACT_DETAIL.property,
+        address: exactItemMatch.propertyAddress,
+      },
+    };
+  }
 
-  if (!match) return DEFAULT_CONTRACT_DETAIL;
+  // 4. Contract ID matching like "#CN-1024" or "CN-1024": default to Active for testing
+  const contractIdMatches = ADMIN_CONTRACTS_DATA.filter(
+    (c) =>
+      c.contractId.toLowerCase() === lowerId ||
+      c.contractId.replace("#", "").toLowerCase() === lowerId
+  );
+  if (contractIdMatches.length > 0) {
+    const chosen = contractIdMatches.find((m) => m.status === "Active") || contractIdMatches[0];
+    return {
+      ...DEFAULT_CONTRACT_DETAIL,
+      id: chosen.id,
+      contractId: chosen.contractId,
+      status: chosen.status,
+      customer: chosen.customer,
+      requestedService: chosen.serviceType.replace("...", ""),
+      serviceAgreementType:
+        chosen.serviceAgreementType || `${chosen.agreementType} agreement (recurring)`,
+      contractDuration: chosen.period || DEFAULT_CONTRACT_DETAIL.contractDuration,
+      property: {
+        ...DEFAULT_CONTRACT_DETAIL.property,
+        address: chosen.propertyAddress,
+      },
+    };
+  }
 
-  return {
-    ...DEFAULT_CONTRACT_DETAIL,
-    id: match.id,
-    contractId: match.contractId,
-    status: match.status,
-    customer: match.customer,
-    requestedService: match.serviceType.replace("...", ""),
-    serviceAgreementType:
-      match.serviceAgreementType || `${match.agreementType} agreement (recurring)`,
-    contractDuration: match.period || DEFAULT_CONTRACT_DETAIL.contractDuration,
-    property: {
-      ...DEFAULT_CONTRACT_DETAIL.property,
-      address: match.propertyAddress,
-    },
-  };
+  return DEFAULT_CONTRACT_DETAIL;
 };
 

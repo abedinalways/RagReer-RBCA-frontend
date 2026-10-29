@@ -13,7 +13,7 @@ interface ContractDetailsStaticPageProps {
 export default async function AdminContractDetailsStaticPage({
   searchParams,
 }: ContractDetailsStaticPageProps) {
-  const { id } = await searchParams;
+  const { id, status } = await searchParams;
   return (
     <Suspense
       fallback={
@@ -22,7 +22,10 @@ export default async function AdminContractDetailsStaticPage({
         </div>
       }
     >
-      <AdminContractDetailView contractId={id} />
+      <AdminContractDetailView
+        contractId={id}
+        initialStatus={status as any}
+      />
     </Suspense>
   );
 }

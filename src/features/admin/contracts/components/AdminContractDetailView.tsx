@@ -23,6 +23,7 @@ import {
 import { contractStatusStyles } from "./AdminContractsColumns";
 import { AdminContractSignatureReviewModal } from "./AdminContractSignatureReviewModal";
 import { AdminContractCorrectionModal } from "./AdminContractCorrectionModal";
+import { AdminScheduleAppointmentModal } from "./AdminScheduleAppointmentModal";
 
 interface AdminContractDetailViewProps {
   contractId?: string;
@@ -36,22 +37,35 @@ export const AdminContractDetailView: React.FC<
   const searchParams = useSearchParams();
   const queryStatus = searchParams.get("status") as AdminContractStatus | null;
 
-  const [data, setData] = useState<ContractDetailData>(DEFAULT_CONTRACT_DETAIL);
-  const [currentStatus, setCurrentStatus] = useState<AdminContractStatus>(
-    initialStatus || queryStatus || "Draft"
+  const initialContract = getContractDetailById(
+    contractId,
+    queryStatus || initialStatus
   );
+  const resolvedStatus: AdminContractStatus =
+    queryStatus || initialStatus || initialContract.status || "Active";
+
+  const [data, setData] = useState<ContractDetailData>(initialContract);
+  const [currentStatus, setCurrentStatus] =
+    useState<AdminContractStatus>(resolvedStatus);
   const [isTermsExpanded, setIsTermsExpanded] = useState(true);
   const [isSignatureReviewOpen, setIsSignatureReviewOpen] = useState(false);
   const [isCorrectionModalOpen, setIsCorrectionModalOpen] = useState(false);
+  const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
+  const [isStatusDropdownOpen, setIsStatusDropdownOpen] = useState(false);
 
-  // Hydrate data based on contractId
+  // Hydrate data based on contractId or queryStatus
   useEffect(() => {
-    if (contractId) {
-      const loaded = getContractDetailById(contractId);
-      setData(loaded);
-      if (!initialStatus && !queryStatus) {
-        setCurrentStatus(loaded.status);
-      }
+    const loaded = getContractDetailById(
+      contractId,
+      queryStatus || initialStatus
+    );
+    setData(loaded);
+    if (queryStatus) {
+      setCurrentStatus(queryStatus);
+    } else if (initialStatus) {
+      setCurrentStatus(initialStatus);
+    } else {
+      setCurrentStatus(loaded.status || "Active");
     }
   }, [contractId, initialStatus, queryStatus]);
 
@@ -64,6 +78,12 @@ export const AdminContractDetailView: React.FC<
   const handleEdit = () => {
     router.push(
       `/admin/contracts/create?contractId=${encodeURIComponent(data.id)}`
+    );
+  };
+
+  const handleCreateAmendment = () => {
+    router.push(
+      `/admin/contracts/create?amendment=true&contractId=${encodeURIComponent(data.id)}`
     );
   };
 
@@ -131,14 +151,51 @@ export const AdminContractDetailView: React.FC<
             <h1 className="font-barlow-condensed font-medium text-xl md:text-2xl text-primary-heading tracking-tight">
               Contract {data.contractId}
             </h1>
-            <span
-              className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-xs text-xs font-medium ${statusStyle.badgeBg} ${statusStyle.badgeText} border ${statusStyle.badgeBorder} whitespace-nowrap`}
-            >
-              <span
-                className={`w-2 h-2 rounded-full ${statusStyle.dotBg} shrink-0`}
-              />
-              {currentStatus}
-            </span>
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setIsStatusDropdownOpen((prev) => !prev)}
+                className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-xs text-xs font-medium ${statusStyle.badgeBg} ${statusStyle.badgeText} border ${statusStyle.badgeBorder} whitespace-nowrap cursor-pointer hover:opacity-90 transition-opacity`}
+                title="Click to preview different contract statuses"
+              >
+                <span
+                  className={`w-2 h-2 rounded-full ${statusStyle.dotBg} shrink-0`}
+                />
+                {currentStatus}
+                <ChevronDown className="w-3 h-3 ml-0.5 opacity-60" />
+              </button>
+
+              {isStatusDropdownOpen && (
+                <div className="absolute left-0 mt-1 z-30 w-36 rounded-xs border border-border bg-card-bg shadow-lg py-1 animate-in fade-in-50 duration-150">
+                  {(
+                    [
+                      "Active",
+                      "Signed",
+                      "Pending Sign",
+                      "Sent",
+                      "Draft",
+                      "Change Requested",
+                    ] as AdminContractStatus[]
+                  ).map((st) => (
+                    <button
+                      key={st}
+                      type="button"
+                      onClick={() => {
+                        setCurrentStatus(st);
+                        setIsStatusDropdownOpen(false);
+                      }}
+                      className={`w-full text-left px-3 py-1.5 text-xs font-normal transition-colors cursor-pointer ${
+                        currentStatus === st
+                          ? "bg-page-bg font-medium text-primary"
+                          : "text-txt-primary hover:bg-page-bg"
+                      }`}
+                    >
+                      {st}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
           <p className="text-xs md:text-sm text-secondary-subheading font-normal">
             Created on {data.createdAt} • Version {data.version}
@@ -238,11 +295,38 @@ export const AdminContractDetailView: React.FC<
             </>
           )}
 
+          {currentStatus === "Active" && (
+            <>
+              <button
+                type="button"
+                onClick={handleCreateAmendment}
+                className="rounded-xs bg-primary px-4 py-2 text-xs md:text-sm font-medium text-white shadow-2xs hover:bg-primary-hover transition-colors cursor-pointer"
+              >
+                Create Amendment
+              </button>
+              <button
+                type="button"
+                onClick={handleViewCustomer}
+                className="rounded-xs border border-border bg-card-bg px-4 py-2 text-xs md:text-sm font-medium text-txt-primary hover:bg-page-bg transition-colors cursor-pointer"
+              >
+                View Customer
+              </button>
+              <button
+                type="button"
+                onClick={handleDownload}
+                className="rounded-xs border border-border bg-card-bg px-4 py-2 text-xs md:text-sm font-medium text-txt-primary hover:bg-page-bg transition-colors cursor-pointer"
+              >
+                Download
+              </button>
+            </>
+          )}
+
           {currentStatus !== "Draft" &&
             currentStatus !== "Sent" &&
             currentStatus !== "Pending Sign" &&
             currentStatus !== "Pending Signature" &&
-            currentStatus !== "Signed" && (
+            currentStatus !== "Signed" &&
+            currentStatus !== "Active" && (
               <>
                 <button
                   type="button"
@@ -593,6 +677,18 @@ export const AdminContractDetailView: React.FC<
                 </span>
               </div>
             </div>
+
+            {currentStatus === "Active" && (
+              <div className="pt-2">
+                <button
+                  type="button"
+                  onClick={() => setIsScheduleModalOpen(true)}
+                  className="w-full rounded-xs bg-primary py-2.5 text-xs md:text-sm font-medium text-white shadow-2xs hover:bg-primary-hover transition-colors cursor-pointer text-center"
+                >
+                  Schedule Appointment
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Card 3: Payment Terms */}
@@ -669,6 +765,24 @@ export const AdminContractDetailView: React.FC<
         isOpen={isCorrectionModalOpen}
         onClose={() => setIsCorrectionModalOpen(false)}
         onSubmit={handleSubmitCorrection}
+      />
+
+      {/* Schedule Appointment Modal matching Figma */}
+      <AdminScheduleAppointmentModal
+        isOpen={isScheduleModalOpen}
+        onClose={() => setIsScheduleModalOpen(false)}
+        contractId={data.contractId}
+        customerName={data.customer.name}
+        propertyAddress={data.property.address}
+        requestType={data.requestedService}
+        frequency={data.scheduling.frequency}
+        estimatedVisit={data.scheduling.estimateVisit}
+        contractPeriod={data.contractDuration}
+        preferredTime={data.scheduling.preferredTime}
+        estimatedDuration={data.scheduling.estimateDuration}
+        onSuccess={() => {
+          toast.success("New appointment scheduled successfully!");
+        }}
       />
     </div>
   );

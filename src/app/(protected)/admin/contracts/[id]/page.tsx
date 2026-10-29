@@ -8,12 +8,15 @@ export const metadata: Metadata = {
 
 interface ContractDetailPageProps {
   params: Promise<{ id: string }>;
+  searchParams?: Promise<{ status?: string }>;
 }
 
 export default async function AdminContractDetailPage({
   params,
+  searchParams,
 }: ContractDetailPageProps) {
   const { id } = await params;
+  const sp = searchParams ? await searchParams : undefined;
   return (
     <Suspense
       fallback={
@@ -22,7 +25,10 @@ export default async function AdminContractDetailPage({
         </div>
       }
     >
-      <AdminContractDetailView contractId={id} />
+      <AdminContractDetailView
+        contractId={id}
+        initialStatus={sp?.status as any}
+      />
     </Suspense>
   );
 }

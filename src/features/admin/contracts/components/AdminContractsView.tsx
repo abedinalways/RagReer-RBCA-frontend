@@ -40,7 +40,11 @@ export const AdminContractsView: React.FC = () => {
   ) => {
     switch (actionKey) {
       case "view_details":
-        router.push(`/admin/contracts/${contract.id}`);
+        router.push(
+          `/admin/contracts/${contract.id}?status=${encodeURIComponent(
+            contract.status
+          )}`
+        );
         break;
       case "edit":
         router.push(

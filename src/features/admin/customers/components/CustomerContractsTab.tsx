@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Search, ChevronDown, FileCheck } from "lucide-react";
 import toast from "react-hot-toast";
 import { CUSTOMER_CONTRACTS_LIST } from "../data/adminCustomersDetailData";
@@ -19,6 +20,7 @@ interface CustomerContractsTabProps {
 export const CustomerContractsTab: React.FC<CustomerContractsTabProps> = ({
   onSelectContract,
 }) => {
+  const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
@@ -106,7 +108,11 @@ export const CustomerContractsTab: React.FC<CustomerContractsTabProps> = ({
     if (onSelectContract) {
       onSelectContract(ctr);
     } else {
-      toast.success(`Viewing contract: ${ctr.contractId}`);
+      router.push(
+        `/admin/contracts/${ctr.contractId
+          .toLowerCase()
+          .replace("#", "")}?status=${encodeURIComponent(ctr.status)}`
+      );
     }
   };
 
