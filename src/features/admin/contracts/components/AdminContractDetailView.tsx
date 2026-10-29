@@ -24,6 +24,7 @@ import { contractStatusStyles } from "./AdminContractsColumns";
 import { AdminContractSignatureReviewModal } from "./AdminContractSignatureReviewModal";
 import { AdminContractCorrectionModal } from "./AdminContractCorrectionModal";
 import { AdminScheduleAppointmentModal } from "./AdminScheduleAppointmentModal";
+import { AdminCreateAmendmentModal } from "./AdminCreateAmendmentModal";
 
 interface AdminContractDetailViewProps {
   contractId?: string;
@@ -51,7 +52,21 @@ export const AdminContractDetailView: React.FC<
   const [isSignatureReviewOpen, setIsSignatureReviewOpen] = useState(false);
   const [isCorrectionModalOpen, setIsCorrectionModalOpen] = useState(false);
   const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
+  const [isCreateAmendmentOpen, setIsCreateAmendmentOpen] = useState(false);
   const [isStatusDropdownOpen, setIsStatusDropdownOpen] = useState(false);
+
+  // Appointment scheduled state matching Figma "After Scheduling" screenshot
+  const [isAppointmentScheduled, setIsAppointmentScheduled] = useState<boolean>(
+    Boolean(data.scheduling?.isScheduled)
+  );
+  const [scheduledDetails, setScheduledDetails] = useState({
+    frequency: data.scheduling?.frequency || "Monthly",
+    scheduledDate: data.scheduling?.scheduledDate || "Aug 27, 2026",
+    arrivalTime: data.scheduling?.arrivalTime || "11:00 AM",
+    duration: data.scheduling?.duration || "2 hr/day",
+    estimateVisit: data.scheduling?.estimateVisit || "12 visit",
+    nextVisitOn: data.scheduling?.nextVisitOn || "Sep 27, 2026",
+  });
 
   // Hydrate data based on contractId or queryStatus
   useEffect(() => {
@@ -60,6 +75,17 @@ export const AdminContractDetailView: React.FC<
       queryStatus || initialStatus
     );
     setData(loaded);
+    setIsAppointmentScheduled(Boolean(loaded.scheduling?.isScheduled));
+    if (loaded.scheduling) {
+      setScheduledDetails({
+        frequency: loaded.scheduling.frequency,
+        scheduledDate: loaded.scheduling.scheduledDate || "Aug 27, 2026",
+        arrivalTime: loaded.scheduling.arrivalTime || "11:00 AM",
+        duration: loaded.scheduling.duration || "2 hr/day",
+        estimateVisit: loaded.scheduling.estimateVisit || "12 visit",
+        nextVisitOn: loaded.scheduling.nextVisitOn || "Sep 27, 2026",
+      });
+    }
     if (queryStatus) {
       setCurrentStatus(queryStatus);
     } else if (initialStatus) {
@@ -82,9 +108,29 @@ export const AdminContractDetailView: React.FC<
   };
 
   const handleCreateAmendment = () => {
+    setIsCreateAmendmentOpen(true);
+  };
+
+  const handleOpenExistingForm = () => {
+    setIsCreateAmendmentOpen(false);
     router.push(
       `/admin/contracts/create?amendment=true&contractId=${encodeURIComponent(data.id)}`
     );
+  };
+
+  const handleSubmitAmendment = (amendmentData: {
+    selectedChanges: string[];
+    effectiveDate: string;
+    reason: string;
+  }) => {
+    setIsCreateAmendmentOpen(false);
+    setData((prev) => ({
+      ...prev,
+      version:
+        typeof prev.version === "number"
+          ? prev.version + 1
+          : (parseInt(String(prev.version) || "1", 10) || 1) + 1,
+    }));
   };
 
   const handleViewCustomer = () => {
@@ -627,66 +673,131 @@ export const AdminContractDetailView: React.FC<
               Service Scheduling Details
             </h3>
 
-            <div className="space-y-2.5 text-xs md:text-sm">
-              <div className="flex items-center justify-between">
-                <span className="text-secondary-subheading font-normal">
-                  Frequency
-                </span>
-                <span className="text-primary font-medium">
-                  {data.scheduling.frequency}
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-secondary-subheading font-normal">
-                  Start Date
-                </span>
-                <span className="text-primary font-medium">
-                  {data.scheduling.startDate}
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-secondary-subheading font-normal">
-                  End Date
-                </span>
-                <span className="text-primary font-medium">
-                  {data.scheduling.endDate}
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-secondary-subheading font-normal">
-                  Preferred Time
-                </span>
-                <span className="text-primary font-medium">
-                  {data.scheduling.preferredTime}
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-secondary-subheading font-normal">
-                  Estimate Duration
-                </span>
-                <span className="text-primary font-medium">
-                  {data.scheduling.estimateDuration}
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-secondary-subheading font-normal">
-                  Estimate Visit
-                </span>
-                <span className="text-primary font-medium">
-                  {data.scheduling.estimateVisit}
-                </span>
-              </div>
-            </div>
+            {isAppointmentScheduled ? (
+              /* After Scheduling View matching Figma Screenshot */
+              <div className="space-y-2.5 text-xs md:text-sm">
+                <div className="flex items-center justify-between">
+                  <span className="text-secondary-subheading font-normal">
+                    Frequency
+                  </span>
+                  <span className="text-primary font-medium">
+                    {scheduledDetails.frequency}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-secondary-subheading font-normal">
+                    Scheduled Date
+                  </span>
+                  <span className="text-primary font-medium">
+                    {scheduledDetails.scheduledDate}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-secondary-subheading font-normal">
+                    Arrival Time
+                  </span>
+                  <span className="text-primary font-medium">
+                    {scheduledDetails.arrivalTime}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-secondary-subheading font-normal">
+                    Duration
+                  </span>
+                  <span className="text-primary font-medium">
+                    {scheduledDetails.duration}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-secondary-subheading font-normal">
+                    Estimate Visit
+                  </span>
+                  <span className="text-primary font-medium">
+                    {scheduledDetails.estimateVisit}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-secondary-subheading font-normal">
+                    Next Visit on
+                  </span>
+                  <span className="text-primary font-medium">
+                    {scheduledDetails.nextVisitOn}
+                  </span>
+                </div>
 
-            {currentStatus === "Active" && (
-              <div className="pt-2">
-                <button
-                  type="button"
-                  onClick={() => setIsScheduleModalOpen(true)}
-                  className="w-full rounded-xs bg-primary py-2.5 text-xs md:text-sm font-medium text-white shadow-2xs hover:bg-primary-hover transition-colors cursor-pointer text-center"
-                >
-                  Schedule Appointment
-                </button>
+                <div className="pt-2">
+                  <button
+                    type="button"
+                    onClick={() => router.push("/admin/schedule")}
+                    className="w-full rounded-xs bg-primary py-2.5 text-xs md:text-sm font-medium text-white shadow-2xs hover:bg-primary-hover transition-colors cursor-pointer text-center"
+                  >
+                    View Appointments
+                  </button>
+                </div>
+              </div>
+            ) : (
+              /* Before Scheduling View */
+              <div className="space-y-2.5 text-xs md:text-sm">
+                <div className="flex items-center justify-between">
+                  <span className="text-secondary-subheading font-normal">
+                    Frequency
+                  </span>
+                  <span className="text-primary font-medium">
+                    {data.scheduling.frequency}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-secondary-subheading font-normal">
+                    Start Date
+                  </span>
+                  <span className="text-primary font-medium">
+                    {data.scheduling.startDate}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-secondary-subheading font-normal">
+                    End Date
+                  </span>
+                  <span className="text-primary font-medium">
+                    {data.scheduling.endDate}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-secondary-subheading font-normal">
+                    Preferred Time
+                  </span>
+                  <span className="text-primary font-medium">
+                    {data.scheduling.preferredTime}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-secondary-subheading font-normal">
+                    Estimate Duration
+                  </span>
+                  <span className="text-primary font-medium">
+                    {data.scheduling.estimateDuration}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-secondary-subheading font-normal">
+                    Estimate Visit
+                  </span>
+                  <span className="text-primary font-medium">
+                    {data.scheduling.estimateVisit}
+                  </span>
+                </div>
+
+                {currentStatus === "Active" && (
+                  <div className="pt-2">
+                    <button
+                      type="button"
+                      onClick={() => setIsScheduleModalOpen(true)}
+                      className="w-full rounded-xs bg-primary py-2.5 text-xs md:text-sm font-medium text-white shadow-2xs hover:bg-primary-hover transition-colors cursor-pointer text-center"
+                    >
+                      Schedule Appointment
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -781,9 +892,32 @@ export const AdminContractDetailView: React.FC<
         preferredTime={data.scheduling.preferredTime}
         estimatedDuration={data.scheduling.estimateDuration}
         dayOfWeek={data.scheduling.dayOfWeek || data.scheduling.daysOfWeek?.[0] || "Monday"}
-        onSuccess={() => {
+        onSuccess={(details) => {
+          setIsAppointmentScheduled(true);
+          if (details) {
+            setScheduledDetails((prev) => ({
+              ...prev,
+              scheduledDate: details.scheduledDate || prev.scheduledDate,
+              arrivalTime: details.arrivalTime || prev.arrivalTime,
+              duration: details.duration || prev.duration,
+              estimateVisit: details.estimateVisit || prev.estimateVisit,
+              nextVisitOn: details.nextVisitOn || prev.nextVisitOn,
+            }));
+          }
           toast.success("New appointment scheduled successfully!");
         }}
+      />
+
+      {/* Create Amendment Modal matching Figma Screenshots */}
+      <AdminCreateAmendmentModal
+        isOpen={isCreateAmendmentOpen}
+        onClose={() => setIsCreateAmendmentOpen(false)}
+        documentVersion={`Document version ${data.contractId}-v${data.version}`}
+        contractId={data.contractId}
+        customerName={data.customer.name}
+        propertyAddress={data.property.address}
+        onOpenExistingForm={handleOpenExistingForm}
+        onSubmit={handleSubmitAmendment}
       />
     </div>
   );
