@@ -122,6 +122,11 @@ export interface ContractDetailData {
     estimateVisit: string;
     dayOfWeek?: string;
     daysOfWeek?: string[];
+    isScheduled?: boolean;
+    scheduledDate?: string;
+    arrivalTime?: string;
+    duration?: string;
+    nextVisitOn?: string;
   };
   paymentTerms: {
     monthlyAmount: string;
