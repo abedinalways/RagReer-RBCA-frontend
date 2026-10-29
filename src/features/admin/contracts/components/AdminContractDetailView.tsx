@@ -774,7 +774,7 @@ export const AdminContractDetailView: React.FC<
         contractId={data.contractId}
         customerName={data.customer.name}
         propertyAddress={data.property.address}
-        requestType={data.requestedService}
+        requestType={data.requestType || data.requestedService}
         frequency={data.scheduling.frequency}
         estimatedVisit={data.scheduling.estimateVisit}
         contractPeriod={data.contractDuration}

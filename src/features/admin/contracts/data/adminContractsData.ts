@@ -5,6 +5,47 @@ import {
 
 export const ADMIN_CONTRACTS_DATA: AdminContractItem[] = [
   {
+    id: "cnt-13245",
+    contractId: "Contract #CNT-13245",
+    estimateId: "#EST-13245",
+    customer: {
+      name: "Alex Morgan",
+      email: "alexmorgan@gmail.com",
+      contact: "999-(1234)-555",
+      address: "100 Whispering Pines Blvd at Hwy 43",
+      avatarUrl:
+        "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150",
+    },
+    propertyAddress: "100 Whispering Pines Blvd at Hwy 43",
+    serviceType: "One Time Service",
+    agreementType: "One Time",
+    period: "Jan 01, 2026 - Jan 02, 2026",
+    serviceAgreementType: "One Time Agreement",
+    requestType: "One Time",
+    frequency: "One Time",
+    amount: "$2,518.00",
+    status: "Active",
+    schedule: {
+      startDate: "01/01/2026",
+      endDate: "02/01/2026",
+      startTime: "02:00 PM",
+      endTime: "05:00 PM",
+      daysOfWeek: ["Monday"],
+      estimatedDuration: "4 hours/day",
+      estimatedVisits: 2,
+      perMonth: 2,
+    },
+    pricing: {
+      contractValue: "$2,518.00",
+      paymentType: "One Time",
+      billingFrequency: "One Time",
+      billingDate: "Upon Completion",
+      billingTerms: "Due on Receipt",
+      billingPreferences: "Direct",
+    },
+    billingType: "One-Time",
+  },
+  {
     id: "cn-1024-1",
     contractId: "#CN-1024",
     estimateId: "#EST-1024",
@@ -275,6 +316,7 @@ export const DEFAULT_CONTRACT_DETAIL: ContractDetailData = {
       "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150",
   },
   requestedService: "Landscape & Property Maintenance",
+  requestType: "Recurring",
   serviceAgreementType: "12 month agreement (recurring)",
   contractDuration: "Jan 01, 2026 to Dec 31, 2026",
   contractValue: "$2,518.00",
@@ -407,6 +449,47 @@ export const getContractDetailById = (
   }
 
   const lowerId = (id || "").toLowerCase().trim();
+
+  // One Time request matching
+  if (lowerId.includes("13245") || lowerId.includes("onetime") || lowerId.includes("one-time")) {
+    return {
+      ...DEFAULT_CONTRACT_DETAIL,
+      id: "cnt-13245",
+      contractId: "Contract #CNT-13245",
+      status: "Active",
+      customer: {
+        name: "Alex Morgan",
+        email: "alexmorgan@gmail.com",
+        contact: "999-(1234)-555",
+        address: "100 Whispering Pines Blvd at Hwy 43",
+      },
+      requestedService: "One Time Service",
+      requestType: "One Time",
+      serviceAgreementType: "One Time Agreement",
+      contractDuration: "Jan 01, 2026 - Jan 02, 2026",
+      property: {
+        name: "North Entrance Monument & Islands",
+        address: "100 Whispering Pines Blvd at Hwy 43",
+        imageUrl:
+          "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&q=80&w=800",
+      },
+      scheduling: {
+        frequency: "One Time",
+        startDate: "Jan 01, 2026",
+        endDate: "Jan 02, 2026",
+        preferredTime: "02:00 PM - 05:00 PM",
+        estimateDuration: "4 hours/day",
+        estimateVisit: "2",
+      },
+      paymentTerms: {
+        monthlyAmount: "$2,518.00",
+        nextPaymentDate: "Due on completion",
+        paymentType: "One Time",
+        billingFrequency: "One Time",
+        paymentDuration: "One Time",
+      },
+    };
+  }
 
   // 2. Direct keywords in ID: active, signed, sent, draft, pending
   if (lowerId === "active" || lowerId.includes("active")) {

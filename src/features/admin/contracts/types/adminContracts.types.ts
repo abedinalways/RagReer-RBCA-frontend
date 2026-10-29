@@ -96,6 +96,7 @@ export interface ContractDetailData {
   };
   customer: AdminContractCustomer;
   requestedService: string;
+  requestType?: string;
   serviceAgreementType: string;
   contractDuration: string;
   contractValue: string;
