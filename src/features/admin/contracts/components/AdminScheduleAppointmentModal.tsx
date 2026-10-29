@@ -10,6 +10,7 @@ import {
   Check,
   Plus,
   Trash2,
+  Info,
 } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -66,6 +67,16 @@ const EQUIPMENT_OPTIONS = [
   "Truck #1",
 ];
 
+const DAYS_OF_WEEK = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
+];
+
 // Preset contracts that can be chosen directly in Contact ID dropdown
 interface PresetContractOption {
   id: string;
@@ -78,6 +89,7 @@ interface PresetContractOption {
   contractPeriod: string;
   preferredTime: string;
   estimatedDuration: string;
+  dayOfWeek?: string;
   dates: string[];
 }
 
@@ -87,12 +99,27 @@ const PRESET_CONTRACTS: PresetContractOption[] = [
     label: "Contract #CNT-13245",
     customerName: "Alex Morgan",
     propertyAddress: "100 Whispering Pines Blv...",
+    requestType: "Recurring",
+    frequency: "12 months",
+    estimatedVisit: "12",
+    contractPeriod: "Jan 01, 2026 - Jan 02, 2026",
+    preferredTime: "02:00 PM - 05:00 PM",
+    estimatedDuration: "4 hours/day",
+    dayOfWeek: "Monday",
+    dates: ["27/09/2026"],
+  },
+  {
+    id: "Contract #CNT-13245-onetime",
+    label: "Contract #CNT-13245 (One Time)",
+    customerName: "Alex Morgan",
+    propertyAddress: "100 Whispering Pines Blv...",
     requestType: "One Time",
     frequency: "One Time",
     estimatedVisit: "2",
     contractPeriod: "Jan 01, 2026 - Jan 02, 2026",
     preferredTime: "02:00 PM - 05:00 PM",
     estimatedDuration: "4 hours/day",
+    dayOfWeek: "Monday",
     dates: ["27/09/2026", "28/09/2026"],
   },
   {
@@ -100,12 +127,13 @@ const PRESET_CONTRACTS: PresetContractOption[] = [
     label: "Contract #CN-1024",
     customerName: "Alex Morgan",
     propertyAddress: "100 Whispering Pines Blvd at Hwy 43",
-    requestType: "Commercial Lawn Care",
+    requestType: "Recurring",
     frequency: "Monthly",
     estimatedVisit: "22 visit",
     contractPeriod: "Jan 01, 2026 to Dec 31, 2026",
     preferredTime: "11:00 AM- 02:00 PM",
     estimatedDuration: "3hr/day",
+    dayOfWeek: "Monday",
     dates: ["27/09/2026"],
   },
   {
@@ -113,12 +141,13 @@ const PRESET_CONTRACTS: PresetContractOption[] = [
     label: "Contract #CN-1025",
     customerName: "Jordan Lee",
     propertyAddress: "987 Pine Avenue",
-    requestType: "Commercial Tree...",
+    requestType: "Recurring",
     frequency: "Monthly",
     estimatedVisit: "12 visit",
     contractPeriod: "Feb 15 - Aug 14, 2026",
     preferredTime: "09:00 AM - 12:00 PM",
     estimatedDuration: "2hr/day",
+    dayOfWeek: "Tuesday",
     dates: ["15/02/2026"],
   },
   {
@@ -126,12 +155,13 @@ const PRESET_CONTRACTS: PresetContractOption[] = [
     label: "Contract #CN-1026",
     customerName: "Taylor Smith",
     propertyAddress: "456 Maple Lane",
-    requestType: "Residential Lawn...",
+    requestType: "Recurring",
     frequency: "Monthly",
     estimatedVisit: "8 visit",
     contractPeriod: "Mar 01 - Sep 30, 2026",
     preferredTime: "01:00 PM - 04:00 PM",
     estimatedDuration: "3hr/day",
+    dayOfWeek: "Wednesday",
     dates: ["01/03/2026"],
   },
 ];
@@ -148,6 +178,7 @@ interface AdminScheduleAppointmentModalProps {
   contractPeriod?: string;
   preferredTime?: string;
   estimatedDuration?: string;
+  dayOfWeek?: string;
   onSuccess?: () => void;
 }
 
@@ -159,23 +190,23 @@ export const AdminScheduleAppointmentModal: React.FC<
   contractId = "Contract #CNT-13245",
   customerName = "Alex Morgan",
   propertyAddress = "100 Whispering Pines Blv...",
-  requestType = "One Time",
-  frequency = "One Time",
-  estimatedVisit = "2",
+  requestType = "Recurring",
+  frequency = "12 months",
+  estimatedVisit = "12",
   contractPeriod = "Jan 01, 2026 - Jan 02, 2026",
   preferredTime = "02:00 PM - 05:00 PM",
   estimatedDuration = "4 hours/day",
+  dayOfWeek = "Monday",
   onSuccess,
 }) => {
   // Determine if initial prop is One Time
   const isInitialOneTime =
     requestType?.toLowerCase().includes("one time") ||
-    frequency?.toLowerCase().includes("one time") ||
-    contractId?.toLowerCase().includes("13245");
+    frequency?.toLowerCase().includes("one time");
 
   // Default contract selection
   const defaultContractId = isInitialOneTime
-    ? "Contract #CNT-13245"
+    ? "Contract #CNT-13245-onetime"
     : contractId.startsWith("#") || contractId.startsWith("Contract")
     ? contractId
     : `Contract ${contractId}`;
@@ -194,6 +225,12 @@ export const AdminScheduleAppointmentModal: React.FC<
   const [currentPreferredTime, setCurrentPreferredTime] =
     useState<string>(preferredTime);
   const [durationValue, setDurationValue] = useState<string>(estimatedDuration);
+
+  // Day of Week state for Recurring requests (matching Figma)
+  const [selectedDayOfWeek, setSelectedDayOfWeek] = useState<string>(dayOfWeek);
+
+  // Single date for Recurring request
+  const [singleDate, setSingleDate] = useState<string>("");
 
   // Multi-date management for One Time requests
   const [dates, setDates] = useState<string[]>(
@@ -217,6 +254,7 @@ export const AdminScheduleAppointmentModal: React.FC<
 
   const crewDropdownRef = useRef<HTMLDivElement>(null);
   const leaderDropdownRef = useRef<HTMLDivElement>(null);
+  const singleDatePickerRef = useRef<HTMLInputElement>(null);
   const dateInputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   // Update form fields when selectedContactId changes or modal opens
@@ -235,7 +273,13 @@ export const AdminScheduleAppointmentModal: React.FC<
       setCurrentContractPeriod(matched.contractPeriod);
       setCurrentPreferredTime(matched.preferredTime);
       setDurationValue(matched.estimatedDuration);
+      if (matched.dayOfWeek) {
+        setSelectedDayOfWeek(matched.dayOfWeek);
+      }
       setDates(matched.dates);
+      if (matched.dates.length > 0) {
+        setSingleDate(matched.dates[0]);
+      }
     } else {
       setCurrentCustomerName(customerName);
       setCurrentPropertyAddress(propertyAddress);
@@ -244,6 +288,7 @@ export const AdminScheduleAppointmentModal: React.FC<
       setCurrentContractPeriod(contractPeriod);
       setCurrentPreferredTime(preferredTime);
       setDurationValue(estimatedDuration);
+      setSelectedDayOfWeek(dayOfWeek);
       if (isInitialOneTime) {
         setDates(["27/09/2026", "28/09/2026"]);
       } else {
@@ -260,6 +305,7 @@ export const AdminScheduleAppointmentModal: React.FC<
     contractPeriod,
     preferredTime,
     estimatedDuration,
+    dayOfWeek,
     isInitialOneTime,
   ]);
 
@@ -287,14 +333,16 @@ export const AdminScheduleAppointmentModal: React.FC<
   const isOneTime =
     currentRequestType.toLowerCase().includes("one time") ||
     currentFrequency.toLowerCase().includes("one time") ||
-    selectedContactId.toLowerCase().includes("13245");
+    selectedContactId.toLowerCase().includes("onetime");
 
   // Dynamic estimated visits count
   const displayEstimatedVisits = isOneTime
     ? dates.length.toString()
+    : currentFrequency === "12 months"
+    ? "12"
     : estimatedVisit;
 
-  // Add date row (max 15 visits)
+  // Add date row (max 15 visits) for One Time
   const addDateRow = () => {
     if (dates.length >= 15) {
       toast.error("You can add maximum 15 visits");
@@ -303,7 +351,7 @@ export const AdminScheduleAppointmentModal: React.FC<
     setDates((prev) => [...prev, ""]);
   };
 
-  // Remove specific date row
+  // Remove specific date row for One Time
   const removeDateRow = (indexToRemove: number) => {
     if (dates.length <= 1) return;
     setDates((prev) => prev.filter((_, idx) => idx !== indexToRemove));
@@ -318,7 +366,7 @@ export const AdminScheduleAppointmentModal: React.FC<
     });
   };
 
-  // Handle native date picker selection
+  // Handle native date picker selection for One Time
   const handleNativeDatePick = (index: number, isoDate: string) => {
     if (!isoDate) return;
     const parts = isoDate.split("-");
@@ -328,7 +376,7 @@ export const AdminScheduleAppointmentModal: React.FC<
     }
   };
 
-  // Trigger native date picker
+  // Trigger native date picker for One Time
   const triggerDatePicker = (index: number) => {
     const input = dateInputRefs.current[index];
     if (input) {
@@ -336,6 +384,17 @@ export const AdminScheduleAppointmentModal: React.FC<
         input.showPicker();
       } else {
         input.focus();
+      }
+    }
+  };
+
+  // Trigger native date picker for Recurring
+  const triggerSingleDatePicker = () => {
+    if (singleDatePickerRef.current) {
+      if (typeof singleDatePickerRef.current.showPicker === "function") {
+        singleDatePickerRef.current.showPicker();
+      } else {
+        singleDatePickerRef.current.focus();
       }
     }
   };
@@ -462,7 +521,7 @@ export const AdminScheduleAppointmentModal: React.FC<
                 type="text"
                 readOnly
                 value={currentRequestType}
-                placeholder="One Time"
+                placeholder="Recurring"
                 className="w-full rounded-xs border border-border bg-[#F9FAFB] px-3 py-2 text-xs md:text-sm text-txt-primary cursor-not-allowed focus:outline-none truncate"
               />
             </div>
@@ -475,7 +534,7 @@ export const AdminScheduleAppointmentModal: React.FC<
                 type="text"
                 readOnly
                 value={currentFrequency}
-                placeholder="One Time"
+                placeholder="12 months"
                 className="w-full rounded-xs border border-border bg-[#F9FAFB] px-3 py-2 text-xs md:text-sm text-txt-primary cursor-not-allowed focus:outline-none"
               />
             </div>
@@ -488,7 +547,7 @@ export const AdminScheduleAppointmentModal: React.FC<
                 type="text"
                 readOnly
                 value={displayEstimatedVisits}
-                placeholder="2"
+                placeholder="12"
                 className="w-full rounded-xs border border-border bg-[#F9FAFB] px-3 py-2 text-xs md:text-sm text-txt-primary cursor-not-allowed focus:outline-none"
               />
             </div>
@@ -536,115 +595,189 @@ export const AdminScheduleAppointmentModal: React.FC<
             </div>
           </div>
 
-          {/* Row 4: Select Date & Arrival Time matching Figma Screenshots 1 & 2 */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 items-start">
-            {/* Left Col: Select Date (Multi-date rows with + and Red Trash icon) */}
-            <div>
-              <label className="block text-xs font-normal text-txt-primary mb-1">
-                Select Date
-              </label>
-              <div className="space-y-2">
-                {dates.map((dateVal, index) => {
-                  const isLast = index === dates.length - 1;
-                  const showTrash = dates.length > 1;
-                  const showPlus = isLast && dates.length < 15;
+          {/* Row 4: Service Scheduling Row */}
+          {/* Recurring Mode: 3 Columns (Day of Week | Select Date | Arrival Time) matching Figma Screenshot */}
+          {!isOneTime ? (
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {/* Day of Week */}
+              <div>
+                <label className="block text-xs font-normal text-txt-primary mb-1">
+                  Day of Week
+                </label>
+                <div className="relative">
+                  <select
+                    value={selectedDayOfWeek}
+                    onChange={(e) => setSelectedDayOfWeek(e.target.value)}
+                    className="w-full appearance-none rounded-xs border border-border bg-card-bg px-3 py-2 text-xs md:text-sm text-txt-primary focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer pr-8"
+                  >
+                    {DAYS_OF_WEEK.map((day) => (
+                      <option key={day} value={day}>
+                        {day}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-secondary-subheading pointer-events-none" />
+                </div>
+              </div>
 
-                  return (
-                    <div
-                      key={index}
-                      className="group relative flex items-center w-full rounded-xs border border-border bg-card-bg px-3 py-2 transition-colors focus-within:ring-1 focus-within:ring-primary focus-within:border-primary"
-                    >
-                      <input
-                        type="text"
-                        value={dateVal}
-                        onChange={(e) => updateDate(index, e.target.value)}
-                        placeholder="dd/mm/yyyy"
-                        className="w-full bg-transparent text-xs md:text-sm text-txt-primary focus:outline-none pr-16"
-                      />
+              {/* Select Date */}
+              <div>
+                <label className="block text-xs font-normal text-txt-primary mb-1">
+                  Select Date
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={singleDate}
+                    onChange={(e) => setSingleDate(e.target.value)}
+                    placeholder="dd/mm/yyyy"
+                    className="w-full rounded-xs border border-border bg-card-bg px-3 py-2 text-xs md:text-sm text-txt-primary focus:outline-none focus:ring-1 focus:ring-primary pr-9"
+                  />
+                  {/* Hidden native date input for calendar popover */}
+                  <input
+                    type="date"
+                    ref={singleDatePickerRef}
+                    onChange={(e) => {
+                      if (!e.target.value) return;
+                      const [y, m, d] = e.target.value.split("-");
+                      setSingleDate(`${d}/${m}/${y}`);
+                    }}
+                    className="sr-only"
+                    tabIndex={-1}
+                  />
+                  <button
+                    type="button"
+                    onClick={triggerSingleDatePicker}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-secondary-subheading hover:text-txt-primary cursor-pointer transition-colors"
+                    title="Open Calendar"
+                  >
+                    <Calendar className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
 
-                      {/* Hidden native date input for calendar popover */}
-                      <input
-                        type="date"
-                        ref={(el) => {
-                          dateInputRefs.current[index] = el;
-                        }}
-                        onChange={(e) =>
-                          handleNativeDatePick(index, e.target.value)
-                        }
-                        className="sr-only"
-                        tabIndex={-1}
-                      />
+              {/* Arrival Time */}
+              <div>
+                <label className="block text-xs font-normal text-txt-primary mb-1">
+                  Arrival Time
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={arrivalTime}
+                    onChange={(e) => setArrivalTime(e.target.value)}
+                    placeholder="10:00 AM"
+                    className="w-full rounded-xs border border-border bg-card-bg px-3 py-2 text-xs md:text-sm text-txt-primary focus:outline-none focus:ring-1 focus:ring-primary pr-9"
+                  />
+                  <ChevronsUpDown className="absolute right-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-secondary-subheading pointer-events-none" />
+                </div>
+              </div>
+            </div>
+          ) : (
+            /* One Time Mode: 2 Columns with Multi-Date visit selection */
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 items-start">
+              {/* Left Col: Select Date */}
+              <div>
+                <label className="block text-xs font-normal text-txt-primary mb-1">
+                  Select Date
+                </label>
+                <div className="space-y-2">
+                  {dates.map((dateVal, index) => {
+                    const isLast = index === dates.length - 1;
+                    const showTrash = dates.length > 1;
+                    const showPlus = isLast && dates.length < 15;
 
-                      {/* Action Icons inside input right */}
-                      <div className="absolute right-2.5 flex items-center gap-2">
-                        {/* Calendar Icon */}
-                        <button
-                          type="button"
-                          onClick={() => triggerDatePicker(index)}
-                          className="text-secondary-subheading hover:text-txt-primary cursor-pointer transition-colors"
-                          title="Open Calendar"
-                        >
-                          <Calendar className="h-4 w-4" />
-                        </button>
+                    return (
+                      <div
+                        key={index}
+                        className="group relative flex items-center w-full rounded-xs border border-border bg-card-bg px-3 py-2 transition-colors focus-within:ring-1 focus-within:ring-primary focus-within:border-primary"
+                      >
+                        <input
+                          type="text"
+                          value={dateVal}
+                          onChange={(e) => updateDate(index, e.target.value)}
+                          placeholder="dd/mm/yyyy"
+                          className="w-full bg-transparent text-xs md:text-sm text-txt-primary focus:outline-none pr-16"
+                        />
 
-                        {/* Red Trash Icon: visible on previous rows, and on last row on hover/focus */}
-                        {showTrash && (
+                        {/* Hidden native date input for calendar popover */}
+                        <input
+                          type="date"
+                          ref={(el) => {
+                            dateInputRefs.current[index] = el;
+                          }}
+                          onChange={(e) =>
+                            handleNativeDatePick(index, e.target.value)
+                          }
+                          className="sr-only"
+                          tabIndex={-1}
+                        />
+
+                        {/* Action Icons inside input right */}
+                        <div className="absolute right-2.5 flex items-center gap-2">
                           <button
                             type="button"
-                            onClick={() => removeDateRow(index)}
-                            className={`text-[#F04438] hover:text-red-700 cursor-pointer transition-opacity ${
-                              isLast
-                                ? "opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                : "opacity-100"
-                            }`}
-                            title="Remove visit"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </button>
-                        )}
-
-                        {/* Plus (+) Icon on the last row */}
-                        {showPlus && (
-                          <button
-                            type="button"
-                            onClick={addDateRow}
+                            onClick={() => triggerDatePicker(index)}
                             className="text-secondary-subheading hover:text-txt-primary cursor-pointer transition-colors"
-                            title="Add visit"
+                            title="Open Calendar"
                           >
-                            <Plus className="h-4 w-4" />
+                            <Calendar className="h-4 w-4" />
                           </button>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
 
-                {/* Amber Warning text matching Figma Screenshot 2 */}
-                {isOneTime && (
+                          {showTrash && (
+                            <button
+                              type="button"
+                              onClick={() => removeDateRow(index)}
+                              className={`text-[#F04438] hover:text-red-700 cursor-pointer transition-opacity ${
+                                isLast
+                                  ? "opacity-0 group-hover:opacity-100 focus:opacity-100"
+                                  : "opacity-100"
+                              }`}
+                              title="Remove visit"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </button>
+                          )}
+
+                          {showPlus && (
+                            <button
+                              type="button"
+                              onClick={addDateRow}
+                              className="text-secondary-subheading hover:text-txt-primary cursor-pointer transition-colors"
+                              title="Add visit"
+                            >
+                              <Plus className="h-4 w-4" />
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+
                   <p className="text-[11px] text-[#F79009] font-normal mt-1">
                     you can add maximum 15 visits
                   </p>
-                )}
+                </div>
               </div>
-            </div>
 
-            {/* Right Col: Arrival Time matching Figma Screenshots */}
-            <div>
-              <label className="block text-xs font-normal text-txt-primary mb-1">
-                Arrival Time
-              </label>
-              <div className="relative">
-                <input
-                  type="text"
-                  value={arrivalTime}
-                  onChange={(e) => setArrivalTime(e.target.value)}
-                  placeholder="10:00 AM"
-                  className="w-full rounded-xs border border-border bg-card-bg px-3 py-2 text-xs md:text-sm text-txt-primary focus:outline-none focus:ring-1 focus:ring-primary pr-9"
-                />
-                <ChevronsUpDown className="absolute right-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-secondary-subheading pointer-events-none" />
+              {/* Right Col: Arrival Time */}
+              <div>
+                <label className="block text-xs font-normal text-txt-primary mb-1">
+                  Arrival Time
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={arrivalTime}
+                    onChange={(e) => setArrivalTime(e.target.value)}
+                    placeholder="10:00 AM"
+                    className="w-full rounded-xs border border-border bg-card-bg px-3 py-2 text-xs md:text-sm text-txt-primary focus:outline-none focus:ring-1 focus:ring-primary pr-9"
+                  />
+                  <ChevronsUpDown className="absolute right-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-secondary-subheading pointer-events-none" />
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
           {/* Row 5: Assign Crew (Multi-select dropdown matching Figma) */}
           <div ref={crewDropdownRef} className="relative">
@@ -817,11 +950,10 @@ export const AdminScheduleAppointmentModal: React.FC<
             </div>
           </div>
 
-          {/* Row 8: Add Note to Crew (optional) */}
+          {/* Row 8: Add Note to Crew */}
           <div>
             <label className="block text-xs font-normal text-txt-primary mb-1">
-              Add Note to Crew{" "}
-              <span className="text-secondary-subheading">(optional)</span>
+              Add Note to Crew
             </label>
             <div className="relative">
               <textarea
@@ -840,6 +972,16 @@ export const AdminScheduleAppointmentModal: React.FC<
               </span>
             </div>
           </div>
+
+          {/* Auto generation info note for Recurring request matching Figma Screenshot */}
+          {!isOneTime && (
+            <div className="flex items-center gap-1.5 pt-0.5">
+              <Info className="w-4 h-4 text-[#12B76A] shrink-0" />
+              <span className="text-xs text-secondary-subheading font-normal">
+                Your next 30 days visit will be auto generated
+              </span>
+            </div>
+          )}
 
           {/* Footer Actions: Cancel & Submit matching Figma */}
           <div className="grid grid-cols-2 gap-3 pt-2">

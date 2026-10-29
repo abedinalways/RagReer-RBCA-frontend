@@ -120,6 +120,8 @@ export interface ContractDetailData {
     preferredTime: string;
     estimateDuration: string;
     estimateVisit: string;
+    dayOfWeek?: string;
+    daysOfWeek?: string[];
   };
   paymentTerms: {
     monthlyAmount: string;

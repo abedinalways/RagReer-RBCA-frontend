@@ -780,6 +780,7 @@ export const AdminContractDetailView: React.FC<
         contractPeriod={data.contractDuration}
         preferredTime={data.scheduling.preferredTime}
         estimatedDuration={data.scheduling.estimateDuration}
+        dayOfWeek={data.scheduling.dayOfWeek || data.scheduling.daysOfWeek?.[0] || "Monday"}
         onSuccess={() => {
           toast.success("New appointment scheduled successfully!");
         }}

@@ -401,6 +401,8 @@ export const DEFAULT_CONTRACT_DETAIL: ContractDetailData = {
     preferredTime: "11:00 AM- 02:00 PM",
     estimateDuration: "3hr/day",
     estimateVisit: "22 visit",
+    dayOfWeek: "Monday",
+    daysOfWeek: ["Monday"],
   },
   paymentTerms: {
     monthlyAmount: "$595.00/month",
